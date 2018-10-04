@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+    <style>
+        .main_body {
+            width: 800px;
+            height: 480px;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .login_div {
+            width: 400px;
+            height: 100%;
+            float: left;
+        }
+
+        .login_left {
+            background-color: lightgray;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login_right {
+            background-color: beige;
+        }
+
+        #login_title,
+        #login_box,
+        #login_other {
+            width: 260px;
+            margin: 5px auto;
+            padding-bottom: 10px;
+            border: 1px solid lightgray;
+        }
+
+        #login_title {
+            width: 100%;
+            height: 80px;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+        }
+
+        #login_title > h1 > span::after {
+            content: '';
+            width: 100px;
+            height: 2px;
+            position: relative;
+            left: 180px;
+            display: block;
+            background-color: black;
+        }
+
+        #login_title > h1 {
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            transition: .1s ease-in;
+        }
+
+        #login_title > #login_title_up {
+            left: -400px;
+            top: 0px;
+        }
+
+        #login_title > #login_title_in {
+            left: 0px;
+            top: -80px;
+        }
+
+        #login_info {
+            height: 40px;
+            width: 260px;
+            margin: 5px auto 0 auto;
+        }
+
+        #login_error_info {
+            text-align: center;
+            width: 100%;
+            max-height: 40px;
+            display: block;
+            font-size: 12px;
+            line-height: 20px;
+            color: red;
+            font-family: '微软雅黑', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis
+        }
+
+        .input_div {
+            width: 240px;
+            height: 40px;
+            margin: 0 auto;
+        }
+
+        .input_div > input {
+            width: 220px;
+            height: 30px;
+            padding: 0 10px;
+            margin-top: 10px;
+            border-width: 0;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            /* border-bottom: 1px solid lightgray; */
+        }
+
+        .input_div > .input_bottom_line {
+            content: '';
+            width: 0;
+            height: 2px;
+            background-color: gray;
+        }
+
+        .input_div > input:focus {
+            outline: none;
+            border: 0;
+        }
+
+        .input_div > input:focus + .input_bottom_line {
+            content: '';
+            transition: .5s;
+            width: 240px;
+        }
+
+        .mix_div {
+            height: 30px;
+            margin-top: 10px;
+            line-height: 30px;
+        }
+
+        .mix_div > label {
+            font-size: 12px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #user_auto_login,
+        #user_sign_deal {
+            width: 26px;
+            height: 14px;
+            position: relative;
+            background-color: white;
+            top: 3px;
+        }
+
+        .user_sign_btn {
+            width: 236px;
+            height: 36px;
+            border: 0;
+            margin: 2px;
+            padding: 0 10px;
+            background-color: white;
+            border-radius: 3px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border-bottom-width: 0;
+            cursor: pointer;
+            display: block;
+        }
+
+        :focus {
+            outline: transparent auto 5px;
+        }
+
+        .btn_back_div {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            top: 0;
+            left: 0;
+            border-radius: 3px;
+
+        }
+
+        #button_top_border {
+            left: 0;
+            top: 0;
+            height: 1px;
+            width: 0;
+        }
+
+        #button_right_border {
+            right: 0;
+            bottom: 0;
+            height: 0;
+            width: 1px;
+        }
+
+        #button_bottom_border {
+            right: 0;
+            bottom: 0;
+            width: 0;
+            height: 1px;
+        }
+
+        #button_left_border {
+            left: 0;
+            top: 0;
+            width: 1px;
+            height: 0;
+
+        }
+
+        .button_border {
+            position: absolute;
+            background-color: lightgray;
+            border-radius: 3px;
+        }
+
+        .btn_back_div:hover .user_sign_btn {
+            background-color: lightgray;
+            color: white;
+            transition: background-color 1s;
+        }
+
+        .btn_back_div:hover #button_left_border,
+        .btn_back_div:hover #button_right_border {
+            transition: .5s ease-out;
+            height: 100%;
+        }
+
+        .btn_back_div:hover #button_top_border,
+        .btn_back_div:hover #button_bottom_border {
+            transition: .5s ease-out;
+            width: 100%;
+        }
+
+        #text_div {
+            height: 30px;
+        }
+
+        #user_forgot_a,
+        #user_have_account {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        #user_forgot_a > span,
+        #user_have_account > span {
+            border-bottom: 1px solid blue;
+            padding-bottom: 2px;
+        }
+
+        #text_line_div {
+            width: 260px;
+            margin: 10px auto 0 auto;
+        }
+
+        #other_account_text {
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #text_line_div::before,
+        #text_line_div::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            position: relative;
+            background-color: lightgray;
+        }
+
+        #text_line_div::before {
+            left: 0;
+            top: 14px;
+            float: left;
+        }
+
+        #text_line_div::after {
+            right: 0;
+            top: -14px;
+            float: right;
+        }
+
+        #login_other {
+            padding: 10px 0;
+        }
+
+        #login_other_middle_div {
+            min-width: 150px;
+            margin: 0 auto;
+
+        }
+
+        #login_other_middle_div > table {
+            border: 0;
+            width: 100%;
+            height: 100%;
+            /* border-collapse: separate; */
+            border-spacing: 0;
+        }
+
+        .other_account_td {
+            align-items: center;
+            width: 25%;
+            margin: 0 5px;
+        }
+
+        .other_account_div {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            /* background-color: lightgray; */
+
+        }
+
+        .full_img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #login_sign {
+            width: 100%;
+            height: 350px;
+            /* height: 349px; */
+            overflow: hidden;
+        }
+
+        #login_sign > div {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: .5s;
+        }
+
+        /* 用户登录 */
+        #login_sign_in {
+            left: 0;
+            top: 0;
+        }
+
+        /* 用户注册 */
+        #login_sign_up {
+            left: 100%;
+            top: -100%;
+            /* background-color: black; */
+        }
+
+        #sign_box {
+            width: 260px;
+            margin: 5px auto;
+            padding-bottom: 10px;
+            border: 1px solid lightgray;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main_body">
+    <div class="login_left login_div">
+
+    </div>
+    <div class="login_right login_div">
+        <div id="login_title">
+            <h1 id="login_title_up">
+                Inz.
+                <span id="login_title_h2" onclick="loginDivTarget();">Sign up</span>
+            </h1>
+            <h1 id="login_title_in">
+                Inz.
+                <span id="login_title_h1" onclick="loginDivTarget();">Sign in</span>
+            </h1>
+        </div>
+
+        <div id="login_info">
+            <span id="login_error_info"></span>
+        </div>
+
+        <div id="login_sign">
+
+            <!-- 用户登录 -->
+            <div id="login_sign_in">
+                <!-- 账号、密码 -->
+                <div id="login_box">
+                    <div class="input_div">
+                        <input id="user_email" type="email" maxlength="50" spellcheck="false"
+                               placeholder="input your email.">
+                        <div class="input_bottom_line"></div>
+                    </div>
+                    <div class="input_div">
+                        <input id="user_password" type="password" maxlength="40" placeholder="input your password.">
+                        <div class="input_bottom_line"></div>
+                    </div>
+                    <div class="input_div">
+                        <div class="mix_div">
+                            <input id="user_auto_login" type="checkbox">
+                            <label for="user_auto_login">Remember me</label>
+                        </div>
+                    </div>
+                    <div class="input_div">
+                        <div class="btn_back_div">
+                            <input id="user_login_btn" class="user_sign_btn" type="button" value="Sign in">
+                            <div class="button_border" id="button_top_border"></div>
+                            <div class="button_border" id="button_right_border"></div>
+                            <div class="button_border" id="button_bottom_border"></div>
+                            <div class="button_border" id="button_left_border"></div>
+                        </div>
+                    </div>
+                    <div class="input_div" id="text_div">
+                        <div class="mix_div">
+                            <a id="user_forgot_a" href="#text_div">
+                                <span>Forgot your password ?</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 分隔线 -->
+                <div id="text_line_div">
+                        <span id="other_account_text">
+                            or Sign in with
+                        </span>
+                </div>
+                <!-- 其他账号 -->
+                <div id="login_other">
+                    <div id="login_other_middle_div">
+                        <table>
+                            <tr>
+                                <td class="other_account_td">
+                                    <div class="other_account_div">
+                                        <a href="#login_other_middle_div" title="QQ">
+                                            <img class="full_img" src="/image/base/qq.png" alt="QQ">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="other_account_td">
+                                    <div class="other_account_div">
+                                        <a href="#login_other_middle_div" title="新浪">
+                                            <img class="full_img" src="/image/base/sina.png" alt="新浪">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="other_account_td">
+                                    <div class="other_account_div">
+                                        <a href="#login_other_middle_div" title="微信">
+                                            <img class="full_img" src="/image/base/weixin.png" alt="微信">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 用户注册 -->
+            <div id="login_sign_up">
+                <div id="sign_box">
+                    <div class="input_div">
+                        <input id="create_user_email" type="email" maxlength="50" spellcheck="false"
+                               placeholder="input your email.">
+                        <div class="input_bottom_line"></div>
+                    </div>
+                    <div class="input_div">
+                        <input id="create_user_username" type="text" maxlength="20" placeholder="input your username.">
+                        <div class="input_bottom_line"></div>
+                    </div>
+                    <div class="input_div">
+                        <input id="create_user_password" type="password" maxlength="40"
+                               placeholder="input your password.">
+                        <div class="input_bottom_line"></div>
+                    </div>
+                    <div class="input_div">
+                        <input id="create_user_password_again" type="password" maxlength="40"
+                               placeholder="input your password again.">
+                        <div class="input_bottom_line"></div>
+                    </div>
+                    <div class="input_div">
+                        <div class="mix_div">
+                            <input id="user_sign_deal" type="checkbox">
+                            <label for="user_sign_deal">接受 《<a href="#user_sign_deal">用户管理协议</a>》 </label>
+                        </div>
+                    </div>
+                    <div class="input_div">
+                        <div class="btn_back_div">
+                            <input id="create_user_login_btn" class="user_sign_btn" type="button"
+                                   value="Create a Account">
+                            <div class="button_border" id="button_top_border"></div>
+                            <div class="button_border" id="button_right_border"></div>
+                            <div class="button_border" id="button_bottom_border"></div>
+                            <div class="button_border" id="button_left_border"></div>
+                        </div>
+                    </div>
+                    <div class="input_div" id="text_div">
+                        <div class="mix_div">
+                            <a id="user_have_account" href="#" onclick="loginDivTarget();">
+                                <span>Have a account ? to login</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/js/jquery/jquery-3.2.1.js"></script>
+<script>
+    // 登录注册界面切换
+    function loginDivTarget() {
+        var signInDiv = $('#login_sign_in');
+        var signUpDiv = $('#login_sign_up');
+        var signUpH1 = $('#login_title_up');
+        var signInH1 = $('#login_title_in');
+        var inLeft = signInDiv.css('left');
+        console.info('--InLeft:' + inLeft);
+        if (inLeft == '0px') {
+            signInDiv.css('left', '-100%');
+            signUpDiv.css('left', '0');
+            signInH1.css('left', '400px');
+            signUpH1.css('left', '0');
+        } else {
+            signInDiv.css('left', '0');
+            signUpDiv.css('left', '100%');
+            signInH1.css('left', '0');
+            signUpH1.css('left', '-400px');
+        }
+    }
+</script>
+</body>
+</html>

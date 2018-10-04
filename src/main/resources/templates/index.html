@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>关于</title>
+    <link rel="stylesheet" href="/css/base/index.css">
+</head>
+<body>
+    <div class="main_body">
+        <div class="header margin_top_div">
+            <!-- 页头 -->
+            <div class="header_logo float_left_div">
+                <!-- 页头LOGO -->
+            </div>
+            <div class="header_user float_right_div">
+                <!-- 页头用户 -->
+                <div class="float_left_div" id="header_nav">
+                    <!-- 页头导航 -->
+                </div>
+                <div class="float_right_div" id="header_user_div">
+                    <div id="header_user_photo" class="float_left_div">
+                        <!-- 用户头像 -->
+                        <img class="full_img" src="/image/base/my.png" alt="User_photo" onerror="this.src='/image/base/my.png';this.onerror=null;">
+                    </div>
+                    <div id="header_user_name" class="float_left_div">
+                        <!-- 用户名称 -->
+                        <h4 id="header_user_name_text" class="float_left_div">用户名称</h4>
+                        <img id="header_user_name_img" class="full_img float_right_div" src="/image/base/unfold.png" alt="more_contrue">
+                        <div id="header_user_sign" class="float_left_div">
+                            <!-- 标识 -->
+                            <ul>
+                                <li>个人中心</li>
+                                <li>意见反馈</li>
+                                <li>退出</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home_banner_div margin_top_div">
+            <!-- 导航&&BANNER -->
+            <div id="banner_left" class="float_left_div">
+                <!-- 导航 -->
+                <ul>
+                    <li class="banner_left_nav">
+                        <h4>导航目录</h4>
+                    </li>
+                    <li class="banner_left_nav"></li>
+                    <li class="banner_left_nav"></li>
+                    <li class="banner_left_nav"></li>
+                    <li class="banner_left_nav"></li>
+                    <li class="banner_left_nav"></li>
+                </ul>
+            </div>
+            <div id="banner_right" class="float_right_div">
+                <!-- BANNER -->
+            </div>
+        </div>
+        <div class="home_user_intro margin_top_div">
+            <!-- 用户信息简介 -->
+            <div id="intro_title">
+                <!-- 用户信息标题 -->
+            </div>
+            <div id="intro_content">
+                <!-- 用户信息简介内容 -->
+                <div id="intro_left" class="float_left_div">
+                    <!-- 左侧用户信息简介 -->
+                    <div class="intro_content_one">
+                        <!-- 用户信息简介一行 -->
+                        <div class="intro_content_one_img_div float_left_div">
+                            <!-- 用户头像行。头像 -->
+                            <img class="full_img" id="intro_user_photo_0" src="/image/base/my.png" alt="User_photo" onerror="this.src='/image/base/my.png';this.onerror=null;">
+                        </div>
+                        <div class="intro_content_one_txt_div float_left_div">
+                            <!-- 用户头像行。简介 -->
+                            <table class="main_table intro_table">
+                                <tr>
+                                    <td class="table_title">姓名</td>
+                                    <td class="table_intro" id="intro_user_name_0">XXX</td>
+                                </tr>
+                                <tr>
+                                    <td class="table_title">性别</td>
+                                    <td class="table_intro" id="intro_user_sex_0">男</td>
+                                </tr>
+                                <tr>
+                                    <td class="table_title">生日</td>
+                                    <td class="table_intro" id="intro_user_birthday_0">1995-07-12</td>
+                                </tr>
+                                <tr>
+                                    <td class="table_title">爱好</td>
+                                    <td class="table_intro" id="intro_user_hobby_0">运动、旅游、影视、摄影、音乐</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="intro_content_two">
+                        <p class="intro_detail" id="intro_user_detail_0">
+                            爱到心破碎 也别去怪谁
+                        </p>
+                    </div>
+                </div>
+                <div id="intro_right" class="float_right_div">
+                    <!-- 右侧用户信息简介 -->
+                    <div class="intro_content_one">
+                            <!-- 用户信息简介一行 -->
+                            <div class="intro_content_one_img_div float_left_div">
+                                <!-- 用户头像行。头像 -->
+                                <img class="full_img" id="intro_user_photo_1"src="/image/base/my.png" alt="User_photo" onerror="this.src='/image/base/my.png';this.onerror=null;">
+                            </div>
+                            <div class="intro_content_one_txt_div float_left_div">
+                                <!-- 用户头像行。简介 -->
+                                <table class="main_table intro_table">
+                                    <tr>
+                                        <td class="table_title">姓名</td>
+                                        <td class="table_intro" id="intro_user_name_1">XXX</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table_title">性别</td>
+                                        <td class="table_intro" id="intro_user_sex_1">男</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table_title">生日</td>
+                                        <td class="table_intro" id="intro_user_birthday_1">1995-07-12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table_title">爱好</td>
+                                        <td class="table_intro" id="intro_user_hobby_1">运动、旅游、影视、摄影、音乐</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="intro_content_two">
+                            <p class="intro_detail" id="intro_user_detail_1">
+                                爱到心破碎 也别去怪谁
+                            </p>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="home_user_detail margin_top_div">
+            <!-- 用户详情 -->
+            <div id="detail_title">
+                <!-- 用户详情标题 -->
+            </div>
+            <input type="hidden" name="detail_num" id="detail_num" value="2">
+            <div id="detail_content">
+                <!-- 用户详情内容 -->
+                <div class="detail_content_div" id="detail_content_0">
+                    <!-- 详情内容模板 -->
+                    <div class="detail_left float_left_div">
+                        <!-- 左侧时间 -->
+                        <h4 class="detail_time">2018-06-13 14:30:06</h4>
+                    </div>
+                    <div class="detail_sign float_left_div" id="detail_sign_0">
+                        <!-- 详情标识 -->
+                    </div>
+                    <div class="detail_right float_right_div" id="detail_right_0">
+                        <!-- 右侧内容 -->
+                    </div>
+                </div>
+                <div class="detail_content_more">
+                    <!-- 更多详情 -->
+                    <h5>查看更多&gt;&gt;</h5>
+                </div>
+            </div>
+        </div>
+        <div class="footer margin_top_div">
+            <!-- 页尾 -->
+        </div>
+
+    </div>
+    <!-- <script src="/js/jquery/jquery-3.2.1.js"></script> -->
+    <script src="/js/jquery/jquery-3.2.1.js"></script>
+    <script >
+        $(document).ready(function() {
+            var screenWidth = $(window).width();
+            var screenHeight = $(window).height();
+            var mainBody = $('.main_body');
+            // mainBody.width(screenWidth - 2);
+            // mainBody.height(screenHeight - 2);
+            console.info('SCREEN---H:' +screenHeight + '---W:' + screenWidth);
+            var detailRightHeight = 0;
+            var detailNum = $('#detail_num').val();
+            for (var i = 0; i < detailNum; i++) {
+                var detailSign = $('#detail_sign_' + i);
+                var detailRight = $('#detail_right_' + i);
+                var templHeight = detailRight.height();
+                if (!isNaN(templHeight)) {
+                    detailRightHeight = detailRightHeight + Number(templHeight) + 20;
+                    console.info(i + '---DetailRightHeight:' + detailRightHeight);
+                }
+            }
+            if (detailRightHeight == 0) {
+
+            } else {
+                $('<style>#detail_sign_' + i + '::after { height: ' + detailRightHeight + 'px; }</sstyle>').appendTo('head');
+            }
+        });
+    </script>
+</body>
+</html>

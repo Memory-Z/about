@@ -1,0 +1,13 @@
+spring:
+  # 数据库配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/about
+    username: root
+    password: root
+    driver-class-name: org.gjt.mm.mysql.Driver
+
+# MyBatis 配置
+mybatis:
+  # 配置映射类所在的包
+  type-aliases-package: com.inz.about.dao
+  # 配置 Mapper xml 文件所在路径，这是一个数组

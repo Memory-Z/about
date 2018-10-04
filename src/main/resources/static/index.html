@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+    <!-- <link rel="stylesheet" href="webjars/bootstrap/4.1.1/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .display_block {
+            width: 100%;
+            min-height: 400px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        .display_block_0 {
+            height: 100%;
+            background-image: url('image/index/banner_0.jpg');
+        }
+        .display_block_1 {
+            background-image: url('image/index/256.jpg');
+        }
+        .display_block_2 {
+            /* background-image: url('image/index/reflection-of-life_1366x768_sc.jpg'); */
+        }
+        .display_block_3 {
+            /* background-image: url('image/index/watercolor-joseph-zbukvic-city-venice-italy-morning-boat-gondola-water-birds_1920x1080_sc.jpg'); */
+        }
+        .nav {
+            width: 100%;
+            height: 60px;
+            position: relative;
+            top: 0;
+            z-index: 2;
+            border: 1px solid red;
+            /* background-color: aquamarine; */
+        }
+        .date_banner {
+            width: 800px;
+            height: 480px;
+            overflow: hidden;
+            border: 1px solid white;
+            border-radius: 5px;
+            position: absolute;
+            top: 0;
+            right: 0; 
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            box-shadow: 7px 4px 11px 0px #636268;
+        }
+        #date_sent {
+            width: 820px;
+            height: 240px;
+            overflow-y: scroll;
+            font-family: '微软雅黑', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 23px;
+            font-style: normal;
+            font-weight: bold;
+            padding: 20px 30px;
+            color: #616161;
+            display: inline-block;
+        }
+        #author {
+            float: right;
+        }
+        #author::before {
+            content: '';
+            width: 50px;
+            height: 4px;
+            background-color: #616161;
+            display: block;
+            position: relative;
+            top: 21px;
+            left: -70px;
+        }
+        #date_mode {
+            width: 400px;
+            height: 200px;
+            /* border: 2px solid white; */
+            margin: 20px auto;
+        }
+        .date_number_box {
+            width: 100%;
+            height: 92px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 10px auto;
+            list-style: none;
+        }
+        .date_time {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 80px;
+            height: 90px;
+            float: left;
+            text-align: center;
+            color: black;
+            font-size: 40px;
+            margin-left: 16px;
+            /* background-color: rgb(80, 22, 146); */
+        }
+        .date_number {
+            width: 80px;
+            height: 60px;
+            color: #ab5818;
+            line-height: 60px;
+        }
+        .date_tag {
+            height: 20px;
+            line-height: 20px;
+            font-size: 14px;
+        }
+        .date_time::after {
+            content: ':';
+            float: left;
+            line-height: 60px;
+            position: relative;
+            left: 85px;
+            top: -80px;
+        }
+        #date_time_0::after {
+            content: ':';
+            float: left;
+            line-height: 60px;
+            position: relative;
+            left: 95px;
+            top: -80px;
+        }
+        .no_date_dot::after {
+            content: '';
+        }
+        .date_dot {
+            float: left;
+            line-height: 60px;
+            position: relative;
+            top: -60px;
+            left: 85px;
+        }
+    </style>
+</head>
+<body>
+    <div class="display_block_0 banner">
+        <div class="nav">
+            <div id="index_logo">
+                <img src="" alt="" srcset="">
+            </div>
+        </div>
+        <div class="date_banner">
+            <div id="date_sent">
+                <p id="sentence">
+                    曾虑多情损梵行，入山又恐别倾城，
+                    <br>
+                    世间安得双全法，不负如来不负卿。
+                </p>
+                <p id="author">
+                    仓央嘉措
+                </p>
+            </div>
+            <div id="date_mode">
+                <input type="hidden" name="static_time" id="static_time" value="2018/06/22 23:15:00">
+                <ul class="date_number_box">
+                    <li class="date_time" id="date_time_0">
+                        <div class="date_number" id="time_day">00</div>
+                        <!-- <div class="date_dot">:</div> -->
+                        <div class="date_tag">Days</div>
+                    </li>
+                    <li class="date_time">
+                        <div class="date_number" id="time_hour">00</div>
+                        <!-- <div class="date_dot">:</div> -->
+                        <div class="date_tag">Hours</div>
+                    </li>
+                    <li class="date_time">
+                        <div class="date_number" id="time_min">00</div>
+                        <!-- <div class="date_dot">:</div> -->
+                        <div class="date_tag">Minutes</div>
+                    </li>
+                    <li class="date_time no_date_dot">
+                        <div class="date_number" id="time_sec">00</div>
+                        <div class="date_tag">Second</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="display_block display_block_1"></div>
+    <div class="display_block display_block_2"></div>
+    <div class="display_block display_block_3"></div>
+    <script src="/js/jquery/jquery-3.2.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            var sceenWidth = window.innerWidth;
+            var sceenHeight = window.innerHeight;
+            $('.banner').height(sceenHeight);
+            console.log('--SceenWidth:' + sceenWidth + '--SceenHeight:' + sceenHeight);
+            showTime();
+        });
+
+        function showTime() {
+            var staticTime = $('#static_time').val();
+            var startTime = new Date('' + staticTime + '').getTime(); // 设置开始时间
+            var endTime = new Date().getTime();  // 设置当前时间为结束时间
+            var distanceTime = endTime - startTime; // 计算时间差
+            var timeDay = $('#time_day');
+            var timeHour = $('#time_hour');
+            var timeMin = $('#time_min');
+            var timeSec = $('#time_sec');
+            if (distanceTime > 0) {
+                // 天时分秒换算
+                var intDay = Math.floor(distanceTime / 86400000);
+                distanceTime -= intDay * 86400000;
+
+                var intHour = Math.floor(distanceTime / 3600000);
+                distanceTime -= intHour * 3600000;
+
+                var intMin = Math.floor(distanceTime / 60000);
+                distanceTime -= intMin * 60000;
+
+                var intSec = Math.floor(distanceTime / 1000);
+                distanceTime -= intSec * 1000;
+
+                // 时分秒为单数时、前面加零 
+                if (intDay < 10) {
+                    intDay = '0' + intDay;
+                }
+                if (intHour < 10) {
+                    intHour = '0' + intHour;
+                }
+                if (intMin < 10) {
+                    intMin = '0' + intMin;
+                }
+                if (intSec < 10) {
+                    intSec = '0' + intSec;
+                }
+
+                // 显示时间
+                timeDay.html(intDay);
+                timeHour.html(intHour);
+                timeMin.html(intMin);
+                timeSec.html(intSec);
+
+                // 计时器 一次
+                // setTimeout('showTime();',1000); 
+                // 计时器 重复
+                setInterval('changeTime();', 1000);
+            } else {
+                // 显示时间
+                timeDay.html('00');
+                timeHour.html('00');
+                timeMin.html('00');
+                timeSec.html('00');
+            }
+        }
+
+        // 改变时间
+        function changeTime() {
+            var timeDay = $('#time_day');
+            var timeHour= $('#time_hour');
+            var timeMin = $('#time_min');
+            var timeSec = $('#time_sec');
+            var intDay  = Number(timeDay.html());
+            var intHour = Number(timeHour.html());
+            var intMin  = Number(timeMin.html());
+            var intSec  = Number(timeSec.html());
+            // var flag = false;
+            if (intSec < 59) {
+                intSec += 1;
+                if (intSec < 10) {
+                    intSec = '0' + intSec;
+                }
+                timeSec.html(intSec);
+                return;
+                // flag = true;
+            } else {
+                intSec = '00';
+                timeSec.html(intSec);
+                intMin += 1;
+                if (intMin < 59) {
+                    if (intMin < 10) {
+                        intMin = '0' + intMin;
+                    }
+                    timeMin.html(intMin);
+                    return;
+                } else {
+                    intMin = '00';
+                    timeMin.html(intMin);
+                    intHour += 1;
+                    if (intHour < 24) {
+                        if (intHour < 10) {
+                            intHour = '0' + intHour;
+                        }
+                        timeHour.html(intHour);
+                        return;
+                    } else {
+                        intHour = '00';
+                        timeHour.html(intHour);
+                        intDay += 1;
+                        timeDay.html(intDay);
+                    }
+                }
+            }
+        }
+        
+    </script>
+</body>
+</html>
