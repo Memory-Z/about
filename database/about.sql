@@ -1,99 +1,119 @@
 /*
-Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
-Source Server         : 127.0.0.1:3307
-Source Server Version : 80012
-Source Host           : localhost:3307
-Source Database       : about
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 80011
+ Source Host           : localhost:3306
+ Source Schema         : about
 
-Target Server Type    : MYSQL
-Target Server Version : 80012
-File Encoding         : 65001
+ Target Server Type    : MySQL
+ Target Server Version : 80011
+ File Encoding         : 65001
 
-Date: 2018-10-08 11:07:20
+ Date: 09/10/2018 01:15:37
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for diary_file
 -- ----------------------------
 DROP TABLE IF EXISTS `diary_file`;
-CREATE TABLE `diary_file` (
-  `maper_id` varchar(40) NOT NULL COMMENT '日志-文件映射主键',
-  `diary_id` varchar(40) NOT NULL COMMENT '日志主键',
-  `file_id` varchar(40) NOT NULL COMMENT '文件主键',
-  `maper_order` varchar(6) NOT NULL DEFAULT '1' COMMENT '映射排序号',
-  `maper_memo` varchar(500) DEFAULT '1' COMMENT '映射备注',
-  `enable` varchar(1) NOT NULL COMMENT '映射是否可用，0：不可用；1：可用',
-  `create_datetime` datetime NOT NULL COMMENT '创建时间',
-  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `diary_file`  (
+  `maper_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '日志-文件映射主键',
+  `diary_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '日志主键',
+  `file_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件主键',
+  `maper_order` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '映射排序号',
+  `maper_memo` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '映射备注',
+  `enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '映射是否可用，0：不可用；1：可用',
+  `create_datetime` datetime(0) NOT NULL COMMENT '创建时间',
+  `update_datetime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`maper_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='日志-文件映射';
-
--- ----------------------------
--- Records of diary_file
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志-文件映射' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for diary_info
 -- ----------------------------
 DROP TABLE IF EXISTS `diary_info`;
-CREATE TABLE `diary_info` (
-  `diary_id` varchar(40) NOT NULL COMMENT '日志主键',
-  `diary_user_id` varchar(40) NOT NULL COMMENT '日志用户ID',
-  `diary_content` varchar(5000) DEFAULT NULL COMMENT '日志内容',
-  `diary_have_image` varchar(1) NOT NULL COMMENT '日志是否有图片',
-  `diary_date` date NOT NULL COMMENT '日志时间',
-  `diary_weather` varchar(20) DEFAULT NULL COMMENT '日志天气',
-  `diary_address` varchar(200) DEFAULT NULL COMMENT '日志地址',
-  `diary_order` varchar(6) NOT NULL DEFAULT '1' COMMENT '日志排序号',
-  `diary_is_more_one` varchar(1) NOT NULL DEFAULT '0' COMMENT '日志是否多余一个，0：没有；1：有',
-  `create_datetime` datetime NOT NULL COMMENT '创建时间',
-  `update_datatime` datetime DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `diary_info`  (
+  `diary_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '日志主键',
+  `diary_user_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '日志用户ID',
+  `diary_content` varchar(5000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志内容',
+  `diary_have_image` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '日志是否有图片;\'0\':无；‘1’：有',
+  `diary_weather` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志天气',
+  `diary_address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志地址',
+  `diary_order` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '日志排序号',
+  `diary_is_more_one` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '日志是否大于一个，0：没有；1：有',
+  `create_datetime` datetime(0) NOT NULL COMMENT '创建时间',
+  `update_datatime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`diary_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='日志信息';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of diary_info
+-- Table structure for diary_picture
 -- ----------------------------
+DROP TABLE IF EXISTS `diary_picture`;
+CREATE TABLE `diary_picture`  (
+  `id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '日志-图片ID',
+  `diary_id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '日志ID',
+  `picture_id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片ID',
+  `picture_total` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '图片总数',
+  `picture_order` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片排序',
+  `picture_enable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片是否可用；‘0’：不可用；‘1’：可用',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '日志-图片映射' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for file_info
 -- ----------------------------
 DROP TABLE IF EXISTS `file_info`;
-CREATE TABLE `file_info` (
-  `file_id` varchar(40) NOT NULL COMMENT '文件主键',
-  `file_name` varchar(200) NOT NULL COMMENT '文件名',
-  `file_path` varchar(200) DEFAULT NULL COMMENT '文件地址',
-  `file_url` varchar(200) DEFAULT NULL COMMENT '文件访问链接',
-  `file_extension` varchar(20) DEFAULT NULL COMMENT '文件扩展名',
-  `file_type` varchar(100) DEFAULT NULL COMMENT '文件类型',
-  `file_size` double(10,4) DEFAULT NULL COMMENT '文件大小',
-  `file_enable` varchar(1) NOT NULL COMMENT '文件是否可用，0：不可用；1：可用',
-  `create_datetime` datetime NOT NULL COMMENT '文件创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '文件更新时间',
+CREATE TABLE `file_info`  (
+  `file_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件主键',
+  `file_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件名',
+  `file_path` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件地址',
+  `file_url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件访问链接',
+  `file_extension` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件扩展名',
+  `file_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件类型',
+  `file_size` double(10, 4) NULL DEFAULT NULL COMMENT '文件大小',
+  `file_enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件是否可用，0：不可用；1：可用',
+  `create_datetime` datetime(0) NOT NULL COMMENT '文件创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '文件更新时间',
   PRIMARY KEY (`file_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='文件信息表';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of file_info
+-- Table structure for picture_info
 -- ----------------------------
+DROP TABLE IF EXISTS `picture_info`;
+CREATE TABLE `picture_info`  (
+  `picture_id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片主键ID',
+  `picture_path` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址',
+  `picture_sys` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1' COMMENT '图片所在系统；1：windows; 2：Linux',
+  `picture_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片访问链接',
+  `picture_size` double(10, 4) NULL DEFAULT NULL COMMENT '图片大小',
+  `picture_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片类型',
+  `picture_enable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '图片是否可用；‘0’：不可用；‘1’：可用',
+  `create_datetime` datetime(0) NOT NULL COMMENT '图片创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '图片更新时间',
+  PRIMARY KEY (`picture_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '图片信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for static_city
 -- ----------------------------
 DROP TABLE IF EXISTS `static_city`;
-CREATE TABLE `static_city` (
-  `static_city_id` varchar(10) NOT NULL,
-  `static_city_name` varchar(50) NOT NULL,
-  `static_province_id` varchar(20) NOT NULL,
-  `first_letter` varchar(20) DEFAULT NULL,
-  `is_hot` varchar(1) NOT NULL DEFAULT '0',
-  `state` varchar(1) NOT NULL DEFAULT '1',
+CREATE TABLE `static_city`  (
+  `static_city_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `static_city_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `static_province_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `first_letter` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `is_hot` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `state` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1',
   PRIMARY KEY (`static_city_id`) USING BTREE,
-  KEY `idx_static_province_id` (`static_province_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='地级市';
+  INDEX `idx_static_province_id`(`static_province_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地级市' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of static_city
@@ -448,11 +468,11 @@ INSERT INTO `static_city` VALUES ('659000', '省直辖行政单位', '650000', '
 -- Table structure for static_province
 -- ----------------------------
 DROP TABLE IF EXISTS `static_province`;
-CREATE TABLE `static_province` (
-  `static_province_id` varchar(20) NOT NULL,
-  `static_province_name` varchar(50) NOT NULL,
+CREATE TABLE `static_province`  (
+  `static_province_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `static_province_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`static_province_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='省';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '省' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of static_province
@@ -496,13 +516,13 @@ INSERT INTO `static_province` VALUES ('820000', '澳门特别行政区');
 -- Table structure for static_region
 -- ----------------------------
 DROP TABLE IF EXISTS `static_region`;
-CREATE TABLE `static_region` (
-  `static_region_id` varchar(10) NOT NULL,
-  `static_region_name` varchar(50) NOT NULL COMMENT '地区名称',
-  `static_city_id` varchar(10) NOT NULL DEFAULT '0' COMMENT '父地区ID',
+CREATE TABLE `static_region`  (
+  `static_region_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `static_region_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区名称',
+  `static_city_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '父地区ID',
   PRIMARY KEY (`static_region_id`) USING BTREE,
-  KEY `idx_static_city_id` (`static_city_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='区/县';
+  INDEX `idx_static_city_id`(`static_city_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '区/县' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of static_region
@@ -3656,14 +3676,14 @@ INSERT INTO `static_region` VALUES ('659004', '五家渠市', '659000');
 -- Table structure for static_zipcode
 -- ----------------------------
 DROP TABLE IF EXISTS `static_zipcode`;
-CREATE TABLE `static_zipcode` (
-  `zip_id` varchar(11) NOT NULL,
-  `static_region_id` varchar(20) NOT NULL,
-  `zip_number` varchar(20) NOT NULL,
-  `code` varchar(20) NOT NULL COMMENT '区号',
+CREATE TABLE `static_zipcode`  (
+  `zip_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `static_region_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `zip_number` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '区号',
   PRIMARY KEY (`zip_id`) USING BTREE,
-  KEY `idx_static_region_id` (`static_region_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='邮编\r\n';
+  INDEX `idx_static_region_id`(`static_region_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '邮编\r\n' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of static_zipcode
@@ -6817,62 +6837,52 @@ INSERT INTO `static_zipcode` VALUES ('999', '330903', '316100', '0580');
 -- Table structure for temp_email
 -- ----------------------------
 DROP TABLE IF EXISTS `temp_email`;
-CREATE TABLE `temp_email` (
-  `email_id` varchar(40) NOT NULL COMMENT '邮件ID',
-  `user_id` varchar(40) NOT NULL COMMENT '用户ID',
-  `email` varchar(80) NOT NULL COMMENT '邮箱地址（单个）',
-  `send_time` datetime NOT NULL COMMENT '发送时间',
-  `enable` varchar(1) NOT NULL DEFAULT '1' COMMENT '是否激活。1：激活，0：未激活',
-  `change_time` datetime DEFAULT NULL COMMENT '更改时间',
-  PRIMARY KEY (`email_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邮箱发送临时表';
-
--- ----------------------------
--- Records of temp_email
--- ----------------------------
+CREATE TABLE `temp_email`  (
+  `email_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮件ID',
+  `user_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
+  `email` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱地址（单个）',
+  `send_time` datetime(0) NOT NULL COMMENT '发送时间',
+  `enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '是否激活。1：激活，0：未激活',
+  `change_time` datetime(0) NULL DEFAULT NULL COMMENT '更改时间',
+  PRIMARY KEY (`email_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '邮箱发送临时表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_file
 -- ----------------------------
 DROP TABLE IF EXISTS `user_file`;
-CREATE TABLE `user_file` (
-  `maper_id` varchar(40) NOT NULL COMMENT '用户-文件映射主键',
-  `user_id` varchar(40) NOT NULL COMMENT '用户信息主键',
-  `file_id` varchar(40) NOT NULL COMMENT '文件信息主键',
-  `maper_order` varchar(6) NOT NULL DEFAULT '1' COMMENT '映射排序号',
-  `maper_memo` varchar(500) DEFAULT NULL COMMENT '映射备注',
-  `enable` varchar(1) NOT NULL DEFAULT '1' COMMENT '映射是否可用，0：不可用；1：可用',
-  `create_datetime` datetime NOT NULL COMMENT '创建时间',
-  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `user_file`  (
+  `maper_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户-文件映射主键',
+  `user_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户信息主键',
+  `file_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件信息主键',
+  `maper_order` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '映射排序号',
+  `maper_memo` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '映射备注',
+  `enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '映射是否可用，0：不可用；1：可用',
+  `create_datetime` datetime(0) NOT NULL COMMENT '创建时间',
+  `update_datetime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`maper_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户-文件映射';
-
--- ----------------------------
--- Records of user_file
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户-文件映射' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_info
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
-CREATE TABLE `user_info` (
-  `user_id` varchar(40) NOT NULL COMMENT '用户主键',
-  `username` varchar(40) NOT NULL COMMENT '用户名',
-  `password` varchar(60) NOT NULL COMMENT '用户密码',
-  `user_sex` varchar(1) NOT NULL DEFAULT '1' COMMENT '用户性别，1：男性；0：女性',
-  `user_email` varchar(50) DEFAULT NULL COMMENT '用户邮箱',
-  `user_phone` varchar(11) DEFAULT NULL COMMENT '用户手机号',
+CREATE TABLE `user_info`  (
+  `user_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户主键',
+  `username` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `password` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户密码',
+  `user_sex` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '用户性别，1：男性；0：女性',
+  `user_email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户邮箱',
+  `user_phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户手机号',
   `user_birthday` date NOT NULL DEFAULT '1900-01-01' COMMENT '用户生日',
-  `user_intro` varchar(500) DEFAULT NULL COMMENT '用户简介',
-  `user_type` varchar(2) NOT NULL DEFAULT '0' COMMENT '用户类型，0：普通用户；1：管理员',
-  `user_role_id` varchar(40) DEFAULT NULL COMMENT '用户权限ID',
-  `user_enable` varchar(1) NOT NULL DEFAULT '1' COMMENT '用户是否可用，0：不可用；1：可用',
-  `user_memo` varchar(1000) DEFAULT NULL COMMENT '用户备注',
-  `create_datetime` datetime NOT NULL COMMENT '用户创建时间',
-  `update_datetime` datetime DEFAULT NULL COMMENT '用户更新时间',
+  `user_intro` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户简介',
+  `user_type` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '用户类型，0：普通用户；1：管理员',
+  `user_role_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户权限ID',
+  `user_enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '用户是否可用，0：不可用；1：可用',
+  `user_memo` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户备注',
+  `create_datetime` datetime(0) NOT NULL COMMENT '用户创建时间',
+  `update_datetime` datetime(0) NULL DEFAULT NULL COMMENT '用户更新时间',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户信息表';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of user_info
--- ----------------------------
+SET FOREIGN_KEY_CHECKS = 1;

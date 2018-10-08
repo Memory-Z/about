@@ -42,14 +42,14 @@
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
         <!-- 用户信息表 -->
-        <table tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
+        <!--<table tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
         <!-- 用户-文件映射表 -->
         <table tableName="user_file" domainObjectName="UserFile" enableCountByExample="false"
                enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>
         <!-- 静态邮编表 -->
-        <table tableName="static_zipcode" domainObjectName="StaticZipCode" enableCountByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!--<table tableName="static_zipcode" domainObjectName="StaticZipCode" enableCountByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!-- 静态地级市表 -->
         <table tableName="static_city" domainObjectName="StaticCity" enableCountByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
@@ -60,8 +60,8 @@
         <table tableName="static_region" domainObjectName="StaticRegion" enableCountByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
         <!-- 临时邮箱信息表‘存储验证信息状态’ -->
-        <table tableName="temp_email" domainObjectName="TempEmail" enableCountByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!--<table tableName="temp_email" domainObjectName="TempEmail" enableCountByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!-- 日志信息表 -->
         <table tableName="diary_info" domainObjectName="DiaryInfo" enableCountByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
