@@ -35,4 +35,3 @@ mybatis:
   # 配置映射类所在的包
   type-aliases-package: com.inz.about.dao
   # 配置 Mapper xml 文件所在路径，这是一个数组
-  mapper-locations: com/inz/about/mapping/*.xml

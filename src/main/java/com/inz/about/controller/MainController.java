@@ -33,12 +33,6 @@ public class MainController {
         this.userInfoService = userInfoService;
     }
 
-    /**
-     * /index 首页
-     *
-     * @param request
-     * @return
-     */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String onPageLoad(HttpServletRequest request) {
         UserInfo userInfo = new UserInfo();
@@ -46,24 +40,12 @@ public class MainController {
         return "/index.html";
     }
 
-    /**
-     * 进入登录界面 login
-     *
-     * @param request
-     * @return
-     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginOnPageLoad(HttpServletRequest request) {
         request.setAttribute("errorMsg", "");
         return loginUrl;
     }
 
-    /**
-     * 登录界面提交信息 login
-     *
-     * @param request
-     * @return
-     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginOnSubmit(HttpServletRequest request) {
 
@@ -109,10 +91,6 @@ public class MainController {
         return loginUrl;
     }
 
-
-    /**
-     * 发送邮件
-     */
     private void sendEmail() {
 
     }
