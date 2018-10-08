@@ -1,7 +1,7 @@
 spring:
   # 数据库配置
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/about
+    url: jdbc:mysql://127.0.0.1:3307/about
     username: root
     password: root
     driver-class-name: org.gjt.mm.mysql.Driver

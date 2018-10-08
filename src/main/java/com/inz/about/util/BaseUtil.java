@@ -492,6 +492,8 @@ public class BaseUtil {
         return s;
     }
 
+    private static final String MD5_KEY = "inz_about";
+
     /**
      * MD5 加密
      *
@@ -499,7 +501,7 @@ public class BaseUtil {
      * @return 加密后的值
      */
     public static String encryptMd5(String value) {
-        return DigestUtils.md5Hex(value);
+        return DigestUtils.md5Hex(value + MD5_KEY);
     }
 
     /**
@@ -513,7 +515,8 @@ public class BaseUtil {
         if ("".equalsIgnoreCase(value) || "".equalsIgnoreCase(md5Value)) {
             return false;
         }
-        return value.equalsIgnoreCase(md5Value);
+        String m = encryptMd5(value);
+        return m.equalsIgnoreCase(md5Value);
     }
 
 

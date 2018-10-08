@@ -185,28 +185,28 @@
 
         }
 
-        #button_top_border {
+        .button_top_border {
             left: 0;
             top: 0;
             height: 1px;
             width: 0;
         }
 
-        #button_right_border {
+        .button_right_border {
             right: 0;
             bottom: 0;
             height: 0;
             width: 1px;
         }
 
-        #button_bottom_border {
+        .button_bottom_border {
             right: 0;
             bottom: 0;
             width: 0;
             height: 1px;
         }
 
-        #button_left_border {
+        .button_left_border {
             left: 0;
             top: 0;
             width: 1px;
@@ -226,19 +226,19 @@
             transition: background-color 1s;
         }
 
-        .btn_back_div:hover #button_left_border,
-        .btn_back_div:hover #button_right_border {
+        .btn_back_div:hover .button_left_border,
+        .btn_back_div:hover .button_right_border {
             transition: .5s ease-out;
             height: 100%;
         }
 
-        .btn_back_div:hover #button_top_border,
-        .btn_back_div:hover #button_bottom_border {
+        .btn_back_div:hover .button_top_border,
+        .btn_back_div:hover .button_bottom_border {
             transition: .5s ease-out;
             width: 100%;
         }
 
-        #text_div {
+        .text_div {
             height: 30px;
         }
 
@@ -384,135 +384,142 @@
         </div>
 
         <div id="login_info">
-            <span id="login_error_info"></span>
+            <!--/*@thymesVar id="errorMsg" type="java.lang.String"*/-->
+            <span th:text="${errorMsg}" id="login_error_info"></span>
         </div>
 
-        <div id="login_sign">
-
-            <!-- 用户登录 -->
-            <div id="login_sign_in">
-                <!-- 账号、密码 -->
-                <div id="login_box">
-                    <div class="input_div">
-                        <input id="user_email" type="email" maxlength="50" spellcheck="false"
-                               placeholder="input your email.">
-                        <div class="input_bottom_line"></div>
-                    </div>
-                    <div class="input_div">
-                        <input id="user_password" type="password" maxlength="40" placeholder="input your password.">
-                        <div class="input_bottom_line"></div>
-                    </div>
-                    <div class="input_div">
-                        <div class="mix_div">
-                            <input id="user_auto_login" type="checkbox">
-                            <label for="user_auto_login">Remember me</label>
+        <form action="/login" method="post">
+            <!-- 登录类型。登录/注册 -->
+            <input type="hidden" id="signType" name="signType" value="in">
+            <div id="login_sign">
+                <!-- 用户登录 -->
+                <div id="login_sign_in">
+                    <!-- 账号、密码 -->
+                    <div id="login_box">
+                        <div class="input_div">
+                            <input id="user_email" type="email" maxlength="50" spellcheck="false" name="inUserEmail"
+                                   placeholder="input your email.">
+                            <div class="input_bottom_line"></div>
+                        </div>
+                        <div class="input_div">
+                            <input id="user_password" type="password" maxlength="40" name="inPassword"
+                                   placeholder="input your password.">
+                            <div class="input_bottom_line"></div>
+                        </div>
+                        <div class="input_div">
+                            <div class="mix_div">
+                                <input id="user_auto_login" type="checkbox">
+                                <label for="user_auto_login">Remember me</label>
+                            </div>
+                        </div>
+                        <div class="input_div">
+                            <div class="btn_back_div">
+                                <input id="user_login_btn" class="user_sign_btn" type="submit" value="Sign in">
+                                <div class="button_border button_top_border"></div>
+                                <div class="button_border button_right_border"></div>
+                                <div class="button_border button_bottom_border"></div>
+                                <div class="button_border button_left_border"></div>
+                            </div>
+                        </div>
+                        <div class="input_div text_div">
+                            <div class="mix_div">
+                                <a id="user_forgot_a" href="#">
+                                    <span>Forgot your password ?</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="input_div">
-                        <div class="btn_back_div">
-                            <input id="user_login_btn" class="user_sign_btn" type="button" value="Sign in">
-                            <div class="button_border" id="button_top_border"></div>
-                            <div class="button_border" id="button_right_border"></div>
-                            <div class="button_border" id="button_bottom_border"></div>
-                            <div class="button_border" id="button_left_border"></div>
-                        </div>
-                    </div>
-                    <div class="input_div" id="text_div">
-                        <div class="mix_div">
-                            <a id="user_forgot_a" href="#text_div">
-                                <span>Forgot your password ?</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- 分隔线 -->
-                <div id="text_line_div">
+                    <!-- 分隔线 -->
+                    <div id="text_line_div">
                         <span id="other_account_text">
                             or Sign in with
                         </span>
-                </div>
-                <!-- 其他账号 -->
-                <div id="login_other">
-                    <div id="login_other_middle_div">
-                        <table>
-                            <tr>
-                                <td class="other_account_td">
-                                    <div class="other_account_div">
-                                        <a href="#login_other_middle_div" title="QQ">
-                                            <img class="full_img" src="/image/base/qq.png" alt="QQ">
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="other_account_td">
-                                    <div class="other_account_div">
-                                        <a href="#login_other_middle_div" title="新浪">
-                                            <img class="full_img" src="/image/base/sina.png" alt="新浪">
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="other_account_td">
-                                    <div class="other_account_div">
-                                        <a href="#login_other_middle_div" title="微信">
-                                            <img class="full_img" src="/image/base/weixin.png" alt="微信">
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
                     </div>
+                    <!-- 其他账号 -->
+                    <div id="login_other">
+                        <div id="login_other_middle_div">
+                            <table>
+                                <tr>
+                                    <td class="other_account_td">
+                                        <div class="other_account_div">
+                                            <a href="#" title="QQ">
+                                                <img class="full_img" src="/image/base/qq.png" alt="QQ">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="other_account_td">
+                                        <div class="other_account_div">
+                                            <a href="#" title="新浪">
+                                                <img class="full_img" src="/image/base/sina.png" alt="新浪">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="other_account_td">
+                                        <div class="other_account_div">
+                                            <a href="#" title="微信">
+                                                <img class="full_img" src="/image/base/weixin.png" alt="微信">
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 用户注册 -->
+                <div id="login_sign_up">
+                    <div id="sign_box">
+                        <div class="input_div">
+                            <input id="create_user_email" type="email" maxlength="50" spellcheck="false" name="upEmail"
+                                   placeholder="input your email.">
+                            <div class="input_bottom_line"></div>
+                        </div>
+                        <div class="input_div">
+                            <input id="create_user_username" type="text" maxlength="20" name="upUserName"
+                                   placeholder="input your username.">
+                            <div class="input_bottom_line"></div>
+                        </div>
+                        <div class="input_div">
+                            <input id="create_user_password" type="password" maxlength="40" name="upPassword"
+                                   placeholder="input your password.">
+                            <div class="input_bottom_line"></div>
+                        </div>
+                        <div class="input_div">
+                            <input id="create_user_password_again" type="password" maxlength="40" name="upPassword2"
+                                   placeholder="input your password again.">
+                            <div class="input_bottom_line"></div>
+                        </div>
+                        <div class="input_div">
+                            <div class="mix_div">
+                                <input id="user_sign_deal" type="checkbox">
+                                <label for="user_sign_deal">接受 《<a href="#user_sign_deal">用户管理协议</a>》 </label>
+                            </div>
+                        </div>
+                        <div class="input_div">
+                            <div class="btn_back_div">
+                                <input id="create_user_login_btn" class="user_sign_btn" type="submit"
+                                       value="Create a Account">
+                                <div class="button_border button_top_border"></div>
+                                <div class="button_border button_right_border"></div>
+                                <div class="button_border button_bottom_border"></div>
+                                <div class="button_border button_left_border"></div>
+                            </div>
+                        </div>
+                        <div class="input_div text_div">
+                            <div class="mix_div">
+                                <a id="user_have_account" href="#" onclick="loginDivTarget();">
+                                    <span>Have a account ? to login</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
-
-            <!-- 用户注册 -->
-            <div id="login_sign_up">
-                <div id="sign_box">
-                    <div class="input_div">
-                        <input id="create_user_email" type="email" maxlength="50" spellcheck="false"
-                               placeholder="input your email.">
-                        <div class="input_bottom_line"></div>
-                    </div>
-                    <div class="input_div">
-                        <input id="create_user_username" type="text" maxlength="20" placeholder="input your username.">
-                        <div class="input_bottom_line"></div>
-                    </div>
-                    <div class="input_div">
-                        <input id="create_user_password" type="password" maxlength="40"
-                               placeholder="input your password.">
-                        <div class="input_bottom_line"></div>
-                    </div>
-                    <div class="input_div">
-                        <input id="create_user_password_again" type="password" maxlength="40"
-                               placeholder="input your password again.">
-                        <div class="input_bottom_line"></div>
-                    </div>
-                    <div class="input_div">
-                        <div class="mix_div">
-                            <input id="user_sign_deal" type="checkbox">
-                            <label for="user_sign_deal">接受 《<a href="#user_sign_deal">用户管理协议</a>》 </label>
-                        </div>
-                    </div>
-                    <div class="input_div">
-                        <div class="btn_back_div">
-                            <input id="create_user_login_btn" class="user_sign_btn" type="button"
-                                   value="Create a Account">
-                            <div class="button_border" id="button_top_border"></div>
-                            <div class="button_border" id="button_right_border"></div>
-                            <div class="button_border" id="button_bottom_border"></div>
-                            <div class="button_border" id="button_left_border"></div>
-                        </div>
-                    </div>
-                    <div class="input_div" id="text_div">
-                        <div class="mix_div">
-                            <a id="user_have_account" href="#" onclick="loginDivTarget();">
-                                <span>Have a account ? to login</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        </form>
 
     </div>
 </div>
@@ -524,18 +531,22 @@
         var signUpDiv = $('#login_sign_up');
         var signUpH1 = $('#login_title_up');
         var signInH1 = $('#login_title_in');
+        var signType = $('#signType');
         var inLeft = signInDiv.css('left');
         console.info('--InLeft:' + inLeft);
-        if (inLeft == '0px') {
+        if (inLeft === '0px') {
+            console.info('inLeft:' + inLeft);
             signInDiv.css('left', '-100%');
             signUpDiv.css('left', '0');
             signInH1.css('left', '400px');
             signUpH1.css('left', '0');
+            signType.val('up');
         } else {
             signInDiv.css('left', '0');
             signUpDiv.css('left', '100%');
             signInH1.css('left', '0');
             signUpH1.css('left', '-400px');
+            signType.val('in');
         }
     }
 </script>

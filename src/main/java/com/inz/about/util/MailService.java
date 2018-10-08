@@ -88,6 +88,12 @@ public class MailService {
         return sendEmail(mailUtil);
     }
 
+    /**
+     * 邮件发送
+     *
+     * @param mailUtil 邮件集合
+     * @return 是否发送成功
+     */
     private static boolean sendEmail(MailUtil mailUtil) {
         try {
             mailUtil.sendEmail();

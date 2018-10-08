@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0
  * Create By Zhenglj on 2018/10/2 09:08
  **/
-public interface IUserService {
+public interface IUserInfoService {
     /**
      * 用户登录
      *
@@ -27,4 +27,12 @@ public interface IUserService {
      * @return 用户信息
      */
     UserInfo findByUsername(String username);
+
+    /**
+     * 用户注册
+     *
+     * @param userInfo 用户信息
+     * @return 是否注册成功
+     */
+    boolean register(UserInfo userInfo);
 }
