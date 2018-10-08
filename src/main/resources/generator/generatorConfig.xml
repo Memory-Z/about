@@ -3,8 +3,12 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+    <!-- inz -->
+    <!--<classPathEntry-->
+    <!--location="C:\Users\inz\.m2\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>-->
+    <!-- 11654 -->
     <classPathEntry
-            location="C:\Users\inz\.m2\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
+            location="C:\Users\11654\.m2\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
     <context id="AboutTable" targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressDate" value="true"/>
@@ -12,8 +16,13 @@
             <property name="suppressAllComments" value="false"/>
         </commentGenerator>
         <!-- 数据库链接URL，用户名、密码 -->
+        <!-- inz -->
+        <!--<jdbcConnection driverClass="org.gjt.mm.mysql.Driver"-->
+        <!--connectionURL="jdbc:mysql://127.0.0.1:3307/about?useSSL=false"-->
+        <!--userId="root" password="root"/>-->
+        <!-- 11654 -->
         <jdbcConnection driverClass="org.gjt.mm.mysql.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3307/about?useSSL=false"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/about?useSSL=false"
                         userId="root" password="root"/>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="true"/>
@@ -35,10 +44,38 @@
         <!-- 用户信息表 -->
         <table tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
+        <!-- 用户-文件映射表 -->
+        <table tableName="user_file" domainObjectName="UserFile" enableCountByExample="false"
+               enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>
         <!-- 静态邮编表 -->
         <table tableName="static_zipcode" domainObjectName="StaticZipCode" enableCountByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 静态地级市表 -->
+        <table tableName="static_city" domainObjectName="StaticCity" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 静态省名表 -->
+        <table tableName="static_province" domainObjectName="StaticProvince" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 静态区/县名表 -->
+        <table tableName="static_region" domainObjectName="StaticRegion" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 临时邮箱信息表‘存储验证信息状态’ -->
         <table tableName="temp_email" domainObjectName="TempEmail" enableCountByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 日志信息表 -->
+        <table tableName="diary_info" domainObjectName="DiaryInfo" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 图片信息表 -->
+        <table tableName="picture_info" domainObjectName="PictureInfo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"/>
+        <!-- 文件信息表 -->
+        <table tableName="file_info" domainObjectName="FileInfo" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!-- 日志-图片映射表 -->
+        <table tableName="diary_picture" domainObjectName="DiaryPicture" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
+        <!-- 日志-文件映射表 -->
+        <table tableName="diary_file" domainObjectName="DiaryFile" enableCountByExample="false"
+               enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>
