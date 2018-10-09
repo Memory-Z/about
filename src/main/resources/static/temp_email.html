@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #email_body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            width: 80%;
+            min-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #414141;
+        }
+
+        #email_theme {
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            margin: 0 auto;
+            color: #c4c4c4;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bolder;
+            background-color: #414141;
+        }
+
+        #email_theme>div {
+            float: left;
+            width: 60%;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        #email_theme>a {
+            float: right;
+            margin-right: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            color: #e6e6e6;
+        }
+
+        #email_detail {
+            width: 90%;
+            margin: 10px auto;
+        }
+
+        #user_name {
+            margin: 2px 0;
+        }
+
+        #email_info {
+            text-indent: 2em;
+        }
+
+        #verification_title {
+            text-align: center;
+            margin: 10 auto;
+        }
+
+        #verification_code_div {
+            margin-top: 10px;
+            height: 80px;
+        }
+
+        #verification_code {
+            border: 1px solid #898989;
+            padding: 10px 8px;
+            text-transform: uppercase;
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 36px;
+        }
+
+        #email_hint {
+            width: 90%;
+            margin: 4px auto;
+            color: #898989;
+            font-size: 14px;
+        }
+
+        #copyright {
+            text-align: center;
+            height: 20px;
+            line-height: 20px;
+            color: #c4c4c4;
+            font-size: 14px;
+            background-color: #414141;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="email_body">
+        <!-- 邮件主题 -->
+        <div id="email_theme">
+            <div>
+                验证码
+            </div>
+            <!-- 网站名、LOGO -->
+            <a href="http://www.zhenglunjie.com">
+                INZ
+            </a>
+        </div>
+        <!-- 说明 -->
+        <div id="email_detail">
+            <div id="user_name">
+                您好，
+                ${user_name}
+                :
+            </div>
+            <div id="email_info">
+                请在INZ上输入以下验证码。验证码将在10分钟后失效，请务必在10分钟以内输入。
+            </div>
+        </div>
+        <div id="verification_title">
+            验证码
+        </div>
+        <!-- 验证码： -->
+        <div id="verification_code_div">
+            <div id="verification_code">
+                ABdcde
+            </div>
+        </div>
+        <!-- 提示 -->
+        <div id="email_hint">
+            <div>
+                * 此封为系统自动发送的邮件。
+            </div>
+            <div>
+                * 如果还没有加入INZ，请点击 右上角
+            </div>
+        </div>
+        <div id="copyright">
+            &COPY;inz. 2017-2018
+        </div>
+    </div>
+</body>
+
+</html>

@@ -5,6 +5,7 @@ import com.inz.about.model.UserInfo;
 import com.inz.about.service.ITempEmailService;
 import com.inz.about.service.IUserInfoService;
 import com.inz.about.util.BaseUtil;
+import com.inz.about.util.IOUtil;
 import com.inz.about.util.MailService;
 import com.inz.about.util.ThreadPoolProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,14 @@ public class MainController {
     public MainController(IUserInfoService userInfoService, ITempEmailService tempEmailService) {
         this.userInfoService = userInfoService;
         this.tempEmailService = tempEmailService;
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String onLoad(HttpServletRequest request) {
+        String s = IOUtil.readEmailTemp(this.getClass().getClassLoader().getResource("").getPath()
+                + "/static/temp_email.html", "sbss", "ADSDS");
+        System.out.println(s);
+        return "/index.html";
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -116,10 +125,6 @@ public class MainController {
         return loginUrl;
     }
 
-    private void Login() {
-
-    }
-
     /**
      * 发送邮件
      */
@@ -147,6 +152,11 @@ public class MainController {
          * 验证码
          */
         private String verificationCode;
+        /**
+         * 邮件模板地址
+         */
+        private final String EMAIL_TEMP_PATH = MainController.class.getClassLoader().getResource("").getPath()
+                + "/static/temp_email.html";
 
         public SendEmailRunnable(String toEmails, String subject) {
             this.toEmails = toEmails;
@@ -156,6 +166,8 @@ public class MainController {
         @Override
         public void run() {
             verificationCode = BaseUtil.getVerifyCode(6);
+            // html 第114 行 ：用户名；第127 行：验证码
+            content = IOUtil.readEmailTemp(EMAIL_TEMP_PATH, toEmails, verificationCode);
             boolean flag = MailService.sendSimpleMail(toEmails, subject, content);
             if (flag) {
                 String[] emails = toEmails.split(",");

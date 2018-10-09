@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/9 11:35
  **/
-@Service(value = "tempEmailService")
+@Service("tempEmailService")
 public class TempEmailServiceImpl implements ITempEmailService {
     @Resource
     private TempEmailMapper tempEmailMapper;

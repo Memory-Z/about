@@ -116,6 +116,42 @@ public class IOUtil {
     }
 
     /**
+     * 读取邮件模板
+     *
+     * @param fileName         文件名
+     * @param userName         用户名
+     * @param verificationCode 验证码
+     * @return
+     */
+    public static String readEmailTemp(String fileName, String userName, String verificationCode) {
+        FileReader fileReader = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String s = "";
+            int i = 0;
+            // html 第114 行 ：用户名；第127 行：验证码
+            while ((s = bufferedReader.readLine()) != null) {
+                i++;
+                if (i == 114) {
+                    sb.append(userName).append("\r\n");
+                } else if (i == 127) {
+                    sb.append(verificationCode).append("\r\n");
+                } else {
+                    sb.append(s).append("\r\n");
+                }
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            fileReader = null;
+        }
+        return sb.toString();
+    }
+
+    /**
      * 判断是否是文件
      *
      * @param filePath
