@@ -174,24 +174,18 @@ public class MailUtil {
         // 建立邮件消息
         MimeMessage mimeMessage = senderImpl.createMimeMessage();
         MimeMessageHelper messageHelper = null;
-        try {
-            messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
 
         // 设置发件人邮件
         try {
+            messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             messageHelper.setFrom(new InternetAddress(getEmailFrom(), "Learning Platform", "UTF-8"));
-        } catch (UnsupportedEncodingException e2) {
-            e2.printStackTrace();
-        } catch (MessagingException e2) {
+        } catch (UnsupportedEncodingException | MessagingException e2) {
             e2.printStackTrace();
         }
 
         String[] toEmailArray = this.getToEmails().split(";");
         List<String> toEmailList = new ArrayList<String>();
-        if (toEmailArray == null || toEmailArray.length < 1) {
+        if (toEmailArray.length < 1) {
             throw new RuntimeException("收件人邮箱不能为空！");
         } else {
             for (String email : toEmailArray) {
@@ -199,7 +193,7 @@ public class MailUtil {
                     toEmailList.add(email);
                 }
             }
-            if (toEmailList.isEmpty() || toEmailList == null) {
+            if (toEmailList.isEmpty()) {
                 throw new RuntimeException("收件人邮箱不能为空！");
             } else {
                 toEmailArray = new String[toEmailList.size()];
@@ -230,8 +224,7 @@ public class MailUtil {
 
         // 添加图片
         if (null != pictures) {
-            for (Iterator<Map.Entry<String, String>> iterator = pictures.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<String, String> entry = iterator.next();
+            for (Map.Entry<String, String> entry : pictures.entrySet()) {
                 String cid = entry.getKey();
                 String filePath = entry.getValue();
                 if (null == cid || null == filePath) {
@@ -252,9 +245,7 @@ public class MailUtil {
 
         // 添加附件
         if (null != attachments) {
-            for (Iterator<Map.Entry<String, String>> iterator = attachments.entrySet().iterator(); iterator
-                    .hasNext(); ) {
-                Map.Entry<String, String> entry = iterator.next();
+            for (Map.Entry<String, String> entry : attachments.entrySet()) {
                 String cid = entry.getKey();
                 String filePath = entry.getValue();
                 if (null == cid || null == filePath) {

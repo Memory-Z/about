@@ -1080,5 +1080,60 @@ public class BaseUtil {
         }
     }
 
+    private static final String[] NUMBER_VERIFY_STR = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private static final String[] LETTER_VERIFY_STR = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    private static final String[] VERIFY_STR = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+            "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U",
+            "V", "W", "X", "Y", "Z"};
+
+    /**
+     * 获取验证码
+     *
+     * @param count 位数
+     * @return 验证码
+     */
+    public static String getVerifyCode(int count) {
+        Random random = new Random(System.currentTimeMillis());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            int x = random.nextInt(VERIFY_STR.length);
+            sb.append(VERIFY_STR[x]);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取数字验证码
+     *
+     * @param count 位数
+     * @return 验证码
+     */
+    public static String getNumberVerifyCode(int count) {
+        Random random = new Random(System.currentTimeMillis());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            int x = random.nextInt(NUMBER_VERIFY_STR.length);
+            sb.append(NUMBER_VERIFY_STR[x]);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取字母验证码
+     *
+     * @param count 位数
+     * @return 验证码
+     */
+    public static String getLetterVerifyCode(int count) {
+        Random random = new Random(System.currentTimeMillis());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            int x = random.nextInt(LETTER_VERIFY_STR.length);
+            sb.append(LETTER_VERIFY_STR[x]);
+        }
+        return sb.toString();
+    }
+
 
 }
