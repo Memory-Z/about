@@ -91,6 +91,9 @@ public class MainController {
         return loginUrl;
     }
 
+    /**
+     * 发送邮件
+     */
     private void sendEmail() {
 
     }
