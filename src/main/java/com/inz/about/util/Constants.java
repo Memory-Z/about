@@ -80,7 +80,7 @@ public class Constants {
     static {
         String PROJECT_PATH = System.getProperty("user.dir");
         ROOT_PATH = PROJECT_PATH.split(":")[0];
-        PROJECT_NAME = "learning-platform";
+        PROJECT_NAME = "about";
         RESOURCE = "file";
     }
 

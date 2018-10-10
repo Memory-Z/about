@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.UserFile;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserFileMapper {
     /**
@@ -52,4 +54,24 @@ public interface UserFileMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(UserFile record);
+
+    /**
+     * 通过用户ID 查询
+     *
+     * @param userId   用户Id
+     * @param start    开始
+     * @param pageSize 大小
+     * @return 用户文件
+     */
+    List<UserFile> findByUserId(String userId, int start, int pageSize);
+
+    /**
+     * 通过文件ID 查询
+     *
+     * @param fileId   文件ID
+     * @param start    开始
+     * @param pageSize 大小
+     * @return 用户文件
+     */
+    List<UserFile> findByFileId(String fileId, int start, int pageSize);
 }

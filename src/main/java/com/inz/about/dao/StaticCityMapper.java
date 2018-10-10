@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.StaticCity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface StaticCityMapper {
     /**
@@ -52,4 +54,26 @@ public interface StaticCityMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StaticCity record);
+
+    /**
+     * 查询所有
+     *
+     * @return 地级市
+     */
+    List<StaticCity> findAll();
+
+    /**
+     * 通过省ID 查询
+     *
+     * @param provinceId 省ID
+     * @return 地级市
+     */
+    List<StaticCity> findByProvinceId(String provinceId);
+
+    /**
+     * 查询热门城市
+     *
+     * @return 地级市
+     */
+    List<StaticCity> findByHot();
 }

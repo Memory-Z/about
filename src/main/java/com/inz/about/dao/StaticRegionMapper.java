@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.StaticRegion;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface StaticRegionMapper {
     /**
@@ -52,4 +54,19 @@ public interface StaticRegionMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StaticRegion record);
+
+    /**
+     * 查询全部
+     *
+     * @return 区/县
+     */
+    List<StaticRegion> findAll();
+
+    /**
+     * 通过地级市ID 查询
+     *
+     * @param cityId 地级市ID
+     * @return 区/县
+     */
+    List<StaticRegion> findByCityId(String cityId);
 }

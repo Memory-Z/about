@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.FileInfo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface FileInfoMapper {
     /**
@@ -52,4 +54,14 @@ public interface FileInfoMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(FileInfo record);
+
+    /**
+     * 通过文件类型查询
+     *
+     * @param fileType 文件类型
+     * @param start    开始位置
+     * @param pageSize 页面大小
+     * @return 文件集合
+     */
+    List<FileInfo> findByFileType(String fileType, int start, int pageSize);
 }

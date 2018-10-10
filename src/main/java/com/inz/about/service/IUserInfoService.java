@@ -11,6 +11,14 @@ import org.springframework.stereotype.Service;
  * Create By Zhenglj on 2018/10/2 09:08
  **/
 public interface IUserInfoService {
+    boolean insert(UserInfo userInfo);
+
+    boolean deleteById(String userId);
+
+    boolean update(UserInfo userInfo);
+
+    UserInfo findById(String userId);
+
     /**
      * 用户登录
      *

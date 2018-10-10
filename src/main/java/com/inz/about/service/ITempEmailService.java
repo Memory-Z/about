@@ -15,4 +15,8 @@ public interface ITempEmailService {
      * @return 是否插入成功
      */
     boolean insertTempEmail(TempEmail tempEmail);
+
+    boolean deleteById(String tempEmailId);
+
+    boolean update(TempEmail tempEmail);
 }

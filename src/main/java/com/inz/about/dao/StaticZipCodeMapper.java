@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.StaticZipCode;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface StaticZipCodeMapper {
     /**
@@ -52,4 +54,19 @@ public interface StaticZipCodeMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StaticZipCode record);
+
+    /**
+     * 查询所有
+     *
+     * @return 邮编
+     */
+    List<StaticZipCode> findAll();
+
+    /**
+     * 通过 区/县Id 获取
+     *
+     * @param regionId 区/县 Id
+     * @return 邮编
+     */
+    List<StaticZipCode> findByRegionId(String regionId);
 }

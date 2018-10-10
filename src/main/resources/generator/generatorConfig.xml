@@ -46,36 +46,36 @@
         <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
         <!-- 用户-文件映射表 -->
         <!--<table tableName="user_file" domainObjectName="UserFile" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>-->
+        <!--enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>-->
         <!-- 静态邮编表 -->
         <!--<table tableName="static_zipcode" domainObjectName="StaticZipCode" enableCountByExample="false"-->
         <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!-- 静态地级市表 -->
         <!--<table tableName="static_city" domainObjectName="StaticCity" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!--&lt;!&ndash; 静态省名表 &ndash;&gt;-->
         <!--<table tableName="static_province" domainObjectName="StaticProvince" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!--&lt;!&ndash; 静态区/县名表 &ndash;&gt;-->
         <!--<table tableName="static_region" domainObjectName="StaticRegion" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!-- 临时邮箱信息表‘存储验证信息状态’ -->
         <table tableName="temp_email" domainObjectName="TempEmail" enableCountByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
         <!-- 日志信息表 -->
         <!--<table tableName="diary_info" domainObjectName="DiaryInfo" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!--&lt;!&ndash; 图片信息表 &ndash;&gt;-->
         <!--<table tableName="picture_info" domainObjectName="PictureInfo" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"/>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"/>-->
         <!--&lt;!&ndash; 文件信息表 &ndash;&gt;-->
         <!--<table tableName="file_info" domainObjectName="FileInfo" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!--&lt;!&ndash; 日志-图片映射表 &ndash;&gt;-->
         <!--<table tableName="diary_picture" domainObjectName="DiaryPicture" enableCountByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
         <!--&lt;!&ndash; 日志-文件映射表 &ndash;&gt;-->
         <!--<table tableName="diary_file" domainObjectName="DiaryFile" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>-->
+        <!--enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>-->
     </context>
 </generatorConfiguration>

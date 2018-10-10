@@ -25,4 +25,19 @@ public class TempEmailServiceImpl implements ITempEmailService {
         }
         return num == 1;
     }
+
+    @Override
+    public boolean deleteById(String tempEmailId) {
+        int num = tempEmailMapper.deleteByPrimaryKey(tempEmailId);
+        return num != 0;
+    }
+
+    @Override
+    public boolean update(TempEmail tempEmail) {
+        int num = 0;
+        if (tempEmail != null) {
+            num = tempEmailMapper.updateByPrimaryKey(tempEmail);
+        }
+        return num != 0;
+    }
 }

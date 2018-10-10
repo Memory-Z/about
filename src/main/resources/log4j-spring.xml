@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
-<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+<!-- status log4j2内部日志级别 -->
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" status="warn">
     <!-- 全局参数 -->
     <Properties>
         <Property name="filePath">/log</Property>
@@ -14,7 +15,7 @@
     <Loggers>
         <Logger name="org.springframework" level="warn"/>
         <Logger name="org.mybatis" level="warn"/>
-        <Root>
+        <Root level="info">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>

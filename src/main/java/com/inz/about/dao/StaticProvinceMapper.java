@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.StaticProvince;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface StaticProvinceMapper {
     /**
@@ -52,4 +54,11 @@ public interface StaticProvinceMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StaticProvince record);
+
+    /**
+     * 查询所有
+     *
+     * @return 省
+     */
+    List<StaticProvince> findAll();
 }

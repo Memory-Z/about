@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.DiaryPicture;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface DiaryPictureMapper {
     /**
@@ -52,4 +54,14 @@ public interface DiaryPictureMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(DiaryPicture record);
+
+    /**
+     * 通过日志ID 查询
+     *
+     * @param diaryId  日志ID
+     * @param start    开始项
+     * @param pageSize 页面数
+     * @return 日志图片
+     */
+    List<DiaryPicture> findByDiaryId(String diaryId, int start, int pageSize);
 }

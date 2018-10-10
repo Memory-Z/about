@@ -20,6 +20,29 @@ public class UserInfoServiceImpl implements IUserInfoService {
     private UserInfoMapper userInfoMapper;
 
     @Override
+    public boolean insert(UserInfo userInfo) {
+        int num = userInfoMapper.insert(userInfo);
+        return num == 0;
+    }
+
+    @Override
+    public boolean deleteById(String userId) {
+        int num = userInfoMapper.deleteByPrimaryKey(userId);
+        return num != 0;
+    }
+
+    @Override
+    public boolean update(UserInfo userInfo) {
+        int num = userInfoMapper.updateByPrimaryKey(userInfo);
+        return num != 0;
+    }
+
+    @Override
+    public UserInfo findById(String userId) {
+        return userInfoMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
     public UserInfo login(String userName, String password) {
         if (!BaseUtil.isEmpty(userName) && !BaseUtil.isEmpty(password)) {
             return userInfoMapper.loginByName(userName, password);

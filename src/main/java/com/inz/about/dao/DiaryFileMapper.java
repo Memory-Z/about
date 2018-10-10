@@ -3,6 +3,8 @@ package com.inz.about.dao;
 import com.inz.about.model.DiaryFile;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface DiaryFileMapper {
     /**
@@ -52,4 +54,20 @@ public interface DiaryFileMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(DiaryFile record);
+
+    /**
+     * 通过文件Id 获取
+     *
+     * @param fileId 文件ID
+     * @return 日志文件
+     */
+    List<DiaryFile> findByFileId(String fileId);
+
+    /**
+     * 通过日志Id获取
+     *
+     * @param diaryId 日志ID
+     * @return 日志文件
+     */
+    List<DiaryFile> findByDiaryId(String diaryId);
 }
