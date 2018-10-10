@@ -48,6 +48,6 @@ public class DiaryInfoServiceImpl implements IDiaryInfoService {
 
     @Override
     public List<DiaryInfo> findByUserId(String userId, int start, int pageSize) {
-        return diaryInfoMapper.findByUserId(userId);
+        return diaryInfoMapper.findByUserId(userId, start, pageSize);
     }
 }

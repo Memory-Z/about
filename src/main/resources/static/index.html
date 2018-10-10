@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.thymeleaf.org">
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,10 +33,10 @@
             background-image: url('image/index/256.jpg');
         }
         .display_block_2 {
-            /* background-image: url('image/index/reflection-of-life_1366x768_sc.jpg'); */
+            background-image: url('image/index/reflection-of-life_1366x768_sc.jpg');
         }
         .display_block_3 {
-            /* background-image: url('image/index/watercolor-joseph-zbukvic-city-venice-italy-morning-boat-gondola-water-birds_1920x1080_sc.jpg'); */
+            background-image: url('image/index/watercolor-joseph-zbukvic-city-venice-italy-morning-boat-gondola-water-birds_1920x1080_sc.jpg');
         }
         .nav {
             width: 100%;
@@ -149,6 +150,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="display_block_0 banner">
         <div class="nav">
@@ -198,7 +200,7 @@
     <div class="display_block display_block_3"></div>
     <script src="/js/jquery/jquery-3.2.1.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var sceenWidth = window.innerWidth;
             var sceenHeight = window.innerHeight;
             $('.banner').height(sceenHeight);
@@ -265,13 +267,13 @@
         // 改变时间
         function changeTime() {
             var timeDay = $('#time_day');
-            var timeHour= $('#time_hour');
+            var timeHour = $('#time_hour');
             var timeMin = $('#time_min');
             var timeSec = $('#time_sec');
-            var intDay  = Number(timeDay.html());
+            var intDay = Number(timeDay.html());
             var intHour = Number(timeHour.html());
-            var intMin  = Number(timeMin.html());
-            var intSec  = Number(timeSec.html());
+            var intMin = Number(timeMin.html());
+            var intSec = Number(timeSec.html());
             // var flag = false;
             if (intSec < 59) {
                 intSec += 1;
@@ -310,7 +312,8 @@
                 }
             }
         }
-        
+
     </script>
 </body>
+
 </html>
