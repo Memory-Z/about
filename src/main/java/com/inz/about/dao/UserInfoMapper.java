@@ -71,4 +71,14 @@ public interface UserInfoMapper {
      * @return 用户信息
      */
     UserInfo findByUsername(@Param("userName") String userName);
+
+    /**
+     * 登录
+     *
+     * @param userName  用户名
+     * @param userEmail 邮箱
+     * @param password  密码
+     * @return 用户信息
+     */
+    UserInfo login(@Param("userName") String userName, @Param("userEmail") String userEmail, @Param("password") String password);
 }

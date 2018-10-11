@@ -185,18 +185,21 @@ public class IOUtil {
             if (file.isDirectory()) {
                 String[] filesName = file.list();
                 List<List<Object>> list = new ArrayList<List<Object>>();
-                assert filesName != null;
-                for (String aFilesName : filesName) {
-                    List<Object> fileList = new ArrayList<Object>();
-                    file = new File(filePath + "/" + aFilesName);
-                    if (file.isFile()) {
-                        fileList.add(aFilesName);
-                        fileList.add("FILE");
-                    } else {
-                        fileList.add(aFilesName);
-                        fileList.add("DIR");
+                if (filesName != null) {
+                    for (String aFilesName : filesName) {
+                        List<Object> fileList = new ArrayList<Object>();
+                        file = new File(filePath + "/" + aFilesName);
+                        if (file.isFile()) {
+                            fileList.add(aFilesName);
+                            fileList.add("FILE");
+                        } else {
+                            fileList.add(aFilesName);
+                            fileList.add("DIR");
+                        }
+                        list.add(fileList);
                     }
-                    list.add(fileList);
+                } else {
+                    System.out.println("文件夹为空");
                 }
                 return list;
             }
@@ -411,35 +414,38 @@ public class IOUtil {
             // 要注意，这个temp仅仅是一个临时文件指针
             // 整个程序并没有创建临时文件
             File temp = null;
-            assert file != null;
-            for (int i = 0; i < file.length; i++) {
-                // 如果oldPath以路径分隔符/或者\结尾，那么则oldPath/文件名就可以了
-                // 否则要自己oldPath后面补个路径分隔符再加文件名
-                // 谁知道你传递过来的参数是f:/a还是f:/a/啊？
-                if (oldPath.endsWith(File.separator)) {
-                    temp = new File(oldPath + file[i]);
-                } else {
-                    temp = new File(oldPath + File.separator + file[i]);
-                }
-
-                // 如果游标遇到文件
-                if (temp.isFile()) {
-                    FileInputStream input = new FileInputStream(temp);
-                    // 复制
-                    FileOutputStream output = new FileOutputStream(newPath + "\\" + (temp.getName()).toString());
-                    byte[] bufferarray = new byte[1024 * 64];
-                    int prereadlength;
-                    while ((prereadlength = input.read(bufferarray)) != -1) {
-                        output.write(bufferarray, 0, prereadlength);
+            if (file != null) {
+                for (String aFile : file) {
+                    // 如果oldPath以路径分隔符/或者\结尾，那么则oldPath/文件名就可以了
+                    // 否则要自己oldPath后面补个路径分隔符再加文件名
+                    // 谁知道你传递过来的参数是f:/a还是f:/a/啊？
+                    if (oldPath.endsWith(File.separator)) {
+                        temp = new File(oldPath + aFile);
+                    } else {
+                        temp = new File(oldPath + File.separator + aFile);
                     }
-                    output.flush();
-                    output.close();
-                    input.close();
+
+                    // 如果游标遇到文件
+                    if (temp.isFile()) {
+                        FileInputStream input = new FileInputStream(temp);
+                        // 复制
+                        FileOutputStream output = new FileOutputStream(newPath + "\\" + (temp.getName()).toString());
+                        byte[] bufferarray = new byte[1024 * 64];
+                        int prereadlength;
+                        while ((prereadlength = input.read(bufferarray)) != -1) {
+                            output.write(bufferarray, 0, prereadlength);
+                        }
+                        output.flush();
+                        output.close();
+                        input.close();
+                    }
+                    // 如果游标遇到文件夹
+                    if (temp.isDirectory()) {
+                        copyFolder(oldPath + "\\" + aFile, newPath + "\\" + aFile);
+                    }
                 }
-                // 如果游标遇到文件夹
-                if (temp.isDirectory()) {
-                    copyFolder(oldPath + "\\" + file[i], newPath + "\\" + file[i]);
-                }
+            } else {
+                System.out.println("复制的文件夹内容为空");
             }
         } catch (Exception e) {
             System.out.println("复制整个文件夹内容操作出错");

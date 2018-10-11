@@ -45,6 +45,8 @@ public class UserInfoServiceImpl implements IUserInfoService {
     @Override
     public UserInfo login(String userName, String password) {
         if (!BaseUtil.isEmpty(userName) && !BaseUtil.isEmpty(password)) {
+            // MD5 加密
+            password = BaseUtil.encryptMd5(password);
             return userInfoMapper.loginByName(userName, password);
         } else {
             return null;
@@ -71,5 +73,15 @@ public class UserInfoServiceImpl implements IUserInfoService {
         userInfo.setPassword(password);
         int num = userInfoMapper.insert(userInfo);
         return num > 0;
+    }
+
+    @Override
+    public UserInfo login(String username, String userEmail, String password) {
+        if (password == null) {
+            return null;
+        }
+        // MD5 加密
+        password = BaseUtil.encryptMd5(password);
+        return userInfoMapper.login(username, userEmail, password);
     }
 }

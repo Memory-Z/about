@@ -13,6 +13,31 @@ import java.util.Map;
  **/
 public class Constants {
 
+    /**
+     * Api 返回码
+     */
+    public static enum API_CODE {
+        // 成功
+        SUCCESS(10000),
+        // 失败
+        FAILED(10001),
+        // 警告
+        WARN(10002),
+        // 异常
+        THROWS(10003),
+        // 错误
+        ERROR(10004);
+
+        int value;
+
+        API_CODE(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 
     /**
      * 每页的记录数

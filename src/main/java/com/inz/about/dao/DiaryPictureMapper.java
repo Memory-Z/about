@@ -2,6 +2,7 @@ package com.inz.about.dao;
 
 import com.inz.about.model.DiaryPicture;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -63,5 +64,5 @@ public interface DiaryPictureMapper {
      * @param pageSize 页面数
      * @return 日志图片
      */
-    List<DiaryPicture> findByDiaryId(String diaryId, int start, int pageSize);
+    List<DiaryPicture> findByDiaryId(@Param("diaryId") String diaryId, @Param("start") int start, @Param("pageSize") int pageSize);
 }

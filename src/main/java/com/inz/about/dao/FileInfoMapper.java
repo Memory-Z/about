@@ -2,6 +2,7 @@ package com.inz.about.dao;
 
 import com.inz.about.model.FileInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -63,5 +64,5 @@ public interface FileInfoMapper {
      * @param pageSize 页面大小
      * @return 文件集合
      */
-    List<FileInfo> findByFileType(String fileType, int start, int pageSize);
+    List<FileInfo> findByFileType(@Param("fileType") String fileType, @Param("start") int start, @Param("pageSize") int pageSize);
 }

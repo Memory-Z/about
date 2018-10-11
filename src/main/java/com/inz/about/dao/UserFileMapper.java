@@ -2,6 +2,7 @@ package com.inz.about.dao;
 
 import com.inz.about.model.UserFile;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -63,7 +64,7 @@ public interface UserFileMapper {
      * @param pageSize 大小
      * @return 用户文件
      */
-    List<UserFile> findByUserId(String userId, int start, int pageSize);
+    List<UserFile> findByUserId(@Param("userId") String userId, @Param("start") int start, @Param("pageSize") int pageSize);
 
     /**
      * 通过文件ID 查询
@@ -73,5 +74,5 @@ public interface UserFileMapper {
      * @param pageSize 大小
      * @return 用户文件
      */
-    List<UserFile> findByFileId(String fileId, int start, int pageSize);
+    List<UserFile> findByFileId(@Param("fileId") String fileId, @Param("start") int start, @Param("pageSize") int pageSize);
 }

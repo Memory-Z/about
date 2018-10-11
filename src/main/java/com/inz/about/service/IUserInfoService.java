@@ -43,4 +43,14 @@ public interface IUserInfoService {
      * @return 是否注册成功
      */
     boolean register(UserInfo userInfo);
+
+    /**
+     * 用户登录
+     *
+     * @param username  用户名
+     * @param userEmail 邮箱
+     * @param password  密码
+     * @return 用户信息
+     */
+    UserInfo login(String username, String userEmail, String password);
 }

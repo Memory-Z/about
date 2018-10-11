@@ -243,4 +243,16 @@
         from user_info
         where user_name = #{userName, jdbcType=VARCHAR}
     </select>
+    <!-- 登录 -->
+    <select id="login" resultMap="BaseResultMap">
+        SELECT * FROM user_info
+        WHERE
+        password = #{password, jdbcType=VARCHAR}
+        <if test="userName != null">
+            AND username = #{userName, jdbcType=VARCHAR}
+        </if>
+        <if test="userEmail != null">
+            AND user_email = #{userEmail, jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

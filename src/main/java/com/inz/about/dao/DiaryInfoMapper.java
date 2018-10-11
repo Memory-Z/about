@@ -2,6 +2,7 @@ package com.inz.about.dao;
 
 import com.inz.about.model.DiaryInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -63,7 +64,7 @@ public interface DiaryInfoMapper {
      * @param pageSize 页面可见数量
      * @return 日志
      */
-    List<DiaryInfo> findByUserId(String userId, int start, int pageSize);
+    List<DiaryInfo> findByUserId(@Param("userId") String userId, @Param("start") int start, @Param("pageSize") int pageSize);
 
     /**
      * 获取全部日志信息
@@ -72,5 +73,5 @@ public interface DiaryInfoMapper {
      * @param pageSize 页面可见数量
      * @return 日志
      */
-    List<DiaryInfo> findAll(int start, int pageSize);
+    List<DiaryInfo> findAll(@Param("start") int start, @Param("pageSize") int pageSize);
 }
