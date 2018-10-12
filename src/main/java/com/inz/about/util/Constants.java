@@ -16,7 +16,7 @@ public class Constants {
     /**
      * Api 返回码
      */
-    public static enum API_CODE {
+    public enum API_CODE {
         // 成功
         SUCCESS(10000),
         // 失败
@@ -36,6 +36,25 @@ public class Constants {
 
         public int getValue() {
             return value;
+        }
+    }
+
+    /**
+     * 文件操作方式
+     */
+    public enum FILE_OPERATION_MODE {
+        FILE(20000),
+        PICTURE(20001),
+        PHOTO(20002);
+
+        int code = 20000;
+
+        FILE_OPERATION_MODE(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
         }
     }
 

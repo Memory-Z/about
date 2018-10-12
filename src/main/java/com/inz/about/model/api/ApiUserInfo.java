@@ -3,6 +3,8 @@ package com.inz.about.model.api;
 import java.io.Serializable;
 
 /**
+ * Api 用户信息
+ *
  * @author inz
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/11 13:36

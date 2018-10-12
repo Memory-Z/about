@@ -3,6 +3,7 @@ package com.inz.about.service.impl;
 import com.inz.about.dao.FileInfoMapper;
 import com.inz.about.model.FileInfo;
 import com.inz.about.service.IFileInfoService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,30 +20,32 @@ public class FileInfoServiceImpl implements IFileInfoService {
     private FileInfoMapper fileInfoMapper;
 
     @Override
-    public boolean insert(FileInfo fileInfo) {
+    public boolean insert(@NotNull FileInfo fileInfo) {
         int num = fileInfoMapper.insert(fileInfo);
         return num != 0;
     }
 
     @Override
-    public boolean update(FileInfo fileInfo) {
+    public boolean update(@NotNull FileInfo fileInfo) {
         int num = fileInfoMapper.updateByPrimaryKey(fileInfo);
         return num != 0;
     }
 
     @Override
-    public boolean deleteById(String fileId) {
+    public boolean deleteById(@NotNull String fileId) {
         int num = fileInfoMapper.deleteByPrimaryKey(fileId);
         return num != 0;
     }
 
+    @NotNull
     @Override
-    public FileInfo findById(String fileId) {
+    public FileInfo findById(@NotNull String fileId) {
         return fileInfoMapper.selectByPrimaryKey(fileId);
     }
 
+    @NotNull
     @Override
-    public List<FileInfo> findByFileType(String fileType, int start, int pageSize) {
+    public List<FileInfo> findByFileType(@NotNull String fileType, int start, int pageSize) {
         return fileInfoMapper.findByFileType(fileType, start, pageSize);
     }
 }

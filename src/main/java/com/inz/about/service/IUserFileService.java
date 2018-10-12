@@ -21,4 +21,20 @@ public interface IUserFileService {
     List<UserFile> findByUserId(String userId, int start, int pageSize);
 
     List<UserFile> findByFileId(String fileId, int start, int pageSize);
+
+    /**
+     * 通过用户Id 查询可用用户头像
+     *
+     * @param userId 用户Id
+     * @return 用户头像文件
+     */
+    UserFile findEnableUserPhotoByUserId(String userId);
+
+    /**
+     * 通过用户Id 查询全部用户头像
+     *
+     * @param userId 用户ID
+     * @return 用户头像文件
+     */
+    List<UserFile> findAllUserPhotoByUserId(String userId);
 }

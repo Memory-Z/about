@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2018-10-10 17:53:50
+Date: 2018-10-12 18:10:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,9 +47,9 @@ CREATE TABLE `diary_info` (
   `diary_weather` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '日志天气',
   `diary_address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '日志地址',
   `diary_order` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '日志排序号',
-  `diary_is_more_one` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '日志是否大于一个，0：没有；1：有',
+  `diary_enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '日志是否可用，0：不可用；1：可用',
   `create_datetime` datetime NOT NULL COMMENT '创建时间',
-  `update_datatime` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`diary_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='日志信息';
 

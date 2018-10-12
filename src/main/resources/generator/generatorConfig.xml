@@ -13,7 +13,7 @@
         <commentGenerator>
             <property name="suppressDate" value="true"/>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="false"/>
+            <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!-- 数据库链接URL，用户名、密码 -->
         <!-- inz -->
@@ -60,11 +60,11 @@
         <!--<table tableName="static_region" domainObjectName="StaticRegion" enableCountByExample="false"-->
         <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!-- 临时邮箱信息表‘存储验证信息状态’ -->
-        <table tableName="temp_email" domainObjectName="TempEmail" enableCountByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
-        <!-- 日志信息表 -->
-        <!--<table tableName="diary_info" domainObjectName="DiaryInfo" enableCountByExample="false"-->
+        <!--<table tableName="temp_email" domainObjectName="TempEmail" enableCountByExample="false"-->
         <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!-- 日志信息表 -->
+        <table tableName="diary_info" domainObjectName="DiaryInfo" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
         <!--&lt;!&ndash; 图片信息表 &ndash;&gt;-->
         <!--<table tableName="picture_info" domainObjectName="PictureInfo" enableCountByExample="false"-->
         <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"/>-->

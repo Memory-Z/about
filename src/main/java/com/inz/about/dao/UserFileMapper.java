@@ -75,4 +75,22 @@ public interface UserFileMapper {
      * @return 用户文件
      */
     List<UserFile> findByFileId(@Param("fileId") String fileId, @Param("start") int start, @Param("pageSize") int pageSize);
+
+    /**
+     * 通过用户Id 查询可用的用户头像
+     *
+     * @param userId 用户ID
+     * @return 用户头像文件
+     */
+    UserFile findEnableUserPhotoByUserId(String userId);
+
+    /**
+     * 通过用户ID 查询全部用户头像
+     *
+     * @param userId 用户ID
+     * @return 用户头像文件
+     */
+    List<UserFile> findAllUserPhotoByUserId(String userId);
+
+
 }

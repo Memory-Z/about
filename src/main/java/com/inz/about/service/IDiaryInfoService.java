@@ -11,9 +11,9 @@ import java.util.List;
  **/
 public interface IDiaryInfoService {
     /**
-     * 添加日记信息
+     * 添加日志信息
      *
-     * @param diaryInfo 日记信息
+     * @param diaryInfo 日志信息
      */
     boolean insert(DiaryInfo diaryInfo);
 
