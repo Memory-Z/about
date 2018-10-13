@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2018-10-12 18:10:31
+Date: 2018-10-13 21:11:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -86,7 +86,7 @@ CREATE TABLE `file_info` (
   `file_url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件访问链接',
   `file_extension` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件扩展名',
   `file_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件类型',
-  `file_size` double(10,4) DEFAULT NULL COMMENT '文件大小',
+  `file_size` decimal(10,4) DEFAULT NULL COMMENT '文件大小',
   `file_enable` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件是否可用，0：不可用；1：可用',
   `create_datetime` datetime NOT NULL COMMENT '文件创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '文件更新时间',

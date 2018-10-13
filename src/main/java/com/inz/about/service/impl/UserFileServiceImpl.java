@@ -60,4 +60,9 @@ public class UserFileServiceImpl implements IUserFileService {
     public List<UserFile> findAllUserPhotoByUserId(String userId) {
         return userFileMapper.findAllUserPhotoByUserId(userId);
     }
+
+    @Override
+    public int findLastOrder(String userId) {
+        return userFileMapper.findLastOrder(userId);
+    }
 }

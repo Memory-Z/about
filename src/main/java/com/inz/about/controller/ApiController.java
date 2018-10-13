@@ -25,6 +25,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -297,13 +298,14 @@ public class ApiController {
     }
 
     /**
-     * 文件保存
+     * 文件保存到实际路径
      *
      * @param multipartFileList 文件
-     * @param type              文件类型
      * @param filePath          文件地址
+     * @return 文件列表
      */
-    private void saveMultipartFile(List<MultipartFile> multipartFileList, Constants.FILE_OPERATION_MODE type, String filePath) {
+    private List<File> saveMultipartFile(List<MultipartFile> multipartFileList, String filePath) {
+        List<File> fileList = new ArrayList<>();
         BufferedOutputStream stream;
         int i = 0;
         for (MultipartFile multipartFile : multipartFileList) {
@@ -326,22 +328,14 @@ public class ApiController {
                         fileExt = "";
                     }
                     // 文件需要存放的路径
-                    filePath = filePath + File.separator + BaseUtil.getRandomUUID() + fileExt;
+                    String fileName = BaseUtil.getRandomUUID() + fileExt;
+                    filePath = filePath + File.separator + fileName;
                     logger.info("文件存放路径： " + filePath);
                     File file = new File(filePath);
                     stream = new BufferedOutputStream(new FileOutputStream(file));
                     stream.write(bytes);
                     stream.close();
-                    switch (type) {
-                        case FILE:
-                            break;
-                        case PHOTO:
-                            break;
-                        case PICTURE:
-                            break;
-                        default:
-                            break;
-                    }
+                    fileList.add(file);
                 } catch (IOException e) {
                     e.printStackTrace();
                     logger.error("文件获取失败！=：" + i, e);
@@ -351,6 +345,117 @@ public class ApiController {
             }
         }
         logger.info("文件处理完成, =： " + i);
+        return fileList;
+    }
+
+    private boolean saveFileToSql(File file, Constants.FILE_OPERATION_MODE mode, String userId) {
+        boolean flag = false;
+        if (file != null && file.isFile()) {
+            String fileName = file.getName();
+            String fileExt = fileName.substring(fileName.lastIndexOf("."));
+            String filePath = file.getPath();
+            switch (mode) {
+                case FILE:
+                    // 保存文件
+                    String fileId = saveFileInfo(fileName, fileExt, filePath, "file", file.length());
+                    if (fileId != null) {
+                        // 保存用户-文件 映射
+                        String userFileId = saveUserFile(userId, fileId, "Api 上传文件");
+                        if (!BaseUtil.isEmpty(userFileId)) {
+                            flag = true;
+                        }
+//                    } else {
+//                        apiCode = Constants.API_CODE.FAILED.getValue();
+//                        apiMessage = "文件上传失败";
+                    }
+                    break;
+                case PHOTO:
+                    String photoId = saveFileInfo(fileName, fileExt, filePath, "photo", file.length());
+                    if (photoId != null) {
+                        // 用户-文件 映射
+                        String userPhotoId = saveUserFile(userId, photoId, "Api 上传图片");
+                        if (!BaseUtil.isEmpty(userPhotoId)) {
+                            flag = true;
+                        }
+//                    } else {
+//                        apiCode = Constants.API_CODE.FAILED.getValue();
+//                        apiMessage = "头像上传失败";
+                    }
+                    break;
+                case PICTURE:
+                    PictureInfo pictureInfo = new PictureInfo();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 保存文件信息
+     *
+     * @param fileExt  文件扩展名
+     * @param filePath 文件路径
+     * @param type     文件类型
+     * @param size     文件大小
+     * @return 保存成功，返回当前文件ID，否则，反回 null
+     */
+    private String saveFileInfo(String fileName, String fileExt, String filePath, String type, long size) {
+        Date createDate = BaseUtil.getSystemDate();
+        FileInfo fileInfo = new FileInfo();
+        String fileId = BaseUtil.getRandomUUID();
+        fileInfo.setFileId(fileId);
+        fileInfo.setFileExtension(fileExt);
+        fileInfo.setFileEnable("1");
+        fileInfo.setFileName(fileName);
+        fileInfo.setCreateDatetime(createDate);
+        fileInfo.setFileUrl(filePath);
+        BigDecimal fileSize = new BigDecimal(size);
+        fileInfo.setFileSize(fileSize);
+        fileInfo.setFilePath(filePath);
+        fileInfo.setFileType(type);
+        boolean flag = fileInfoService.insert(fileInfo);
+        if (flag) {
+            return fileId;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 保存用户-文件 映射关系
+     *
+     * @param userId     用户ID
+     * @param fileId     文件ID
+     * @param mapperMemo 备注
+     * @return 映射ID
+     */
+    private String saveUserFile(String userId, String fileId, String mapperMemo) {
+        String userFileId = BaseUtil.getRandomUUID();
+        Date createDate = BaseUtil.getSystemDate();
+        UserFile userFile = new UserFile();
+        userFile.setMaperId(userFileId);
+        userFile.setCreateDatetime(createDate);
+        userFile.setEnable("1");
+        userFile.setUserId(userId);
+        userFile.setFileId(fileId);
+        userFile.setMaperMemo(mapperMemo);
+        int mapperOrder = 0;
+        try {
+            mapperOrder = userFileService.findLastOrder(userId);
+        } catch (Exception e) {
+            logger.error("获取用户文件排序出错！：", e);
+        }
+        mapperOrder += 1;
+        userFile.setMaperOrder(mapperOrder + "");
+        boolean flag = userFileService.insert(userFile);
+        if (flag) {
+            return userFileId;
+        } else {
+            return null;
+        }
+
     }
 
     /**

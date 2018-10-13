@@ -92,5 +92,12 @@ public interface UserFileMapper {
      */
     List<UserFile> findAllUserPhotoByUserId(String userId);
 
+    /**
+     * 查询最后一个排序
+     *
+     * @param userId 用户ID
+     * @return order
+     */
+    int findLastOrder(String userId);
 
 }

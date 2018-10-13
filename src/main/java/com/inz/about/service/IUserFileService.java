@@ -37,4 +37,12 @@ public interface IUserFileService {
      * @return 用户头像文件
      */
     List<UserFile> findAllUserPhotoByUserId(String userId);
+
+    /**
+     * 通过用户ID 查询最后一个排序
+     *
+     * @param userId 用户ID
+     * @return 排序
+     */
+    int findLastOrder(String userId);
 }

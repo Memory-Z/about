@@ -43,19 +43,9 @@ public class Constants {
      * 文件操作方式
      */
     public enum FILE_OPERATION_MODE {
-        FILE(20000),
-        PICTURE(20001),
-        PHOTO(20002);
-
-        int code = 20000;
-
-        FILE_OPERATION_MODE(int code) {
-            this.code = code;
-        }
-
-        public int getCode() {
-            return code;
-        }
+        FILE,
+        PICTURE,
+        PHOTO;
     }
 
     /**

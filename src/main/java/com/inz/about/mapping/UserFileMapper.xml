@@ -184,4 +184,10 @@
         WHERE user_id = #{userId, jdbcType=VARCHAR}
         ORDER BY enable, create_datetime DESC
     </select>
+    <!-- 通过用户名， 查询最后一个Order  -->
+    <select id="findLastOrder" resultType="java.lang.Integer">
+        SELECT IFNULL(maper_order, 0) FROM user_file
+        WHERE user_id = #{userId, jdbcType=VARCHAR}
+        ORDER BY maper_order DESC
+    </select>
 </mapper>
