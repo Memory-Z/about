@@ -289,7 +289,7 @@ public class ApiController {
                         String realName = (String) map.get("fileRealName");
                         File file = (File) map.get("file");
                         if (file != null) {
-                            boolean flag = saveFileToSql(file, Constants.FILE_OPERATION_MODE.PHOTO, userId, realName);
+                            boolean flag = saveFileToSql(file, Constants.FILE_OPERATION_MODE.PHOTO, userId, diaryId, realName);
                             if (flag) {
                                 logger.info("图片文件 保存成功");
                             } else {
@@ -427,7 +427,7 @@ public class ApiController {
      * @return 是否保存成功
      */
     @SuppressWarnings("SameParameterValue")
-    private boolean saveFileToSql(File file, Constants.FILE_OPERATION_MODE mode, String userId, String fileRealName) {
+    private boolean saveFileToSql(File file, Constants.FILE_OPERATION_MODE mode, String userId, String diaryId, String fileRealName) {
         boolean flag = false;
         if (file != null && file.isFile()) {
             String fileName = file.getName();
@@ -439,8 +439,8 @@ public class ApiController {
                     String fileId = saveFileInfo(fileRealName, fileName, fileExt, filePath, "file", file.length());
                     if (fileId != null) {
                         // 保存用户-文件 映射
-                        String userFileId = saveUserFile(userId, fileId, "Api 上传文件");
-                        if (!BaseUtil.isEmpty(userFileId)) {
+                        String diaryFileId = saveDiaryFile(userId, fileId, "Api 上传文件");
+                        if (!BaseUtil.isEmpty(diaryFileId)) {
                             flag = true;
                         }
 //                    } else {
@@ -578,6 +578,41 @@ public class ApiController {
         boolean flag = userFileService.insert(userFile);
         if (flag) {
             return userFileId;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 保存日志-文件 映射关系
+     *
+     * @param diaryId    日志ID
+     * @param fileId     文件ID
+     * @param mapperMemo 备注
+     * @return 映射ID
+     */
+    private String saveDiaryFile(String diaryId, String fileId, String mapperMemo) {
+        String diaryFileId = BaseUtil.getRandomUUID();
+        Date createDate = BaseUtil.getSystemDate();
+        DiaryFile diaryFile = new DiaryFile();
+        diaryFile.setMapperId(diaryFileId);
+        diaryFile.setCreateDatetime(createDate);
+        diaryFile.setEnable("1");
+        diaryFile.setDiaryId(diaryId);
+        diaryFile.setFileId(fileId);
+        diaryFile.setMapperMemo(mapperMemo);
+        int mapperOrder = 0;
+        try {
+            mapperOrder = diaryFileService.findLastOrder(diaryId);
+        } catch (Exception e) {
+            logger.error("获取用户文件排序出错！：", e);
+        }
+        mapperOrder += 1;
+        BigDecimal order = new BigDecimal(mapperOrder);
+        diaryFile.setMapperOrder(order);
+        boolean flag = diaryFileService.insert(diaryFile);
+        if (flag) {
+            return diaryFileId;
         } else {
             return null;
         }

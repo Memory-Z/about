@@ -21,4 +21,12 @@ public interface IDiaryFileService {
     List<DiaryFile> findByFileId(String fileId);
 
     List<DiaryFile> findByDiaryId(String diaryId);
+
+    /**
+     * 通过日志ID 查询最后一个排序
+     *
+     * @param diaryId 日志ID
+     * @return 排序
+     */
+    int findLastOrder(String diaryId);
 }

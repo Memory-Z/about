@@ -50,4 +50,16 @@ public class DiaryFileServiceImpl implements IDiaryFileService {
     public List<DiaryFile> findByDiaryId(String diaryId) {
         return diaryFileMapper.findByDiaryId(diaryId);
     }
+
+    @Override
+    public int findLastOrder(String diaryId) {
+        String orderStr = diaryFileMapper.findLastOrder(diaryId);
+        int order = 0;
+        try {
+            order = Integer.parseInt(orderStr);
+        } catch (Exception e) {
+            System.out.println(" DiaryFileMapper -: " + e.getMessage());
+        }
+        return order;
+    }
 }

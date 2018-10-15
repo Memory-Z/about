@@ -70,4 +70,13 @@ public interface DiaryFileMapper {
      * @return 日志文件
      */
     List<DiaryFile> findByDiaryId(String diaryId);
+
+
+    /**
+     * 通过日志ID 查询 排序号
+     *
+     * @param diaryId 日志ID
+     * @return 排序号
+     */
+    String findLastOrder(String diaryId);
 }
