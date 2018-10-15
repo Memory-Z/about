@@ -45,8 +45,8 @@
         <!--<table tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false"-->
         <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
         <!-- 用户-文件映射表 -->
-        <!--<table tableName="user_file" domainObjectName="UserFile" enableCountByExample="false"-->
-        <!--enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>-->
+        <table tableName="user_file" domainObjectName="UserFile" enableCountByExample="false"
+               enableSelectByExample="false" enableDeleteByExample="false" enableUpdateByExample="false"/>
         <!-- 静态邮编表 -->
         <!--<table tableName="static_zipcode" domainObjectName="StaticZipCode" enableCountByExample="false"-->
         <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
@@ -69,8 +69,8 @@
         <!--<table tableName="picture_info" domainObjectName="PictureInfo" enableCountByExample="false"-->
         <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"/>-->
         <!--&lt;!&ndash; 文件信息表 &ndash;&gt;-->
-        <table tableName="file_info" domainObjectName="FileInfo" enableCountByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>
+        <!--<table tableName="file_info" domainObjectName="FileInfo" enableCountByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!--&lt;!&ndash; 日志-图片映射表 &ndash;&gt;-->
         <!--<table tableName="diary_picture" domainObjectName="DiaryPicture" enableCountByExample="false"-->
         <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->

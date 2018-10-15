@@ -3,6 +3,7 @@
 <mapper namespace="com.inz.about.dao.FileInfoMapper">
     <resultMap id="BaseResultMap" type="com.inz.about.model.FileInfo">
         <id column="file_id" jdbcType="VARCHAR" property="fileId"/>
+        <result column="file_real_name" jdbcType="VARCHAR" property="fileRealName"/>
         <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
         <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
         <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
@@ -14,8 +15,8 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    file_id, file_name, file_path, file_url, file_extension, file_type, file_size, file_enable, 
-    create_datetime, update_time
+    file_id, file_real_name, file_name, file_path, file_url, file_extension, file_type, 
+    file_size, file_enable, create_datetime, update_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -28,20 +29,23 @@
     where file_id = #{fileId,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="com.inz.about.model.FileInfo">
-    insert into file_info (file_id, file_name, file_path, 
-      file_url, file_extension, file_type, 
-      file_size, file_enable, create_datetime, 
-      update_time)
-    values (#{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
-      #{fileUrl,jdbcType=VARCHAR}, #{fileExtension,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, 
-      #{fileSize,jdbcType=DECIMAL}, #{fileEnable,jdbcType=VARCHAR}, #{createDatetime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into file_info (file_id, file_real_name, file_name, 
+      file_path, file_url, file_extension, 
+      file_type, file_size, file_enable, 
+      create_datetime, update_time)
+    values (#{fileId,jdbcType=VARCHAR}, #{fileRealName,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{fileExtension,jdbcType=VARCHAR}, 
+      #{fileType,jdbcType=VARCHAR}, #{fileSize,jdbcType=DECIMAL}, #{fileEnable,jdbcType=VARCHAR}, 
+      #{createDatetime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.inz.about.model.FileInfo">
         insert into file_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="fileId != null">
                 file_id,
+            </if>
+            <if test="fileRealName != null">
+                file_real_name,
             </if>
             <if test="fileName != null">
                 file_name,
@@ -75,6 +79,9 @@
             <if test="fileId != null">
                 #{fileId,jdbcType=VARCHAR},
             </if>
+            <if test="fileRealName != null">
+                #{fileRealName,jdbcType=VARCHAR},
+            </if>
             <if test="fileName != null">
                 #{fileName,jdbcType=VARCHAR},
             </if>
@@ -107,6 +114,9 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.inz.about.model.FileInfo">
         update file_info
         <set>
+            <if test="fileRealName != null">
+                file_real_name = #{fileRealName,jdbcType=VARCHAR},
+            </if>
             <if test="fileName != null">
                 file_name = #{fileName,jdbcType=VARCHAR},
             </if>
@@ -139,7 +149,8 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.inz.about.model.FileInfo">
     update file_info
-    set file_name = #{fileName,jdbcType=VARCHAR},
+    set file_real_name = #{fileRealName,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
       file_path = #{filePath,jdbcType=VARCHAR},
       file_url = #{fileUrl,jdbcType=VARCHAR},
       file_extension = #{fileExtension,jdbcType=VARCHAR},

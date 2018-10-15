@@ -22,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -85,7 +83,7 @@ public class ApiController {
         initApiData();
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        boolean isRegister = false;
+        boolean isRegister;
         String userId = BaseUtil.getRandomUUID();
         Date createDate = BaseUtil.getSystemDate();
         UserInfo userInfo = new UserInfo();
@@ -370,14 +368,12 @@ public class ApiController {
      */
     private List<Map<String, Object>> saveMultipartFile(List<MultipartFile> multipartFileList, String filePath) {
         List<Map<String, Object>> fileList = new ArrayList<>();
-        BufferedOutputStream stream;
         int i = 0;
         for (MultipartFile multipartFile : multipartFileList) {
             Map<String, Object> map = new HashMap<>();
             i++;
             if (multipartFile != null && !multipartFile.isEmpty()) {
                 try {
-                    byte[] bytes = multipartFile.getBytes();
                     // 获取原文件名
                     String originalFilename = multipartFile.getOriginalFilename();
                     logger.info("originalFilename: " + originalFilename);
@@ -402,9 +398,6 @@ public class ApiController {
                         logger.info("文件创建状态： " + flag);
                     }
                     multipartFile.transferTo(file);
-//                    stream = new BufferedOutputStream(new FileOutputStream(file));
-//                    stream.write(bytes);
-//                    stream.close();
                     map.put("fileRealName", originalFilename);
                     map.put("file", file);
                 } catch (IOException e) {
@@ -506,6 +499,7 @@ public class ApiController {
         fileInfo.setFileSize(fileSize);
         fileInfo.setFilePath(filePath);
         fileInfo.setFileType(type);
+        fileInfo.setFileRealName(fileRealName);
         boolean flag = fileInfoService.insert(fileInfo);
         if (flag) {
             return fileId;
@@ -566,12 +560,12 @@ public class ApiController {
         String userFileId = BaseUtil.getRandomUUID();
         Date createDate = BaseUtil.getSystemDate();
         UserFile userFile = new UserFile();
-        userFile.setMaperId(userFileId);
+        userFile.setMapperId(userFileId);
         userFile.setCreateDatetime(createDate);
         userFile.setEnable("1");
         userFile.setUserId(userId);
         userFile.setFileId(fileId);
-        userFile.setMaperMemo(mapperMemo);
+        userFile.setMapperMemo(mapperMemo);
         int mapperOrder = 0;
         try {
             mapperOrder = userFileService.findLastOrder(userId);
@@ -579,7 +573,8 @@ public class ApiController {
             logger.error("获取用户文件排序出错！：", e);
         }
         mapperOrder += 1;
-        userFile.setMaperOrder(mapperOrder + "");
+        BigDecimal order = new BigDecimal(mapperOrder);
+        userFile.setMapperOrder(order);
         boolean flag = userFileService.insert(userFile);
         if (flag) {
             return userFileId;
