@@ -60,7 +60,7 @@ public class Constants {
     /**
      * 文件保存路径
      */
-    private static String WINDOWS_PATH = "E:\\project\\about";
+    private static String WINDOWS_PATH = "E:\\project\\about\\";
     private static String LINUX_PATH = "/etc/mnt/project/about/";
 
     /**
