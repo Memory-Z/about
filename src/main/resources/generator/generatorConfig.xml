@@ -64,7 +64,7 @@
         <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!-- 日志信息表 -->
         <!--<table tableName="diary_info" domainObjectName="DiaryInfo" enableCountByExample="false"-->
-               <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
+        <!--enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"/>-->
         <!--&lt;!&ndash; 图片信息表 &ndash;&gt;-->
         <!--<table tableName="picture_info" domainObjectName="PictureInfo" enableCountByExample="false"-->
         <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"/>-->

@@ -98,6 +98,6 @@ public interface UserFileMapper {
      * @param userId 用户ID
      * @return order
      */
-    int findLastOrder(String userId);
+    String findLastOrder(String userId);
 
 }

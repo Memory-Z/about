@@ -101,11 +101,11 @@
         where static_region_id = #{staticRegionId,jdbcType=VARCHAR}
     </update>
     <!-- 查询所有 -->
-    <select id="findAll" resultType="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM static_region
     </select>
     <!-- 通过 地级市ID 查询 -->
-    <select id="findByCityId" resultType="BaseResultMap">
+    <select id="findByCityId" resultMap="BaseResultMap">
         SELECT * FROM static_region WHERE static_city_id = #{cityId, jdbcType=VARCHAR}
     </select>
 </mapper>

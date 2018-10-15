@@ -158,7 +158,7 @@
         where maper_id = #{maperId,jdbcType=VARCHAR}
     </update>
     <!-- 通过文件ID查询 -->
-    <select id="findByFileId" parameterType="java.lang.String" resultType="BaseResultMap">
+    <select id="findByFileId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM diary_file
@@ -166,7 +166,7 @@
         ORDER BY mapper_order ASC
     </select>
     <!-- 通过日志ID查询 -->
-    <select id="findByDiaryId" parameterType="java.lang.String" resultType="BaseResultMap">
+    <select id="findByDiaryId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM diary_file

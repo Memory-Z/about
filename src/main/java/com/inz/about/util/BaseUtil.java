@@ -1048,13 +1048,13 @@ public class BaseUtil {
      * @param request
      * @return
      */
-    public static String getPefererURL(HttpServletRequest request) {
+    public static String getRefererURL(HttpServletRequest request) {
         String str = "";
-        str = request.getHeader("Peferer").toString();
+        str = request.getHeader("Referer").toString();
         return str;
     }
 
-    public static String pefererPage(HttpServletRequest request, String url) throws UnsupportedEncodingException {
+    public static String refererPage(HttpServletRequest request, String url) throws UnsupportedEncodingException {
         Cookie[] cookies = request.getCookies();
         String formParam = null;
         if (cookies != null) {
@@ -1073,10 +1073,10 @@ public class BaseUtil {
         }
         if (formParam != null) {
             // formParam不为null,请求路径带参数重定向
-            return "forward:" + url + ".do?" + formParam + "&premgr=no";
+            return "forward:" + url + ".do?" + formParam + "&premger=no";
         } else {
             // 如果formParam为null,则没有执行cookie内容调取或者访问非当前路径参数下的请求
-            return "forward:" + url + ".do?premgr=no";
+            return "forward:" + url + ".do?premger=no";
         }
     }
 
@@ -1133,6 +1133,28 @@ public class BaseUtil {
             sb.append(LETTER_VERIFY_STR[x]);
         }
         return sb.toString();
+    }
+
+    /**
+     * 获取是否为Windows
+     *
+     * @return 是否为Windows 系统
+     */
+    public static boolean isWindows() {
+        String systemName = System.getProperty("os.name").toLowerCase();
+        int index = systemName.indexOf("windows");
+        return index != -1;
+    }
+
+    /**
+     * 获取是否为Linux
+     *
+     * @return 是否为Linux 系统
+     */
+    public static boolean isLinux() {
+        String systemName = System.getProperty("os.name").toLowerCase();
+        int index = systemName.indexOf("linux");
+        return index != -1;
     }
 
 

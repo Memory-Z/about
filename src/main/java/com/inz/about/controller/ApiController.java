@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -26,9 +27,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Api 接口
@@ -39,7 +39,7 @@ import java.util.List;
  **/
 @Controller
 @ResponseBody
-@RequestMapping(value = "/api/", produces = {"html/text;charset=utf-8;", "application/json;"})
+@RequestMapping(value = "/api/", produces = {"html/text;charset=utf-8;", "application/json;"}, method = RequestMethod.POST)
 public class ApiController {
     /**
      * ApiCode 默认失败
@@ -72,6 +72,47 @@ public class ApiController {
         this.diaryFileService = diaryFileService;
         this.diaryPictureService = diaryPictureService;
         this.pictureInfoService = pictureInfoService;
+    }
+
+    /**
+     * 用户注册：register
+     *
+     * @param request HttpServletRequest
+     * @return JSON
+     */
+    @RequestMapping(value = "register")
+    public String register(HttpServletRequest request) {
+        initApiData();
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        boolean isRegister = false;
+        String userId = BaseUtil.getRandomUUID();
+        Date createDate = BaseUtil.getSystemDate();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(userId);
+        userInfo.setUsername(userName);
+        userInfo.setPassword(password);
+        userInfo.setUserEnable("1");
+        // 0 普通用户；1 管理员
+        userInfo.setUserType("0");
+        userInfo.setUserSex("1");
+        Date birthdayDate = BaseUtil.getSystemDate();
+        try {
+            birthdayDate = BaseUtil.getDate("1990-01-01 00:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        userInfo.setUserBirthday(birthdayDate);
+        userInfo.setCreateDatetime(createDate);
+        isRegister = userInfoService.register(userInfo);
+        if (isRegister) {
+            apiCode = Constants.API_CODE.SUCCESS.getValue();
+            apiMessage = "用户注册成功";
+        } else {
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "用户注册失败";
+        }
+        return resultJson1(isRegister);
     }
 
     /**
@@ -128,7 +169,7 @@ public class ApiController {
         try {
             start = Integer.getInteger(startStr);
             pageSize = Integer.getInteger(pageSizeStr);
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             logger.error("转换获取页号及页面大小，出错", e);
         }
         // 需要返回的数据
@@ -221,7 +262,6 @@ public class ApiController {
         initApiData();
         // 日志内容
         String diaryContent = request.getParameter("diaryContent");
-        diaryContent = diaryContent.trim();
         // 天气
         String diaryWeather = request.getParameter("diaryWeather");
         // 地址
@@ -243,12 +283,36 @@ public class ApiController {
             diaryInfo.setCreateDatetime(createTime);
             if (multipartFileList.size() > 0) {
                 diaryInfo.setDiaryHaveImage("1");
-
+                // 获取文件保存路路径
+                String filePath = Constants.getBaseFilePath();
+                List<Map<String, Object>> fileList = saveMultipartFile(multipartFileList, filePath);
+                if (fileList != null && fileList.size() > 0) {
+                    for (Map<String, Object> map : fileList) {
+                        String realName = (String) map.get("fileRealName");
+                        File file = (File) map.get("file");
+                        if (file != null) {
+                            boolean flag = saveFileToSql(file, Constants.FILE_OPERATION_MODE.PHOTO, userId, realName);
+                            if (flag) {
+                                logger.info("图片文件 保存成功");
+                            } else {
+                                logger.warn("图片文件 保存失败");
+                            }
+                        } else {
+                            logger.info("文件保存失败");
+                        }
+                    }
+                }
             } else {
                 diaryInfo.setDiaryHaveImage("0");
             }
-            apiCode = Constants.API_CODE.SUCCESS.getValue();
-            apiMessage = "日志发布成功";
+            boolean flag = diaryInfoService.insert(diaryInfo);
+            if (flag) {
+                apiCode = Constants.API_CODE.SUCCESS.getValue();
+                apiMessage = "日志发布成功";
+            } else {
+                apiCode = Constants.API_CODE.FAILED.getValue();
+                apiMessage = "日志保存失败";
+            }
         } else {
             apiCode = Constants.API_CODE.FAILED.getValue();
             apiMessage = "日志发布失败，日志内容为空";
@@ -304,11 +368,12 @@ public class ApiController {
      * @param filePath          文件地址
      * @return 文件列表
      */
-    private List<File> saveMultipartFile(List<MultipartFile> multipartFileList, String filePath) {
-        List<File> fileList = new ArrayList<>();
+    private List<Map<String, Object>> saveMultipartFile(List<MultipartFile> multipartFileList, String filePath) {
+        List<Map<String, Object>> fileList = new ArrayList<>();
         BufferedOutputStream stream;
         int i = 0;
         for (MultipartFile multipartFile : multipartFileList) {
+            Map<String, Object> map = new HashMap<>();
             i++;
             if (multipartFile != null && !multipartFile.isEmpty()) {
                 try {
@@ -329,26 +394,47 @@ public class ApiController {
                     }
                     // 文件需要存放的路径
                     String fileName = BaseUtil.getRandomUUID() + fileExt;
-                    filePath = filePath + File.separator + fileName;
+                    filePath = filePath + fileName;
                     logger.info("文件存放路径： " + filePath);
                     File file = new File(filePath);
-                    stream = new BufferedOutputStream(new FileOutputStream(file));
-                    stream.write(bytes);
-                    stream.close();
-                    fileList.add(file);
+                    if (!file.getParentFile().exists()) {
+                        boolean flag = file.getParentFile().mkdirs();
+                        logger.info("文件创建状态： " + flag);
+                    }
+                    multipartFile.transferTo(file);
+//                    stream = new BufferedOutputStream(new FileOutputStream(file));
+//                    stream.write(bytes);
+//                    stream.close();
+                    map.put("fileRealName", originalFilename);
+                    map.put("file", file);
                 } catch (IOException e) {
                     e.printStackTrace();
                     logger.error("文件获取失败！=：" + i, e);
+                    map.put("fileRealName", "");
+                    map.put("file", null);
                 }
             } else {
                 logger.warn("文件获取失败, =： " + i);
+                map.put("fileRealName", "");
+                map.put("file", null);
             }
+            fileList.add(map);
         }
         logger.info("文件处理完成, =： " + i);
         return fileList;
     }
 
-    private boolean saveFileToSql(File file, Constants.FILE_OPERATION_MODE mode, String userId) {
+    /**
+     * 保存文件到 SQL 数据库中
+     *
+     * @param file         文件
+     * @param mode         操作类型
+     * @param userId       用户ID
+     * @param fileRealName 文件真实名字
+     * @return 是否保存成功
+     */
+    @SuppressWarnings("SameParameterValue")
+    private boolean saveFileToSql(File file, Constants.FILE_OPERATION_MODE mode, String userId, String fileRealName) {
         boolean flag = false;
         if (file != null && file.isFile()) {
             String fileName = file.getName();
@@ -357,7 +443,7 @@ public class ApiController {
             switch (mode) {
                 case FILE:
                     // 保存文件
-                    String fileId = saveFileInfo(fileName, fileExt, filePath, "file", file.length());
+                    String fileId = saveFileInfo(fileRealName, fileName, fileExt, filePath, "file", file.length());
                     if (fileId != null) {
                         // 保存用户-文件 映射
                         String userFileId = saveUserFile(userId, fileId, "Api 上传文件");
@@ -370,7 +456,7 @@ public class ApiController {
                     }
                     break;
                 case PHOTO:
-                    String photoId = saveFileInfo(fileName, fileExt, filePath, "photo", file.length());
+                    String photoId = saveFileInfo(fileRealName, fileName, fileExt, filePath, "photo", file.length());
                     if (photoId != null) {
                         // 用户-文件 映射
                         String userPhotoId = saveUserFile(userId, photoId, "Api 上传图片");
@@ -383,7 +469,10 @@ public class ApiController {
                     }
                     break;
                 case PICTURE:
-                    PictureInfo pictureInfo = new PictureInfo();
+                    String pictureId = savePictureInfo(filePath, "photo", file.length());
+                    if (pictureId != null) {
+                        flag = true;
+                    }
                     break;
                 default:
                     break;
@@ -395,13 +484,15 @@ public class ApiController {
     /**
      * 保存文件信息
      *
-     * @param fileExt  文件扩展名
-     * @param filePath 文件路径
-     * @param type     文件类型
-     * @param size     文件大小
+     * @param fileRealName 文件实际名
+     * @param fileName     文件保存名
+     * @param fileExt      文件扩展名
+     * @param filePath     文件路径
+     * @param type         文件类型
+     * @param size         文件大小
      * @return 保存成功，返回当前文件ID，否则，反回 null
      */
-    private String saveFileInfo(String fileName, String fileExt, String filePath, String type, long size) {
+    private String saveFileInfo(String fileRealName, String fileName, String fileExt, String filePath, String type, long size) {
         Date createDate = BaseUtil.getSystemDate();
         FileInfo fileInfo = new FileInfo();
         String fileId = BaseUtil.getRandomUUID();
@@ -418,6 +509,46 @@ public class ApiController {
         boolean flag = fileInfoService.insert(fileInfo);
         if (flag) {
             return fileId;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 保存图片文件
+     *
+     * @param filePath 文件地址
+     * @param type     文件类型
+     * @param size     文件大小
+     * @return 保存的图片ID
+     */
+    @SuppressWarnings("SameParameterValue")
+    private String savePictureInfo(String filePath, String type, long size) {
+        Date createDate = BaseUtil.getSystemDate();
+        PictureInfo pictureInfo = new PictureInfo();
+        String pictureId = BaseUtil.getRandomUUID();
+        pictureInfo.setPictureId(pictureId);
+        pictureInfo.setPictureEnable("1");
+        pictureInfo.setPictureType(type);
+        pictureInfo.setPictureUrl(filePath);
+        BigDecimal pictureSize = new BigDecimal(size);
+        boolean isWindows = BaseUtil.isWindows();
+        boolean isLinux = BaseUtil.isLinux();
+        String sysName;
+        if (isWindows) {
+            sysName = "Windows";
+        } else if (isLinux) {
+            sysName = "Linux";
+        } else {
+            sysName = "Other";
+        }
+        pictureInfo.setPictureSys(sysName);
+        pictureInfo.setPictureSize(pictureSize);
+        pictureInfo.setPicturePath(filePath);
+        pictureInfo.setCreateDatetime(createDate);
+        boolean flag = pictureInfoService.insert(pictureInfo);
+        if (flag) {
+            return pictureId;
         } else {
             return null;
         }
@@ -455,7 +586,6 @@ public class ApiController {
         } else {
             return null;
         }
-
     }
 
     /**

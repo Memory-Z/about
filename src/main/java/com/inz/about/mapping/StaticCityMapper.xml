@@ -137,15 +137,15 @@
         where static_city_id = #{staticCityId,jdbcType=VARCHAR}
     </update>
     <!-- 查询所有 -->
-    <select id="findAll" resultType="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM static_city
     </select>
     <!-- 通过省ID 查询 -->
-    <select id="findByProvinceId" resultType="BaseResultMap">
+    <select id="findByProvinceId" resultMap="BaseResultMap">
         SELECT * FROM static_city WHERE static_province_id = #{provinceId, jdbcType=VARCHAR}
     </select>
     <!-- 查询热门城市 -->
-    <select id="findByHot" resultType="BaseResultMap">
+    <select id="findByHot" resultMap="BaseResultMap">
         SELECT * FROM static_city WHERE is_hot = '1'
     </select>
 </mapper>

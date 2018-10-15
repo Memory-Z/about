@@ -151,7 +151,7 @@
     where file_id = #{fileId,jdbcType=VARCHAR}
   </update>
     <!-- 通过文件类型查询 -->
-    <select id="findByFileType" parameterType="java.lang.String" resultType="BaseResultMap">
+    <select id="findByFileType" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM file_info

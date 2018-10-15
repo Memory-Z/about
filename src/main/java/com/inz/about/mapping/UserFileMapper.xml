@@ -158,14 +158,14 @@
         where maper_id = #{maperId,jdbcType=VARCHAR}
     </update>
     <!-- 通过用户Id查询 -->
-    <select id="findByUserId" resultType="BaseResultMap">
+    <select id="findByUserId" resultMap="BaseResultMap">
         SELECT * FROM user_file
         WHERE user_id = #{userId, jdbcType=VARCHAR}
         ORDER BY create_datetime, maper_order ASC
         LIMIT #{start}, #{pageSize}
     </select>
     <!-- 通过文件Id 查询 -->
-    <select id="findByFileId" resultType="BaseResultMap">
+    <select id="findByFileId" resultMap="BaseResultMap">
         SELECT * FROM user_file
         WHERE file_id = #{fileId, jdbcType=VARCHAR}
         ORDER BY create_datetime, maper_order ASC
@@ -185,9 +185,10 @@
         ORDER BY enable, create_datetime DESC
     </select>
     <!-- 通过用户名， 查询最后一个Order  -->
-    <select id="findLastOrder" resultType="java.lang.Integer">
+    <select id="findLastOrder" resultType="java.lang.String">
         SELECT IFNULL(maper_order, 0) FROM user_file
         WHERE user_id = #{userId, jdbcType=VARCHAR}
         ORDER BY maper_order DESC
+        LIMIT 0, 1
     </select>
 </mapper>

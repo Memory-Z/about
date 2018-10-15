@@ -90,7 +90,7 @@
         where static_province_id = #{staticProvinceId,jdbcType=VARCHAR}
     </update>
     <!-- 查询全部 -->
-    <select id="findAll" resultType="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM static_province
     </select>
 </mapper>

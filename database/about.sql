@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2018-10-13 21:11:08
+Date: 2018-10-15 20:56:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,6 +56,7 @@ CREATE TABLE `diary_info` (
 -- ----------------------------
 -- Records of diary_info
 -- ----------------------------
+INSERT INTO `diary_info` VALUES ('1678E3DC-0FDE-4D3E-8B34-49278ADC7A4F', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '123', '1', null, null, '1', '1', '2018-10-15 20:52:44', null);
 
 -- ----------------------------
 -- Table structure for diary_picture
@@ -81,6 +82,7 @@ CREATE TABLE `diary_picture` (
 DROP TABLE IF EXISTS `file_info`;
 CREATE TABLE `file_info` (
   `file_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件主键',
+  `file_real_name` varchar(400) DEFAULT NULL COMMENT '文件原名称',
   `file_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件名',
   `file_path` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件地址',
   `file_url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件访问链接',
@@ -96,6 +98,13 @@ CREATE TABLE `file_info` (
 -- ----------------------------
 -- Records of file_info
 -- ----------------------------
+INSERT INTO `file_info` VALUES ('2B635441-0B88-4ACB-9624-AED2F8B6D680', null, '8EAACDCD-CC4D-45AA-A6BE-F989FB24DF33.sql', 'E:\\project\\8EAACDCD-CC4D-45AA-A6BE-F989FB24DF33.sql', 'E:\\project\\8EAACDCD-CC4D-45AA-A6BE-F989FB24DF33.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 20:15:11', null);
+INSERT INTO `file_info` VALUES ('4854A0B3-6568-4103-BE7D-27D9F196933F', null, '3F0389A1-E1E2-4480-A6A4-75D25BE560D8.sql', 'E:\\project\\3F0389A1-E1E2-4480-A6A4-75D25BE560D8.sql', 'E:\\project\\3F0389A1-E1E2-4480-A6A4-75D25BE560D8.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 20:17:33', null);
+INSERT INTO `file_info` VALUES ('48926FBF-706B-434E-B597-68F108ED2FE8', null, 'B46B33CE-47B6-4E15-8BE7-39B40BDEBCF8.sql', 'E:\\project\\B46B33CE-47B6-4E15-8BE7-39B40BDEBCF8.sql', 'E:\\project\\B46B33CE-47B6-4E15-8BE7-39B40BDEBCF8.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 20:11:49', null);
+INSERT INTO `file_info` VALUES ('6992E2D5-BA4A-4018-9022-989DF238F8AF', null, '5F9DA7F7-B95F-48F0-8376-BB95AE778ABC.sql', 'E:\\project\\5F9DA7F7-B95F-48F0-8376-BB95AE778ABC.sql', 'E:\\project\\5F9DA7F7-B95F-48F0-8376-BB95AE778ABC.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 20:06:46', null);
+INSERT INTO `file_info` VALUES ('715422A2-F57E-452E-8ECB-561F4082B4ED', null, 'about33FD01A6-A6DC-4475-8BF5-7274B014F3F8.sql', 'E:\\project\\about33FD01A6-A6DC-4475-8BF5-7274B014F3F8.sql', 'E:\\project\\about33FD01A6-A6DC-4475-8BF5-7274B014F3F8.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 20:52:44', null);
+INSERT INTO `file_info` VALUES ('7BF8E6C0-33EE-4275-B1E0-632E666294BA', null, '928B7AF6-0739-49F0-AF87-183C9071252E.sql', 'E:\\project\\928B7AF6-0739-49F0-AF87-183C9071252E.sql', 'E:\\project\\928B7AF6-0739-49F0-AF87-183C9071252E.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 18:26:24', null);
+INSERT INTO `file_info` VALUES ('EEE481FF-ACBE-45D9-BEC1-9486423A9A21', null, 'C02622A2-600D-432B-8683-14889C5FEA8F.sql', 'E:\\project\\C02622A2-600D-432B-8683-14889C5FEA8F.sql', 'E:\\project\\C02622A2-600D-432B-8683-14889C5FEA8F.sql', '.sql', 'photo', '507046.0000', '1', '2018-10-15 18:20:35', null);
 
 -- ----------------------------
 -- Table structure for picture_info
@@ -106,7 +115,7 @@ CREATE TABLE `picture_info` (
   `picture_path` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图片地址',
   `picture_sys` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '1' COMMENT '图片所在系统；1：windows; 2：Linux',
   `picture_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图片访问链接',
-  `picture_size` double(10,4) DEFAULT NULL COMMENT '图片大小',
+  `picture_size` decimal(10,4) DEFAULT NULL COMMENT '图片大小',
   `picture_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图片类型',
   `picture_enable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '图片是否可用；‘0’：不可用；‘1’：可用',
   `create_datetime` datetime NOT NULL COMMENT '图片创建时间',
@@ -6889,6 +6898,13 @@ CREATE TABLE `user_file` (
 -- ----------------------------
 -- Records of user_file
 -- ----------------------------
+INSERT INTO `user_file` VALUES ('5DFE17BA-C6C9-4921-8BCF-7368A514C9FE', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '715422A2-F57E-452E-8ECB-561F4082B4ED', '6', 'Api 上传图片', '1', '2018-10-15 20:52:44', null);
+INSERT INTO `user_file` VALUES ('6475DF14-1B01-461F-9B38-2C0E0E4448D2', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '4854A0B3-6568-4103-BE7D-27D9F196933F', '5', 'Api 上传图片', '1', '2018-10-15 20:17:33', null);
+INSERT INTO `user_file` VALUES ('8B8654A9-D989-418B-B77A-370D038F4630', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '7BF8E6C0-33EE-4275-B1E0-632E666294BA', '2', 'Api 上传图片', '1', '2018-10-15 18:26:24', null);
+INSERT INTO `user_file` VALUES ('9C4176C9-30AB-4121-81F3-A3E9D75BFF69', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '6992E2D5-BA4A-4018-9022-989DF238F8AF', '1', 'Api 上传图片', '1', '2018-10-15 20:06:46', null);
+INSERT INTO `user_file` VALUES ('B1442902-8544-48CD-AE49-08F85F10E9C7', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '48926FBF-706B-434E-B597-68F108ED2FE8', '3', 'Api 上传图片', '1', '2018-10-15 20:11:50', null);
+INSERT INTO `user_file` VALUES ('C58E2A06-787D-4516-9A6E-820FAB366B68', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', '2B635441-0B88-4ACB-9624-AED2F8B6D680', '4', 'Api 上传图片', '1', '2018-10-15 20:15:16', null);
+INSERT INTO `user_file` VALUES ('DD701BF3-4FF7-4CB7-BA58-8B608FD805B9', '17D6F27B-673E-4FCC-95AB-2588AADEEE3D', 'EEE481FF-ACBE-45D9-BEC1-9486423A9A21', '1', 'Api 上传图片', '1', '2018-10-15 18:20:35', null);
 
 -- ----------------------------
 -- Table structure for user_info
@@ -6915,3 +6931,4 @@ CREATE TABLE `user_info` (
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
+INSERT INTO `user_info` VALUES ('17D6F27B-673E-4FCC-95AB-2588AADEEE3D', 'inz', '3d4def25e0a56d19b76af7e477b88151', '1', null, null, '1990-01-01', null, '0', null, '1', null, '2018-10-15 16:17:08', null);

@@ -136,7 +136,7 @@
         where id = #{id,jdbcType=VARCHAR}
     </update>
     <!-- 通过日志ID 查询图片 -->
-    <select id="findByDiaryId" resultType="BaseResultMap">
+    <select id="findByDiaryId" resultMap="BaseResultMap">
         SELECT
         *
         FROM diary_picture

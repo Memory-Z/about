@@ -70,7 +70,7 @@ public class ModelUtil {
         apiDiaryInfo.setDiaryContent(diaryInfo.getDiaryContent());
         apiDiaryInfo.setDiaryOrder(diaryInfo.getDiaryOrder());
         boolean isMore = false;
-        if ("1".equals(diaryInfo.getDiaryIsMoreOne())) {
+        if ("1".equals(diaryInfo.getDiaryHaveImage())) {
             isMore = true;
         }
         apiDiaryInfo.setDiaryIsMoreOne(isMore);
@@ -78,7 +78,7 @@ public class ModelUtil {
         apiDiaryInfo.setDiaryWeather(diaryInfo.getDiaryWeather());
         String createTime = BaseUtil.getDateStr(diaryInfo.getCreateDatetime());
         apiDiaryInfo.setCreateDatetime(createTime);
-        Date updateTime = diaryInfo.getUpdateDatatime();
+        Date updateTime = diaryInfo.getUpdateDatetime();
         String updateTimeStr = "";
         if (updateTime != null) {
             updateTimeStr = BaseUtil.getDateStr(updateTime);

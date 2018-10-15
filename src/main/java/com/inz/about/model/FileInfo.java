@@ -6,6 +6,8 @@ import java.util.Date;
 public class FileInfo {
     private String fileId;
 
+    private String fileRealName;
+
     private String fileName;
 
     private String filePath;
@@ -30,6 +32,14 @@ public class FileInfo {
 
     public void setFileId(String fileId) {
         this.fileId = fileId == null ? null : fileId.trim();
+    }
+
+    public String getFileRealName() {
+        return fileRealName;
+    }
+
+    public void setFileRealName(String fileRealName) {
+        this.fileRealName = fileRealName == null ? null : fileRealName.trim();
     }
 
     public String getFileName() {

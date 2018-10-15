@@ -1,6 +1,7 @@
 package com.inz.about.model.api;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Api 文件信息
@@ -29,7 +30,7 @@ public class ApiFileInfo implements Serializable {
     /**
      * 文件大小
      */
-    private Double fileSize;
+    private BigDecimal fileSize;
     /**
      * 是否可用
      */
@@ -75,11 +76,11 @@ public class ApiFileInfo implements Serializable {
         this.fileType = fileType;
     }
 
-    public Double getFileSize() {
+    public BigDecimal getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Double fileSize) {
+    public void setFileSize(BigDecimal fileSize) {
         this.fileSize = fileSize;
     }
 

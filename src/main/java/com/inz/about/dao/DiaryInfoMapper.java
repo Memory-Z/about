@@ -1,10 +1,12 @@
 package com.inz.about.dao;
 
 import com.inz.about.model.DiaryInfo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface DiaryInfoMapper {
     int deleteByPrimaryKey(String diaryId);
 

@@ -58,6 +58,12 @@ public class Constants {
     public static String GUID = "B56BBCB3-5AF2-41A1-8A5F-E4177525E9CA";
 
     /**
+     * 文件保存路径
+     */
+    private static String WINDOWS_PATH = "E:\\project\\about";
+    private static String LINUX_PATH = "/etc/mnt/project/about/";
+
+    /**
      * 邮箱服务器地址：163是 smtp.163.com；qq是 smtp.qq.com
      */
     public static final String emailHost = "smtp.qq.com";
@@ -73,6 +79,18 @@ public class Constants {
      * 邮箱密码
      */
     public static final String emailPassword = "hkjezqmmgtxtjfgi";
+
+    /**
+     * 获取 本地路径
+     */
+    public static String getBaseFilePath() {
+        boolean isWin = BaseUtil.isWindows();
+        if (isWin) {
+            return WINDOWS_PATH;
+        } else {
+            return LINUX_PATH;
+        }
+    }
 
 //    /**
 //     * 地区 省 集合

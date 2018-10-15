@@ -151,7 +151,7 @@
     where diary_id = #{diaryId,jdbcType=VARCHAR}
   </update>
     <!-- 通过用户ID 查询 -->
-    <select id="findByUserId" resultType="BaseResultMap">
+    <select id="findByUserId" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM diary_info
@@ -160,7 +160,7 @@
         LIMIT #{start}, #{pageSize}
     </select>
     <!-- 获取全部 -->
-    <select id="findAll" resultType="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM diary_info

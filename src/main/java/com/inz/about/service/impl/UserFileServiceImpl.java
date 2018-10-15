@@ -3,6 +3,7 @@ package com.inz.about.service.impl;
 import com.inz.about.dao.UserFileMapper;
 import com.inz.about.model.UserFile;
 import com.inz.about.service.IUserFileService;
+import com.inz.about.util.BaseUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -63,6 +64,15 @@ public class UserFileServiceImpl implements IUserFileService {
 
     @Override
     public int findLastOrder(String userId) {
-        return userFileMapper.findLastOrder(userId);
+        String orderStr = userFileMapper.findLastOrder(userId);
+        int order = 0;
+        if (!BaseUtil.isEmpty(orderStr)) {
+            try {
+                order = Integer.parseInt(orderStr);
+            } catch (Exception e) {
+                System.out.println("==UserFileServiceImpl: " + e.getMessage());
+            }
+        }
+        return order;
     }
 }

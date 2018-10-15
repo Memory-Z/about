@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  * @version 1.0.0
  * Create By Zhenglj on 2018/10/2 10:32
  **/
-@Service("userInfoService")
+@Service(value = "userInfoService")
 public class UserInfoServiceImpl implements IUserInfoService {
 
     @Resource
@@ -64,7 +64,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
 
     @Override
     public boolean register(UserInfo userInfo) {
-        if (userInfo == null) {
+        if (userInfo == null || userInfo.getUsername() == null || userInfo.getPassword() == null) {
             return false;
         }
         String password = userInfo.getPassword();

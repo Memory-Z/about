@@ -112,11 +112,11 @@
         where zip_id = #{zipId,jdbcType=VARCHAR}
     </update>
     <!-- 获取所有 -->
-    <select id="findAll" resultType="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM static_zip_code
     </select>
     <!-- 通过 区/县ID 获取 -->
-    <select id="findByRegionId" resultType="BaseResultMap">
+    <select id="findByRegionId" resultMap="BaseResultMap">
         SELECT * FROM static_zip_code
         WHERE static_region_id = #{regionId, jdbcType=VARCHAR}
     </select>
