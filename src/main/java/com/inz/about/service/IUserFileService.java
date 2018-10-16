@@ -31,6 +31,14 @@ public interface IUserFileService {
     UserFile findEnableUserPhotoByUserId(String userId);
 
     /**
+     * 通过用户Id 查询多个可用用户图片
+     *
+     * @param userId 用户Id
+     * @return 用户头像文件
+     */
+    List<UserFile> findListEnableUserPhotoByUserId(String userId);
+
+    /**
      * 通过用户Id 查询全部用户头像
      *
      * @param userId 用户ID

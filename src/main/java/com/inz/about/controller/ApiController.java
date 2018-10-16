@@ -83,32 +83,50 @@ public class ApiController {
         initApiData();
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        boolean isRegister;
-        String userId = BaseUtil.getRandomUUID();
-        Date createDate = BaseUtil.getSystemDate();
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUserId(userId);
-        userInfo.setUsername(userName);
-        userInfo.setPassword(password);
-        userInfo.setUserEnable("1");
-        // 0 普通用户；1 管理员
-        userInfo.setUserType("0");
-        userInfo.setUserSex("1");
-        Date birthdayDate = BaseUtil.getSystemDate();
-        try {
-            birthdayDate = BaseUtil.getDate("1990-01-01 00:00:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        userInfo.setUserBirthday(birthdayDate);
-        userInfo.setCreateDatetime(createDate);
-        isRegister = userInfoService.register(userInfo);
-        if (isRegister) {
-            apiCode = Constants.API_CODE.SUCCESS.getValue();
-            apiMessage = "用户注册成功";
+        boolean isRegister = false;
+        if (BaseUtil.isEmpty(userName) || BaseUtil.isEmpty(password)) {
+            apiCode = Constants.API_CODE.WARN.getValue();
+            apiMessage = "传入的参数不完整";
         } else {
-            apiCode = Constants.API_CODE.FAILED.getValue();
-            apiMessage = "用户注册失败";
+            // 是否存在同一用户名
+            boolean haveUserInfo = false;
+            if (!BaseUtil.isEmpty(userName)) {
+                UserInfo userInfo = userInfoService.findByUsername(userName);
+                if (userInfo != null) {
+                    haveUserInfo = true;
+                }
+            }
+            if (!haveUserInfo) {
+                String userId = BaseUtil.getRandomUUID();
+                Date createDate = BaseUtil.getSystemDate();
+                UserInfo userInfo = new UserInfo();
+                userInfo.setUserId(userId);
+                userInfo.setUsername(userName);
+                userInfo.setPassword(password);
+                userInfo.setUserEnable("1");
+                // 0 普通用户；1 管理员
+                userInfo.setUserType("0");
+                userInfo.setUserSex("1");
+                Date birthdayDate = BaseUtil.getSystemDate();
+                try {
+                    birthdayDate = BaseUtil.getDate("1990-01-01 00:00:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                userInfo.setUserBirthday(birthdayDate);
+                userInfo.setCreateDatetime(createDate);
+                isRegister = userInfoService.register(userInfo);
+                if (isRegister) {
+                    apiCode = Constants.API_CODE.SUCCESS.getValue();
+                    apiMessage = "用户注册成功";
+                } else {
+                    apiCode = Constants.API_CODE.FAILED.getValue();
+                    apiMessage = "用户注册失败";
+                }
+            } else {
+                apiCode = Constants.API_CODE.FAILED.getValue();
+                apiMessage = "用户名已存在";
+            }
         }
         return resultJson1(isRegister);
     }
@@ -152,6 +170,124 @@ public class ApiController {
     }
 
     /**
+     * 设置用户 头像
+     *
+     * @param fileRequest MultipartHttpServletRequest
+     * @param userId      用户ID
+     * @return JSON
+     */
+    @RequestMapping(value = "{userId}/photo")
+    public String updateUserPhoto(MultipartHttpServletRequest fileRequest, @PathVariable("userId") String userId) {
+        initApiData();
+        // 是否更新成功
+        boolean isUpdate = false;
+        MultipartFile multipartFile = fileRequest.getFile("userPhoto");
+        if (!BaseUtil.isEmpty(userId)) {
+            UserInfo userInfo = userInfoService.findById(userId);
+            if (userInfo != null && multipartFile != null) {
+                String filePath = Constants.getBaseFilePath() + "photo" + File.separator;
+                Map<String, Object> map = getFileInfo(multipartFile, filePath);
+                String realName = (String) map.get("fileRealName");
+                File file = (File) map.get("file");
+                if (file != null) {
+                    boolean flag = saveFileToSql(file, Constants.FILE_OPERATION_MODE.PHOTO, userId, "", realName);
+                    if (flag) {
+                        isUpdate = true;
+                        logger.info("图片文件 保存成功");
+                    } else {
+                        logger.info("图片文件 保存失败");
+                    }
+                } else {
+                    logger.info("文件保存失败");
+                }
+            }
+        }
+        if (isUpdate) {
+            apiCode = Constants.API_CODE.SUCCESS.getValue();
+            apiMessage = "用户头像更新完成";
+        } else {
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "用户头像更新失败";
+        }
+        return resultJson1(isUpdate);
+    }
+
+    /**
+     * 用户信息更新
+     *
+     * @param request HttpServletRequest
+     * @param userId  用户ID
+     * @return JSON
+     */
+    @RequestMapping(value = "{userId}/update")
+    public String updateUser(HttpServletRequest request, @PathVariable("userId") String userId) {
+        initApiData();
+        String userEmail = request.getParameter("userEmail");
+        String userSex = request.getParameter("userSex");
+        String createDateStr = request.getParameter("createDate");
+        String userIntro = request.getParameter("userIntro");
+        String userMemo = request.getParameter("userMemo");
+        String userPhone = request.getParameter("userPhone");
+        ApiUserInfo apiUserInfo = null;
+        UserInfo userInfo = userInfoService.findById(userId);
+        if (!BaseUtil.isEmpty(userEmail)) {
+            userInfo.setUserEmail(userEmail);
+        }
+        if (!BaseUtil.isEmpty(userSex)) {
+            userInfo.setUserSex(userSex);
+        }
+        if (!BaseUtil.isEmpty(createDateStr)) {
+            try {
+                Date birthdayDate = BaseUtil.getDate("");
+                userInfo.setUserBirthday(birthdayDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!BaseUtil.isEmpty(userIntro)) {
+            userInfo.setUserIntro(userIntro);
+        }
+        if (!BaseUtil.isEmpty(userMemo)) {
+            userInfo.setUserMemo(userMemo);
+        }
+        if (!BaseUtil.isEmpty(userPhone)) {
+            userInfo.setUserPhone(userPhone);
+        }
+        Date updateTime = BaseUtil.getSystemDate();
+        userInfo.setUpdateDatetime(updateTime);
+        boolean flag = userInfoService.update(userInfo);
+        if (flag) {
+            UserFile userFile = userFileService.findEnableUserPhotoByUserId(userId);
+            String userPhotoUrl = "";
+            if (userFile != null) {
+                String fileId = userFile.getFileId();
+                FileInfo fileInfo = fileInfoService.findById(fileId);
+                userPhotoUrl = fileInfo.getFileUrl();
+            }
+            apiUserInfo = ModelUtil.userInfoToApi(userInfo, userPhotoUrl);
+            apiCode = Constants.API_CODE.SUCCESS.getValue();
+            apiMessage = "用户信息更新成功";
+        } else {
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "用户信息更新失败";
+        }
+        return resultJson1(apiUserInfo);
+    }
+
+    @RequestMapping(value = "{userId}/password")
+    public String updateUserPassword(HttpServletRequest request, @PathVariable("userId") String userId) {
+        initApiData();
+        boolean isUpdate = false;
+        UserInfo userInfo = userInfoService.findById(userId);
+        if (userInfo != null) {
+
+        } else {
+
+        }
+        return resultJson1(null);
+    }
+
+    /**
      * 通过用户 获取日志
      *
      * @param request HttpServletRequest
@@ -164,11 +300,19 @@ public class ApiController {
         String startStr = request.getParameter("start");
         String pageSizeStr = request.getParameter("pageSize");
         int start = 0, pageSize = 10;
-        try {
-            start = Integer.getInteger(startStr);
-            pageSize = Integer.getInteger(pageSizeStr);
-        } catch (Exception e) {
-            logger.error("转换获取页号及页面大小，出错", e);
+        if (!BaseUtil.isEmpty(startStr)) {
+            try {
+                start = Integer.parseInt(startStr);
+            } catch (NumberFormatException e) {
+                logger.error("开始项转换失败", e);
+            }
+        }
+        if (!BaseUtil.isEmpty(pageSizeStr)) {
+            try {
+                pageSize = Integer.getInteger(pageSizeStr);
+            } catch (NumberFormatException e) {
+                logger.error("转换页面大小，出错", e);
+            }
         }
         // 需要返回的数据
         List<ApiDiaryInfo> apiDiaryInfoList = new ArrayList<>();
@@ -255,6 +399,14 @@ public class ApiController {
         return resultJson1(apiFileInfoList);
     }
 
+    /**
+     * 日志添加
+     *
+     * @param request     HttpServletRequest
+     * @param userId      用户ID
+     * @param fileRequest 文件
+     * @return JSON
+     */
     @RequestMapping(value = "{userId}/diary/add")
     public String addDiaryByUserId(HttpServletRequest request, @PathVariable("userId") String userId, MultipartHttpServletRequest fileRequest) {
         initApiData();
@@ -277,19 +429,21 @@ public class ApiController {
             diaryInfo.setDiaryAddress(diaryAddress);
             diaryInfo.setDiaryWeather(diaryWeather);
             diaryInfo.setDiaryEnable("1");
-            diaryInfo.setDiaryOrder("1");
+            int order = diaryInfoService.findLastOrder(userId);
+            BigDecimal diaryOrder = new BigDecimal(order + 1);
+            diaryInfo.setDiaryOrder(diaryOrder);
             diaryInfo.setCreateDatetime(createTime);
             if (multipartFileList.size() > 0) {
                 diaryInfo.setDiaryHaveImage("1");
                 // 获取文件保存路路径
-                String filePath = Constants.getBaseFilePath();
+                String filePath = Constants.getBaseFilePath() + "diary" + File.separator;
                 List<Map<String, Object>> fileList = saveMultipartFile(multipartFileList, filePath);
                 if (fileList != null && fileList.size() > 0) {
                     for (Map<String, Object> map : fileList) {
                         String realName = (String) map.get("fileRealName");
                         File file = (File) map.get("file");
                         if (file != null) {
-                            boolean flag = saveFileToSql(file, Constants.FILE_OPERATION_MODE.PHOTO, userId, diaryId, realName);
+                            boolean flag = saveFileToSql(file, Constants.FILE_OPERATION_MODE.PICTURE, userId, diaryId, realName);
                             if (flag) {
                                 logger.info("图片文件 保存成功");
                             } else {
@@ -316,6 +470,54 @@ public class ApiController {
             apiMessage = "日志发布失败，日志内容为空";
         }
         return resultJson1(diaryInfo);
+    }
+
+    /**
+     * 日志删除
+     *
+     * @param userId  用户ID
+     * @param diaryId 日志ID
+     * @return JSON
+     */
+    @RequestMapping(value = "{userId}/diary/{diaryId}/delete")
+    public String deleteDiaryByUserId(@PathVariable("userId") String userId, @PathVariable("diaryId") String diaryId) {
+        initApiData();
+        // 是否删除
+        boolean isDelete = false;
+        if (!BaseUtil.isEmpty(userId) && !BaseUtil.isEmpty(diaryId)) {
+            DiaryInfo diaryInfo = diaryInfoService.findById(diaryId);
+            if (diaryInfo != null) {
+                String diaryUserId = diaryInfo.getDiaryUserId();
+                if (diaryUserId.equals(userId)) {
+                    diaryInfo.setDiaryEnable("0");
+                    Date updateTime = BaseUtil.getSystemDate();
+                    diaryInfo.setUpdateDatetime(updateTime);
+                    String haveImage = diaryInfo.getDiaryHaveImage();
+                    if ("1".equals(haveImage)) {
+                        List<DiaryFile> diaryFileList = diaryFileService.findByDiaryId(diaryId);
+                        if (diaryFileList != null && diaryFileList.size() > 0) {
+                            for (DiaryFile diaryFile : diaryFileList) {
+                                diaryFile.setEnable("0");
+                                diaryFile.setUpdateDatetime(updateTime);
+                                boolean flag = diaryFileService.update(diaryFile);
+                                if (!flag) {
+                                    logger.warn("日志文件删除失败： " + diaryFile.getMapperId());
+                                }
+                            }
+                        }
+                    }
+                    isDelete = diaryInfoService.update(diaryInfo);
+                }
+            }
+        }
+        if (isDelete) {
+            apiCode = Constants.API_CODE.SUCCESS.getValue();
+            apiMessage = "日志文件删除成功";
+        } else {
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "日志文件删除失败";
+        }
+        return resultJson1(isDelete);
     }
 
     /**
@@ -373,39 +575,8 @@ public class ApiController {
             Map<String, Object> map = new HashMap<>();
             i++;
             if (multipartFile != null && !multipartFile.isEmpty()) {
-                try {
-                    // 获取原文件名
-                    String originalFilename = multipartFile.getOriginalFilename();
-                    logger.info("originalFilename: " + originalFilename);
-                    int extIndexOf = -1;
-                    if (originalFilename != null) {
-                        extIndexOf = originalFilename.lastIndexOf(".");
-                    }
-                    // 截取文件扩展名
-                    String fileExt;
-                    if (extIndexOf != -1) {
-                        fileExt = originalFilename.substring(extIndexOf);
-                    } else {
-                        fileExt = "";
-                    }
-                    // 文件需要存放的路径
-                    String fileName = BaseUtil.getRandomUUID() + fileExt;
-                    filePath = filePath + fileName;
-                    logger.info("文件存放路径： " + filePath);
-                    File file = new File(filePath);
-                    if (!file.getParentFile().exists()) {
-                        boolean flag = file.getParentFile().mkdirs();
-                        logger.info("文件创建状态： " + flag);
-                    }
-                    multipartFile.transferTo(file);
-                    map.put("fileRealName", originalFilename);
-                    map.put("file", file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    logger.error("文件获取失败！=：" + i, e);
-                    map.put("fileRealName", "");
-                    map.put("file", null);
-                }
+                // 文件信息获取 保存
+                map = getFileInfo(multipartFile, filePath);
             } else {
                 logger.warn("文件获取失败, =： " + i);
                 map.put("fileRealName", "");
@@ -415,6 +586,50 @@ public class ApiController {
         }
         logger.info("文件处理完成, =： " + i);
         return fileList;
+    }
+
+    /**
+     * 获取实际 文件信息，并保存至本地
+     *
+     * @param multipartFile 文件
+     * @param filePath      文件路径
+     * @return 映射关系
+     */
+    private Map<String, Object> getFileInfo(MultipartFile multipartFile, String filePath) {
+        Map<String, Object> map = new HashMap<>();
+        // 获取原文件名
+        String originalFilename = multipartFile.getOriginalFilename();
+        logger.info("originalFilename: " + originalFilename);
+        int extIndexOf = -1;
+        if (originalFilename != null) {
+            extIndexOf = originalFilename.lastIndexOf(".");
+        }
+        // 截取文件扩展名
+        String fileExt;
+        if (extIndexOf != -1) {
+            fileExt = originalFilename.substring(extIndexOf);
+        } else {
+            fileExt = "";
+        }
+        // 文件需要存放的路径
+        String fileName = BaseUtil.getRandomUUID() + fileExt;
+        filePath = filePath + fileName;
+        logger.info("文件存放路径： " + filePath);
+        File file = new File(filePath);
+        if (!file.getParentFile().exists()) {
+            boolean flag = file.getParentFile().mkdirs();
+            logger.info("文件创建状态： " + flag);
+        }
+        try {
+            multipartFile.transferTo(file);
+            map.put("fileRealName", originalFilename);
+            map.put("file", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            map.put("fileRealName", "");
+            map.put("file", null);
+        }
+        return map;
     }
 
     /**
@@ -439,7 +654,7 @@ public class ApiController {
                     String fileId = saveFileInfo(fileRealName, fileName, fileExt, filePath, "file", file.length());
                     if (fileId != null) {
                         // 保存用户-文件 映射
-                        String diaryFileId = saveDiaryFile(userId, fileId, "Api 上传文件");
+                        String diaryFileId = saveDiaryFile(diaryId, fileId, "Api 上传文件");
                         if (!BaseUtil.isEmpty(diaryFileId)) {
                             flag = true;
                         }
@@ -556,7 +771,20 @@ public class ApiController {
      * @param mapperMemo 备注
      * @return 映射ID
      */
+    @SuppressWarnings("SameParameterValue")
     private String saveUserFile(String userId, String fileId, String mapperMemo) {
+        if ("Api 上传图片".equals(mapperMemo)) {
+            List<UserFile> userFileList = userFileService.findListEnableUserPhotoByUserId(userId);
+            if (userFileList != null && userFileList.size() > 0) {
+                for (UserFile userFile : userFileList) {
+                    userFile.setEnable("0");
+                    boolean flag = userFileService.update(userFile);
+                    if (!flag) {
+                        logger.error("重置用户文件映射关系出错：" + userFile.getMapperId());
+                    }
+                }
+            }
+        }
         String userFileId = BaseUtil.getRandomUUID();
         Date createDate = BaseUtil.getSystemDate();
         UserFile userFile = new UserFile();
@@ -591,6 +819,7 @@ public class ApiController {
      * @param mapperMemo 备注
      * @return 映射ID
      */
+    @SuppressWarnings("SameParameterValue")
     private String saveDiaryFile(String diaryId, String fileId, String mapperMemo) {
         String diaryFileId = BaseUtil.getRandomUUID();
         Date createDate = BaseUtil.getSystemDate();

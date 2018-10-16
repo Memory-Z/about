@@ -233,15 +233,17 @@
         select
         <include refid="Base_Column_List"/>
         from user_info
-        where user_name = #{userName, jdbcType=VARCHAR}
+        where username = #{userName, jdbcType=VARCHAR}
         and password = #{password, jdbcType=VARCHAR}
+        LIMIT 0, 1
     </select>
     <!-- 通过用户名查找 -->
     <select id="findByUsername" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from user_info
-        where user_name = #{userName, jdbcType=VARCHAR}
+        where username = #{userName, jdbcType=VARCHAR}
+        LIMIT 0, 1
     </select>
     <!-- 登录 -->
     <select id="login" resultMap="BaseResultMap">

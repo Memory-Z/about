@@ -4,6 +4,7 @@ import com.inz.about.model.FileInfo;
 import com.inz.about.model.PictureInfo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public class ApiDiaryInfo implements Serializable {
     /**
      * 日志排序号
      */
-    private String diaryOrder;
+    private BigDecimal diaryOrder;
     /**
      * 日志是否为多个
      */
@@ -112,11 +113,11 @@ public class ApiDiaryInfo implements Serializable {
         this.diaryAddress = diaryAddress;
     }
 
-    public String getDiaryOrder() {
+    public BigDecimal getDiaryOrder() {
         return diaryOrder;
     }
 
-    public void setDiaryOrder(String diaryOrder) {
+    public void setDiaryOrder(BigDecimal diaryOrder) {
         this.diaryOrder = diaryOrder;
     }
 

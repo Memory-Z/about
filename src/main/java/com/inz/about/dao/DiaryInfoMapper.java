@@ -38,4 +38,12 @@ public interface DiaryInfoMapper {
      * @return 日志
      */
     List<DiaryInfo> findAll(@Param("start") int start, @Param("pageSize") int pageSize);
+
+    /**
+     * 通过用户ID 查询最后一个排序号
+     *
+     * @param userId 用户ID
+     * @return 排序
+     */
+    String findLastOrder(String userId);
 }

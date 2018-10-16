@@ -3,6 +3,7 @@ package com.inz.about.service.impl;
 import com.inz.about.dao.DiaryInfoMapper;
 import com.inz.about.model.DiaryInfo;
 import com.inz.about.service.IDiaryInfoService;
+import com.inz.about.util.BaseUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,5 +50,19 @@ public class DiaryInfoServiceImpl implements IDiaryInfoService {
     @Override
     public List<DiaryInfo> findByUserId(String userId, int start, int pageSize) {
         return diaryInfoMapper.findByUserId(userId, start, pageSize);
+    }
+
+    @Override
+    public int findLastOrder(String userId) {
+        String orderStr = diaryInfoMapper.findLastOrder(userId);
+        int order = 0;
+        if (!BaseUtil.isEmpty(orderStr)) {
+            try {
+                order = Integer.parseInt(orderStr);
+            } catch (NumberFormatException e) {
+                System.out.println("  DiaryInfoService: FindLastOrder: " + e.getMessage());
+            }
+        }
+        return order;
     }
 }

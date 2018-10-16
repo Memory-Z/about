@@ -27,4 +27,12 @@ public interface IDiaryInfoService {
 
     List<DiaryInfo> findByUserId(String userId, int start, int pageSize);
 
+    /**
+     * 通过用户ID 查询最后一个排序号
+     *
+     * @param userId 用户ID
+     * @return 排序号
+     */
+    int findLastOrder(String userId);
+
 }

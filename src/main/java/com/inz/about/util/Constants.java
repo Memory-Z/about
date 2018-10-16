@@ -60,8 +60,8 @@ public class Constants {
     /**
      * 文件保存路径
      */
-    private static String WINDOWS_PATH = "E:\\project\\about\\";
-    private static String LINUX_PATH = "/etc/mnt/project/about/";
+    private static final String WINDOWS_PATH = "E:\\project\\about\\";
+    private static final String LINUX_PATH = "/mnt/home/project/about/";
 
     /**
      * 邮箱服务器地址：163是 smtp.163.com；qq是 smtp.qq.com

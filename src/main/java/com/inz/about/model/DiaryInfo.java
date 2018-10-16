@@ -1,5 +1,6 @@
 package com.inz.about.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DiaryInfo {
@@ -15,7 +16,7 @@ public class DiaryInfo {
 
     private String diaryAddress;
 
-    private String diaryOrder;
+    private BigDecimal diaryOrder;
 
     private String diaryEnable;
 
@@ -71,12 +72,12 @@ public class DiaryInfo {
         this.diaryAddress = diaryAddress == null ? null : diaryAddress.trim();
     }
 
-    public String getDiaryOrder() {
+    public BigDecimal getDiaryOrder() {
         return diaryOrder;
     }
 
-    public void setDiaryOrder(String diaryOrder) {
-        this.diaryOrder = diaryOrder == null ? null : diaryOrder.trim();
+    public void setDiaryOrder(BigDecimal diaryOrder) {
+        this.diaryOrder = diaryOrder;
     }
 
     public String getDiaryEnable() {

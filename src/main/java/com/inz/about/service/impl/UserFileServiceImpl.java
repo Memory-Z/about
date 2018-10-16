@@ -58,6 +58,11 @@ public class UserFileServiceImpl implements IUserFileService {
     }
 
     @Override
+    public List<UserFile> findListEnableUserPhotoByUserId(String userId) {
+        return userFileMapper.findListEnableUserPhotoByUserId(userId);
+    }
+
+    @Override
     public List<UserFile> findAllUserPhotoByUserId(String userId) {
         return userFileMapper.findAllUserPhotoByUserId(userId);
     }

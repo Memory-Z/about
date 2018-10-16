@@ -85,6 +85,14 @@ public interface UserFileMapper {
     UserFile findEnableUserPhotoByUserId(String userId);
 
     /**
+     * 通过用户Id 查询多个可用的用户头像
+     *
+     * @param userId 用户ID
+     * @return 用户头像文件
+     */
+    List<UserFile> findListEnableUserPhotoByUserId(String userId);
+
+    /**
      * 通过用户ID 查询全部用户头像
      *
      * @param userId 用户ID

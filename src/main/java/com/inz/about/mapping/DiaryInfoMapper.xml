@@ -8,7 +8,7 @@
         <result column="diary_have_image" jdbcType="VARCHAR" property="diaryHaveImage"/>
         <result column="diary_weather" jdbcType="VARCHAR" property="diaryWeather"/>
         <result column="diary_address" jdbcType="VARCHAR" property="diaryAddress"/>
-        <result column="diary_order" jdbcType="VARCHAR" property="diaryOrder"/>
+        <result column="diary_order" jdbcType="DECIMAL" property="diaryOrder"/>
         <result column="diary_enable" jdbcType="VARCHAR" property="diaryEnable"/>
         <result column="create_datetime" jdbcType="TIMESTAMP" property="createDatetime"/>
         <result column="update_datetime" jdbcType="TIMESTAMP" property="updateDatetime"/>
@@ -34,7 +34,7 @@
       update_datetime)
     values (#{diaryId,jdbcType=VARCHAR}, #{diaryUserId,jdbcType=VARCHAR}, #{diaryContent,jdbcType=VARCHAR}, 
       #{diaryHaveImage,jdbcType=VARCHAR}, #{diaryWeather,jdbcType=VARCHAR}, #{diaryAddress,jdbcType=VARCHAR}, 
-      #{diaryOrder,jdbcType=VARCHAR}, #{diaryEnable,jdbcType=VARCHAR}, #{createDatetime,jdbcType=TIMESTAMP}, 
+      #{diaryOrder,jdbcType=DECIMAL}, #{diaryEnable,jdbcType=VARCHAR}, #{createDatetime,jdbcType=TIMESTAMP}, 
       #{updateDatetime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.inz.about.model.DiaryInfo">
@@ -91,7 +91,7 @@
                 #{diaryAddress,jdbcType=VARCHAR},
             </if>
             <if test="diaryOrder != null">
-                #{diaryOrder,jdbcType=VARCHAR},
+                #{diaryOrder,jdbcType=DECIMAL},
             </if>
             <if test="diaryEnable != null">
                 #{diaryEnable,jdbcType=VARCHAR},
@@ -123,7 +123,7 @@
                 diary_address = #{diaryAddress,jdbcType=VARCHAR},
             </if>
             <if test="diaryOrder != null">
-                diary_order = #{diaryOrder,jdbcType=VARCHAR},
+                diary_order = #{diaryOrder,jdbcType=DECIMAL},
             </if>
             <if test="diaryEnable != null">
                 diary_enable = #{diaryEnable,jdbcType=VARCHAR},
@@ -144,7 +144,7 @@
       diary_have_image = #{diaryHaveImage,jdbcType=VARCHAR},
       diary_weather = #{diaryWeather,jdbcType=VARCHAR},
       diary_address = #{diaryAddress,jdbcType=VARCHAR},
-      diary_order = #{diaryOrder,jdbcType=VARCHAR},
+      diary_order = #{diaryOrder,jdbcType=DECIMAL},
       diary_enable = #{diaryEnable,jdbcType=VARCHAR},
       create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
       update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}
@@ -156,7 +156,7 @@
         <include refid="Base_Column_List"/>
         FROM diary_info
         WHERE diary_user_id = #{userId, jdbcType=VARCHAR}
-        ORDER BY create_datetime DESC, diary_order ASC
+        ORDER BY diary_order ASC, create_datetime DESC
         LIMIT #{start}, #{pageSize}
     </select>
     <!-- 获取全部 -->
@@ -166,5 +166,12 @@
         FROM diary_info
         ORDER BY create_datetime DESC, diary_order ASC
         LIMIT #{start}, #{pageSize}
+    </select>
+    <!-- 通过用户ID 查询最后一个排序号 -->
+    <select id="findLastOrder" resultType="java.lang.String">
+        SELECT IFNULL(diary_order, 0) FROM diary_info
+        WHERE diary_user_id = #{userId, jdbcType=VARCHAR}
+        ORDER BY diary_order DESC
+        LIMIT 0, 1
     </select>
 </mapper>

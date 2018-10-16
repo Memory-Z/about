@@ -146,6 +146,14 @@
         WHERE user_id = #{userId, jdbcType=VARCHAR}
           AND enable = 1
         ORDER BY create_datetime ASC
+        LIMIT 0, 1
+    </select>
+    <!-- 通过 用户 ID 查询多个可用用户图片 -->
+    <select id="findListEnableUserPhotoByUserId" resultMap="BaseResultMap">
+        SELECT * FROM user_file
+        WHERE user_id = #{userId, jdbcType=VARCHAR}
+          AND enable = 1
+        ORDER BY create_datetime ASC
     </select>
     <!-- 通过用户Id 查询全部用户头像文件 -->
     <select id="findAllUserPhotoByUserId" resultMap="BaseResultMap">
