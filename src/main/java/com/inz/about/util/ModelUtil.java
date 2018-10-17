@@ -1,11 +1,9 @@
 package com.inz.about.util;
 
-import com.inz.about.model.DiaryInfo;
-import com.inz.about.model.FileInfo;
-import com.inz.about.model.UserFile;
-import com.inz.about.model.UserInfo;
+import com.inz.about.model.*;
 import com.inz.about.model.api.ApiDiaryInfo;
 import com.inz.about.model.api.ApiFileInfo;
+import com.inz.about.model.api.ApiPictureInfo;
 import com.inz.about.model.api.ApiUserInfo;
 
 import java.util.Date;
@@ -87,6 +85,12 @@ public class ModelUtil {
         return apiDiaryInfo;
     }
 
+    /**
+     * 转换为ApiFileInfo
+     *
+     * @param fileInfo 文件信息
+     * @return ApiFileInfo
+     */
     public static ApiFileInfo fileInfoToApi(FileInfo fileInfo) {
         if (fileInfo == null) {
             return null;
@@ -112,5 +116,33 @@ public class ModelUtil {
         }
         apiFileInfo.setUpdateTime(updateTimeStr);
         return apiFileInfo;
+    }
+
+    /**
+     * 转换为 ApiPictureInfo
+     *
+     * @param pictureInfo 图片信息
+     * @return ApiPictureInfo
+     */
+    public static ApiPictureInfo pictureInfoToApi(PictureInfo pictureInfo) {
+        if (pictureInfo == null) {
+            return null;
+        }
+        ApiPictureInfo apiPictureInfo = new ApiPictureInfo();
+        apiPictureInfo.setPictureId(pictureInfo.getPictureId());
+        apiPictureInfo.setPictureEnable(pictureInfo.getPictureEnable());
+        apiPictureInfo.setPictureSize(pictureInfo.getPictureSize());
+        apiPictureInfo.setPictureType(pictureInfo.getPictureType());
+        apiPictureInfo.setPictureUrl(pictureInfo.getPictureUrl());
+        Date createDate = pictureInfo.getCreateDatetime();
+        String createDateStr = BaseUtil.getDateStr(createDate);
+        apiPictureInfo.setCreateDatetime(createDateStr);
+        Date updateDate = pictureInfo.getUpdateTime();
+        String updateDateStr = "";
+        if (updateDate != null) {
+            updateDateStr = BaseUtil.getDateStr(updateDate);
+        }
+        apiPictureInfo.setUpdateDatetime(updateDateStr);
+        return apiPictureInfo;
     }
 }

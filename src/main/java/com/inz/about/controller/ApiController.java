@@ -2,10 +2,7 @@ package com.inz.about.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.inz.about.model.*;
-import com.inz.about.model.api.ApiDiaryInfo;
-import com.inz.about.model.api.ApiFileInfo;
-import com.inz.about.model.api.ApiTemp1;
-import com.inz.about.model.api.ApiUserInfo;
+import com.inz.about.model.api.*;
 import com.inz.about.service.*;
 import com.inz.about.util.BaseUtil;
 import com.inz.about.util.Constants;
@@ -330,15 +327,15 @@ public class ApiController {
                         haveImage = true;
                     }
                     int diaryPictureNum = 0;
-                    List<PictureInfo> pictureInfoList = new ArrayList<>();
+                    List<ApiPictureInfo> apiPictureInfoList = new ArrayList<>();
                     if (haveImage) {
-                        pictureInfoList = getPictureInfoByDiaryId(diaryId);
-                        diaryPictureNum = pictureInfoList.size();
+                        apiPictureInfoList = getPictureInfoByDiaryId(diaryId);
+                        diaryPictureNum = apiPictureInfoList.size();
                     }
-                    List<FileInfo> fileInfoList = getFileInfoByDiaryId(diaryId);
+                    List<ApiFileInfo> apiFileInfoList = getFileInfoByDiaryId(diaryId);
                     apiDiaryInfo.setDiaryImageNum(diaryPictureNum);
-                    apiDiaryInfo.setPictureInfoList(pictureInfoList);
-                    apiDiaryInfo.setFileInfoList(fileInfoList);
+                    apiDiaryInfo.setPictureInfoList(apiPictureInfoList);
+                    apiDiaryInfo.setFileInfoList(apiFileInfoList);
                     apiDiaryInfoList.add(apiDiaryInfo);
                 }
             }
@@ -380,12 +377,8 @@ public class ApiController {
         if (isConform) {
             List<DiaryFile> diaryFileList = diaryFileService.findByDiaryId(diaryId);
             if (diaryFileList != null && diaryFileList.size() > 0) {
-                for (DiaryFile diaryFile : diaryFileList) {
-                    String fileId = diaryFile.getFileId();
-                    FileInfo fileInfo = fileInfoService.findById(fileId);
-                    ApiFileInfo apiFileInfo = ModelUtil.fileInfoToApi(fileInfo);
-                    apiFileInfoList.add(apiFileInfo);
-                }
+                // 获取文件信息
+                apiFileInfoList = getApiFileInfoListByDiaryFileList(diaryFileList);
                 apiCode = Constants.API_CODE.SUCCESS.getValue();
                 apiMessage = "日志文件获取成功";
             } else {
@@ -526,8 +519,8 @@ public class ApiController {
      * @param diaryId 日志Id
      * @return 图片信息 List<PictureInfo>
      */
-    private List<PictureInfo> getPictureInfoByDiaryId(String diaryId) {
-        List<PictureInfo> pictureInfoList = new ArrayList<>();
+    private List<ApiPictureInfo> getPictureInfoByDiaryId(String diaryId) {
+        List<ApiPictureInfo> pictureInfoList = new ArrayList<>();
         List<DiaryPicture> diaryPictureList = diaryPictureService.findByDiaryId(diaryId, 0, 9);
         if (diaryPictureList != null && diaryPictureList.size() > 0) {
             for (DiaryPicture diaryPicture : diaryPictureList) {
@@ -535,7 +528,8 @@ public class ApiController {
                 PictureInfo pictureInfo = pictureInfoService.findById(pictureId);
                 // 不为空
                 if (pictureInfo != null) {
-                    pictureInfoList.add(pictureInfo);
+                    ApiPictureInfo apiPictureInfo = ModelUtil.pictureInfoToApi(pictureInfo);
+                    pictureInfoList.add(apiPictureInfo);
                 }
             }
         }
@@ -548,15 +542,12 @@ public class ApiController {
      * @param diaryId 日志ID
      * @return 文件信息
      */
-    private List<FileInfo> getFileInfoByDiaryId(String diaryId) {
-        List<FileInfo> fileInfoList = new ArrayList<>();
+    private List<ApiFileInfo> getFileInfoByDiaryId(String diaryId) {
+        List<ApiFileInfo> fileInfoList = new ArrayList<>();
         List<DiaryFile> diaryFileList = diaryFileService.findByDiaryId(diaryId);
         if (diaryFileList != null && diaryFileList.size() > 0) {
-            for (DiaryFile diaryFile : diaryFileList) {
-                String fileId = diaryFile.getFileId();
-                FileInfo fileInfo = fileInfoService.findById(fileId);
-                fileInfoList.add(fileInfo);
-            }
+            // 获取文件信息
+            fileInfoList = getApiFileInfoListByDiaryFileList(diaryFileList);
         }
         return fileInfoList;
     }
@@ -845,6 +836,23 @@ public class ApiController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 通过日志文件 获取 ApiFileInfo 文件信息
+     *
+     * @param diaryFileList 日志文件信息
+     * @return List:ApiFileInfo
+     */
+    private List<ApiFileInfo> getApiFileInfoListByDiaryFileList(List<DiaryFile> diaryFileList) {
+        List<ApiFileInfo> apiFileInfoList = new ArrayList<>();
+        for (DiaryFile diaryFile : diaryFileList) {
+            String fileId = diaryFile.getFileId();
+            FileInfo fileInfo = fileInfoService.findById(fileId);
+            ApiFileInfo apiFileInfo = ModelUtil.fileInfoToApi(fileInfo);
+            apiFileInfoList.add(apiFileInfo);
+        }
+        return apiFileInfoList;
     }
 
     /**

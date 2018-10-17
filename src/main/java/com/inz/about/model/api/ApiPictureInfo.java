@@ -1,6 +1,7 @@
 package com.inz.about.model.api;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Api 图片信息
@@ -21,7 +22,7 @@ public class ApiPictureInfo implements Serializable {
     /**
      * 图片大小
      */
-    private Double pictureSize;
+    private BigDecimal pictureSize;
     /**
      * 图片类型
      */
@@ -55,11 +56,11 @@ public class ApiPictureInfo implements Serializable {
         this.pictureUrl = pictureUrl;
     }
 
-    public Double getPictureSize() {
+    public BigDecimal getPictureSize() {
         return pictureSize;
     }
 
-    public void setPictureSize(Double pictureSize) {
+    public void setPictureSize(BigDecimal pictureSize) {
         this.pictureSize = pictureSize;
     }
 

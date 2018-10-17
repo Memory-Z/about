@@ -59,11 +59,11 @@ public class ApiDiaryInfo implements Serializable {
     /**
      * 日志文件信息
      */
-    private List<FileInfo> fileInfoList;
+    private List<ApiFileInfo> fileInfoList;
     /**
      * 日志图片信息
      */
-    private List<PictureInfo> pictureInfoList;
+    private List<ApiPictureInfo> pictureInfoList;
 
     public String getDiaryId() {
         return diaryId;
@@ -145,19 +145,19 @@ public class ApiDiaryInfo implements Serializable {
         this.updateDatetime = updateDatetime;
     }
 
-    public List<FileInfo> getFileInfoList() {
+    public List<ApiFileInfo> getFileInfoList() {
         return fileInfoList;
     }
 
-    public void setFileInfoList(List<FileInfo> fileInfoList) {
+    public void setFileInfoList(List<ApiFileInfo> fileInfoList) {
         this.fileInfoList = fileInfoList;
     }
 
-    public List<PictureInfo> getPictureInfoList() {
+    public List<ApiPictureInfo> getPictureInfoList() {
         return pictureInfoList;
     }
 
-    public void setPictureInfoList(List<PictureInfo> pictureInfoList) {
+    public void setPictureInfoList(List<ApiPictureInfo> pictureInfoList) {
         this.pictureInfoList = pictureInfoList;
     }
 
@@ -174,8 +174,8 @@ public class ApiDiaryInfo implements Serializable {
                 ", diaryIsMoreOne=" + diaryIsMoreOne +
                 ", createDatetime='" + createDatetime + '\'' +
                 ", updateDatetime='" + updateDatetime + '\'' +
-                ", fileInfoList=" + fileInfoList +
-                ", pictureInfoList=" + pictureInfoList +
+                ", fileInfoList=" + fileInfoList.toString() +
+                ", pictureInfoList=" + pictureInfoList.toString() +
                 '}';
     }
 }
