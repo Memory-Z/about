@@ -29,10 +29,11 @@ spring:
       #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
-
 # MyBatis 配置
 mybatis:
   # 配置映射类所在的包
   type-aliases-package: com.inz.about.dao
   # 配置 Mapper xml 文件所在路径，这是一个数组
   mapper-locations: classpath*:com/inz/about/mapping/*.xml
+server:
+  port: 8081

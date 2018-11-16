@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.inz.about.model.*;
 import com.inz.about.model.api.*;
 import com.inz.about.service.*;
-import com.inz.about.util.BaseUtil;
-import com.inz.about.util.Constants;
-import com.inz.about.util.ModelUtil;
+import com.inz.about.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +43,7 @@ public class ApiController {
      */
     private String apiMessage = "";
     private static Logger logger = LogManager.getLogger(ApiController.class.getName());
+    private Calendar calendar = Calendar.getInstance(Locale.CHINA);
 
 
     private final IUserInfoService userInfoService;
@@ -54,12 +53,13 @@ public class ApiController {
     private final IDiaryFileService diaryFileService;
     private final IDiaryPictureService diaryPictureService;
     private final IPictureInfoService pictureInfoService;
+    private final ITempEmailService tempEmailService;
 
     @Autowired
     public ApiController(IUserInfoService userInfoService, IUserFileService userFileService,
                          IFileInfoService fileInfoService, IDiaryInfoService diaryInfoService,
                          IDiaryFileService diaryFileService, IDiaryPictureService diaryPictureService,
-                         IPictureInfoService pictureInfoService) {
+                         IPictureInfoService pictureInfoService, ITempEmailService tempEmailService) {
         this.userInfoService = userInfoService;
         this.userFileService = userFileService;
         this.fileInfoService = fileInfoService;
@@ -67,6 +67,20 @@ public class ApiController {
         this.diaryFileService = diaryFileService;
         this.diaryPictureService = diaryPictureService;
         this.pictureInfoService = pictureInfoService;
+        this.tempEmailService = tempEmailService;
+    }
+
+    /**
+     * Android 版本控制
+     *
+     * @param request HttpServletRequest
+     * @return JSON
+     */
+    @RequestMapping(value = "version")
+    public String appVersionsController(HttpServletRequest request) {
+        initApiData();
+
+        return resultJson1(0);
     }
 
     /**
@@ -126,6 +140,71 @@ public class ApiController {
             }
         }
         return resultJson1(isRegister);
+    }
+
+    /**
+     * 邮箱验证码是否 发送
+     */
+    private boolean emailCodeIsSend = false;
+
+    /**
+     * 更新 用户邮箱
+     *
+     * @param request HttpServletRequest
+     * @param userId  用户ID
+     * @return JSON
+     */
+    @RequestMapping(value = "{userId}/updateUserEmail")
+    public String updateUserEmail(HttpServletRequest request, @PathVariable("userId") String userId) {
+        initApiData();
+        emailCodeIsSend = false;
+        if (userId != null) {
+            String userEmail = request.getParameter("userEmail");
+            ThreadPoolProxy.getInstance().execute(new SendEmailRunnable(userId, userEmail, "邮箱验证码"));
+            apiCode = Constants.API_CODE.SUCCESS.getValue();
+            apiMessage = "验证码已发送";
+        } else {
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "当前用户不存在";
+        }
+        return resultJson1(emailCodeIsSend);
+    }
+
+    @RequestMapping(value = "{userId}/updateUserEmail/{emailCode}")
+    public String checkUserEmailCode(HttpServletRequest request, @PathVariable("userId") String userId,
+                                     @PathVariable("emailCode") String emailCode) {
+        initApiData();
+        boolean isUpdate = false;
+        UserInfo userInfo = userInfoService.findById(userId);
+        if (userInfo != null) {
+            String userEmail = request.getParameter("userEmail");
+            TempEmail tempEmail = tempEmailService.findByEmail(userEmail);
+            if (tempEmail != null) {
+                String email = tempEmail.getEmail();
+                String code = tempEmail.geteKey();
+                if (email.equals(userEmail) && code.equals(emailCode)) {
+                    userInfo.setUserEmail(userEmail);
+                    isUpdate = userInfoService.update(userInfo);
+                    if (isUpdate) {
+                        apiCode = Constants.API_CODE.SUCCESS.getValue();
+                        apiMessage = "用户邮箱更新成功";
+                    } else {
+                        apiCode = Constants.API_CODE.FAILED.getValue();
+                        apiMessage = "用户邮箱更新失败";
+                    }
+                } else {
+                    apiMessage = "邮箱验证码不匹配";
+                    apiCode = Constants.API_CODE.FAILED.getValue();
+                }
+            } else {
+                apiCode = Constants.API_CODE.FAILED.getValue();
+                apiMessage = "请重新验证邮箱";
+            }
+        } else {
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "当前用户不存在";
+        }
+        return resultJson1(isUpdate);
     }
 
     /**
@@ -271,17 +350,36 @@ public class ApiController {
         return resultJson1(apiUserInfo);
     }
 
+    /**
+     * 用户密码 修改
+     *
+     * @param request HttpServletRequest
+     * @param userId  用户ID
+     * @return JSON
+     */
     @RequestMapping(value = "{userId}/password")
     public String updateUserPassword(HttpServletRequest request, @PathVariable("userId") String userId) {
         initApiData();
         boolean isUpdate = false;
         UserInfo userInfo = userInfoService.findById(userId);
         if (userInfo != null) {
-
+            String password = request.getParameter("userPassword");
+            if (!BaseUtil.isEmpty(password)) {
+                userInfo.setPassword(BaseUtil.encryptMd5(password));
+                isUpdate = userInfoService.update(userInfo);
+                if (isUpdate) {
+                    apiMessage = "密码修改成功";
+                    apiCode = Constants.API_CODE.SUCCESS.getValue();
+                }
+            } else {
+                apiMessage = "新密码不能为空";
+                apiCode = Constants.API_CODE.FAILED.getValue();
+            }
         } else {
-
+            apiCode = Constants.API_CODE.FAILED.getValue();
+            apiMessage = "当前用户不存在";
         }
-        return resultJson1(null);
+        return resultJson1(isUpdate);
     }
 
     /**
@@ -878,5 +976,65 @@ public class ApiController {
         apiTemp1.setData(data);
         JSONObject resultJson = (JSONObject) JSONObject.toJSON(apiTemp1);
         return resultJson.toJSONString();
+    }
+
+    /**
+     * 发送邮件线程
+     */
+    private class SendEmailRunnable implements Runnable {
+        private String userId;
+        /**
+         * 发送对象，多个用‘,’分隔
+         */
+        private String toEmails;
+        /**
+         * 邮件主题
+         */
+        private String subject;
+        /**
+         * 邮件内容
+         */
+        private String content;
+        /**
+         * 验证码
+         */
+        private String verificationCode;
+        /**
+         * 邮件模板地址
+         */
+        private final String EMAIL_TEMP_PATH = this.getClass().getClassLoader().getResource("").getPath()
+                + "/static/temp_email.html";
+
+        public SendEmailRunnable(String userId, String toEmails, String subject) {
+            this.userId = userId;
+            this.toEmails = toEmails;
+            this.subject = subject;
+        }
+
+        @Override
+        public void run() {
+            verificationCode = BaseUtil.getVerifyCode(6);
+            // html 第115 行 ：用户名；第128 行：验证码
+            content = IOUtil.readEmailTemp(EMAIL_TEMP_PATH, toEmails, verificationCode);
+            boolean flag = MailService.sendSimpleMail(toEmails, subject, content);
+            if (flag) {
+                String[] emails = toEmails.split(",");
+                for (String email : emails) {
+                    String tempEmailId = BaseUtil.getRandomUUID();
+                    Date createDate = calendar.getTime();
+                    TempEmail tempEmail = new TempEmail();
+                    tempEmail.setEmailId(tempEmailId);
+                    tempEmail.setUserId(userId);
+                    tempEmail.setEmail(email);
+                    tempEmail.seteKey(verificationCode);
+                    tempEmail.setSendTime(createDate);
+                    tempEmail.setEnable("1");
+                    emailCodeIsSend = tempEmailService.insertTempEmail(tempEmail);
+                }
+            } else {
+                // 邮件发送失败
+                emailCodeIsSend = false;
+            }
+        }
     }
 }

@@ -131,12 +131,12 @@ public class IOUtil {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String s = "";
             int i = 0;
-            // html 第114 行 ：用户名；第127 行：验证码
+            // html 第115 行 ：用户名；第128 行：验证码
             while ((s = bufferedReader.readLine()) != null) {
                 i++;
-                if (i == 114) {
+                if (i == 115) {
                     sb.append(userName).append("\r\n");
-                } else if (i == 127) {
+                } else if (i == 128) {
                     sb.append(verificationCode).append("\r\n");
                 } else {
                     sb.append(s).append("\r\n");

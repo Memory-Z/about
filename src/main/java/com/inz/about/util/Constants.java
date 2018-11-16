@@ -78,7 +78,7 @@ public class Constants {
     /**
      * 邮箱密码
      */
-    public static final String emailPassword = "hkjezqmmgtxtjfgi";
+    public static final String emailPassword = "yoijgjyhenlwiaga";
 
     /**
      * 获取 本地路径

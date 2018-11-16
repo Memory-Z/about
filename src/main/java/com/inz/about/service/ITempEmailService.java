@@ -19,4 +19,6 @@ public interface ITempEmailService {
     boolean deleteById(String tempEmailId);
 
     boolean update(TempEmail tempEmail);
+
+    TempEmail findByEmail(String email);
 }

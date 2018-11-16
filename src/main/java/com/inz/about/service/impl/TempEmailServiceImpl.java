@@ -3,6 +3,7 @@ package com.inz.about.service.impl;
 import com.inz.about.dao.TempEmailMapper;
 import com.inz.about.model.TempEmail;
 import com.inz.about.service.ITempEmailService;
+import com.inz.about.util.BaseUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,5 +40,13 @@ public class TempEmailServiceImpl implements ITempEmailService {
             num = tempEmailMapper.updateByPrimaryKey(tempEmail);
         }
         return num != 0;
+    }
+
+    @Override
+    public TempEmail findByEmail(String email) {
+        if (!BaseUtil.isEmpty(email)) {
+            return tempEmailMapper.findByEmail(email);
+        }
+        return null;
     }
 }

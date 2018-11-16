@@ -136,6 +136,7 @@ public class MainController {
      * 发送邮件线程
      */
     private class SendEmailRunnable implements Runnable {
+        private String userId;
         /**
          * 发送对象，多个用‘,’分隔
          */
@@ -158,7 +159,8 @@ public class MainController {
         private final String EMAIL_TEMP_PATH = MainController.class.getClassLoader().getResource("").getPath()
                 + "/static/temp_email.html";
 
-        public SendEmailRunnable(String toEmails, String subject) {
+        public SendEmailRunnable(String userId, String toEmails, String subject) {
+            this.userId = userId;
             this.toEmails = toEmails;
             this.subject = subject;
         }
@@ -166,7 +168,7 @@ public class MainController {
         @Override
         public void run() {
             verificationCode = BaseUtil.getVerifyCode(6);
-            // html 第114 行 ：用户名；第127 行：验证码
+            // html 第115 行 ：用户名；第125 行：验证码
             content = IOUtil.readEmailTemp(EMAIL_TEMP_PATH, toEmails, verificationCode);
             boolean flag = MailService.sendSimpleMail(toEmails, subject, content);
             if (flag) {
@@ -177,7 +179,8 @@ public class MainController {
                     TempEmail tempEmail = new TempEmail();
                     tempEmail.setEmailId(tempEmailId);
                     tempEmail.setEmail(email);
-                    tempEmail.setKey(verificationCode);
+                    tempEmail.setUserId(userId);
+                    tempEmail.seteKey(verificationCode);
                     tempEmail.setSendTime(createDate);
                     tempEmail.setEnable("1");
                     boolean isSend = tempEmailService.insertTempEmail(tempEmail);

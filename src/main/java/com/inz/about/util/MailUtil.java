@@ -178,7 +178,7 @@ public class MailUtil {
         // 设置发件人邮件
         try {
             messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            messageHelper.setFrom(new InternetAddress(getEmailFrom(), "Learning Platform", "UTF-8"));
+            messageHelper.setFrom(new InternetAddress(getEmailFrom(), "Inz.", "UTF-8"));
         } catch (UnsupportedEncodingException | MessagingException e2) {
             e2.printStackTrace();
         }
@@ -203,21 +203,27 @@ public class MailUtil {
             }
         }
         try {
-            messageHelper.setTo(toEmailArray);
+            if (messageHelper != null) {
+                messageHelper.setTo(toEmailArray);
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
         // 邮件主题
         try {
-            messageHelper.setSubject(this.getSubject());
+            if (messageHelper != null) {
+                messageHelper.setSubject(this.getSubject());
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
         // true 表示启动HTML格式
         try {
-            messageHelper.setText(this.getContent(), true);
+            if (messageHelper != null) {
+                messageHelper.setText(this.getContent(), true);
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -236,7 +242,9 @@ public class MailUtil {
                 }
                 FileSystemResource fileSystemResource = new FileSystemResource(file);
                 try {
-                    messageHelper.addInline(cid, fileSystemResource);
+                    if (messageHelper != null) {
+                        messageHelper.addInline(cid, fileSystemResource);
+                    }
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
@@ -257,7 +265,9 @@ public class MailUtil {
                 }
                 FileSystemResource fileSystemResource = new FileSystemResource(file);
                 try {
-                    messageHelper.addAttachment(cid, fileSystemResource);
+                    if (messageHelper != null) {
+                        messageHelper.addAttachment(cid, fileSystemResource);
+                    }
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
