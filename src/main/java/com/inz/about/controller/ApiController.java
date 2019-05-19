@@ -79,7 +79,8 @@ public class ApiController {
     @RequestMapping(value = "version")
     public String appVersionsController(HttpServletRequest request) {
         initApiData();
-
+        String userId = request.getParameter("userId");
+        System.out.println("UserId : " + userId);
         return resultJson1(0);
     }
 
@@ -143,9 +144,9 @@ public class ApiController {
     }
 
     /**
-     * 邮箱验证码是否 发送
+     * 邮箱验证码是否 发送 0; 未开始； 1： 发送成功； 2：发送失败
      */
-    private boolean emailCodeIsSend = false;
+    private int emailCodeIsSendState = 0;
 
     /**
      * 更新 用户邮箱
@@ -157,12 +158,25 @@ public class ApiController {
     @RequestMapping(value = "{userId}/updateUserEmail")
     public String updateUserEmail(HttpServletRequest request, @PathVariable("userId") String userId) {
         initApiData();
-        emailCodeIsSend = false;
+        emailCodeIsSendState = 0;
+        boolean emailCodeIsSend = false;
         if (userId != null) {
             String userEmail = request.getParameter("userEmail");
             ThreadPoolProxy.getInstance().execute(new SendEmailRunnable(userId, userEmail, "邮箱验证码"));
-            apiCode = Constants.API_CODE.SUCCESS.getValue();
-            apiMessage = "验证码已发送";
+            while (emailCodeIsSendState == 0) {
+                // 邮件发送中...
+                if (timer == null) {
+                    countDownTimer(5000);
+                }
+            }
+            emailCodeIsSend = emailCodeIsSendState == 1;
+            if (emailCodeIsSend) {
+                apiCode = Constants.API_CODE.SUCCESS.getValue();
+                apiMessage = "验证码已发送";
+            } else {
+                apiCode = Constants.API_CODE.FAILED.getValue();
+                apiMessage = "验证码发送失败";
+            }
         } else {
             apiCode = Constants.API_CODE.FAILED.getValue();
             apiMessage = "当前用户不存在";
@@ -186,8 +200,17 @@ public class ApiController {
                     userInfo.setUserEmail(userEmail);
                     isUpdate = userInfoService.update(userInfo);
                     if (isUpdate) {
-                        apiCode = Constants.API_CODE.SUCCESS.getValue();
-                        apiMessage = "用户邮箱更新成功";
+                        // 验证完成
+                        tempEmail.setEnable("0");
+                        tempEmail.setChangeTime(calendar.getTime());
+                        boolean isUpdated = tempEmailService.update(tempEmail);
+                        if (isUpdated) {
+                            apiCode = Constants.API_CODE.SUCCESS.getValue();
+                            apiMessage = "用户邮箱更新成功";
+                        } else {
+                            apiCode = Constants.API_CODE.FAILED.getValue();
+                            apiMessage = "邮箱信息，更新失败/API";
+                        }
                     } else {
                         apiCode = Constants.API_CODE.FAILED.getValue();
                         apiMessage = "用户邮箱更新失败";
@@ -198,7 +221,7 @@ public class ApiController {
                 }
             } else {
                 apiCode = Constants.API_CODE.FAILED.getValue();
-                apiMessage = "请重新验证邮箱";
+                apiMessage = "请重新获取邮箱验证码";
             }
         } else {
             apiCode = Constants.API_CODE.FAILED.getValue();
@@ -298,7 +321,6 @@ public class ApiController {
     @RequestMapping(value = "{userId}/update")
     public String updateUser(HttpServletRequest request, @PathVariable("userId") String userId) {
         initApiData();
-        String userEmail = request.getParameter("userEmail");
         String userSex = request.getParameter("userSex");
         String createDateStr = request.getParameter("createDate");
         String userIntro = request.getParameter("userIntro");
@@ -306,15 +328,12 @@ public class ApiController {
         String userPhone = request.getParameter("userPhone");
         ApiUserInfo apiUserInfo = null;
         UserInfo userInfo = userInfoService.findById(userId);
-        if (!BaseUtil.isEmpty(userEmail)) {
-            userInfo.setUserEmail(userEmail);
-        }
         if (!BaseUtil.isEmpty(userSex)) {
             userInfo.setUserSex(userSex);
         }
         if (!BaseUtil.isEmpty(createDateStr)) {
             try {
-                Date birthdayDate = BaseUtil.getDate("");
+                Date birthdayDate = BaseUtil.getDate(createDateStr);
                 userInfo.setUserBirthday(birthdayDate);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -798,6 +817,7 @@ public class ApiController {
         fileInfo.setFileEnable("1");
         fileInfo.setFileName(fileName);
         fileInfo.setCreateDatetime(createDate);
+//        String project =
         fileInfo.setFileUrl(filePath);
         BigDecimal fileSize = new BigDecimal(size);
         fileInfo.setFileSize(fileSize);
@@ -1002,10 +1022,10 @@ public class ApiController {
         /**
          * 邮件模板地址
          */
-        private final String EMAIL_TEMP_PATH = this.getClass().getClassLoader().getResource("").getPath()
+        private final String EMAIL_TEMP_PATH = Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath()
                 + "/static/temp_email.html";
 
-        public SendEmailRunnable(String userId, String toEmails, String subject) {
+        SendEmailRunnable(String userId, String toEmails, String subject) {
             this.userId = userId;
             this.toEmails = toEmails;
             this.subject = subject;
@@ -1013,6 +1033,7 @@ public class ApiController {
 
         @Override
         public void run() {
+            boolean emailCodeIsSend = false;
             verificationCode = BaseUtil.getVerifyCode(6);
             // html 第115 行 ：用户名；第128 行：验证码
             content = IOUtil.readEmailTemp(EMAIL_TEMP_PATH, toEmails, verificationCode);
@@ -1031,10 +1052,43 @@ public class ApiController {
                     tempEmail.setEnable("1");
                     emailCodeIsSend = tempEmailService.insertTempEmail(tempEmail);
                 }
-            } else {
-                // 邮件发送失败
-                emailCodeIsSend = false;
             }
+            emailCodeIsSendState = emailCodeIsSend ? 1 : 2;
         }
+    }
+
+    /**
+     * 计时
+     */
+    private static Timer timer;
+
+    /**
+     * 倒计时时间
+     */
+    private long courtDownTime = 0;
+
+    /**
+     * 倒计时 (间隔周期 1 s)
+     *
+     * @param time 计时时间
+     */
+    @SuppressWarnings("SameParameterValue")
+    private void countDownTimer(long time) {
+        courtDownTime = 0;
+        if (timer == null) {
+            timer = new Timer();
+        } else {
+            timer.cancel();
+        }
+        TimerTask courtDownTask = new TimerTask() {
+            @Override
+            public void run() {
+                if (courtDownTime >= time) {
+                    timer.cancel();
+                }
+                courtDownTime += 1000;
+            }
+        };
+        timer.schedule(courtDownTask, 0, 1000);
     }
 }

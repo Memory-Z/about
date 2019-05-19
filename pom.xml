@@ -139,6 +139,9 @@
     </dependencies>
 
     <build>
+
+        <finalName>about</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

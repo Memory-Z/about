@@ -8,10 +8,10 @@
         <result column="e_key" jdbcType="VARCHAR" property="eKey"/>
         <result column="send_time" jdbcType="TIMESTAMP" property="sendTime"/>
         <result column="enable" jdbcType="VARCHAR" property="enable"/>
-        <result column="change_timee_key" jdbcType="TIMESTAMP" property="changeTimeeKey"/>
+        <result column="change_time" jdbcType="TIMESTAMP" property="changeTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    email_id, user_id, email, e_key, send_time, enable, change_timee_key
+    email_id, user_id, email, e_key, send_time, enable, change_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -26,10 +26,10 @@
     <insert id="insert" parameterType="com.inz.about.model.TempEmail">
     insert into temp_email (email_id, user_id, email, 
       e_key, send_time, enable, 
-      change_timee_key)
+      change_time)
     values (#{emailId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{eKey,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR}, 
-      #{changeTimeeKey,jdbcType=TIMESTAMP})
+      #{changeTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.inz.about.model.TempEmail">
         insert into temp_email
@@ -52,8 +52,8 @@
             <if test="enable != null">
                 enable,
             </if>
-            <if test="changeTimeeKey != null">
-                change_timee_key,
+            <if test="changeTime != null">
+                change_time,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -75,8 +75,8 @@
             <if test="enable != null">
                 #{enable,jdbcType=VARCHAR},
             </if>
-            <if test="changeTimeeKey != null">
-                #{changeTimeeKey,jdbcType=TIMESTAMP},
+            <if test="changeTime != null">
+                #{changeTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -98,8 +98,8 @@
             <if test="enable != null">
                 enable = #{enable,jdbcType=VARCHAR},
             </if>
-            <if test="changeTimeeKey != null">
-                change_timee_key = #{changeTimeeKey,jdbcType=TIMESTAMP},
+            <if test="changeTime != null">
+                change_time = #{changeTime,jdbcType=TIMESTAMP},
             </if>
         </set>
         where email_id = #{emailId,jdbcType=VARCHAR}
@@ -111,7 +111,7 @@
       e_key = #{eKey,jdbcType=VARCHAR},
       send_time = #{sendTime,jdbcType=TIMESTAMP},
       enable = #{enable,jdbcType=VARCHAR},
-      change_timee_key = #{changeTimeeKey,jdbcType=TIMESTAMP}
+      change_time = #{changeTime,jdbcType=TIMESTAMP}
     where email_id = #{emailId,jdbcType=VARCHAR}
   </update>
 

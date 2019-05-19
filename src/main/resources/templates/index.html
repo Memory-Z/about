@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>关于</title>
-    <link rel="stylesheet" href="/css/base/index.css">
+    <script type="text/javascript" th:inline="javasrcript"></script>
+    <link rel="stylesheet" href="css/base/index.css">
 </head>
 <body>
     <div class="main_body">
@@ -108,7 +109,7 @@
                             <!-- 用户信息简介一行 -->
                             <div class="intro_content_one_img_div float_left_div">
                                 <!-- 用户头像行。头像 -->
-                                <img class="full_img" id="intro_user_photo_1"src="/image/base/my.png" alt="User_photo" onerror="this.src='/image/base/my.png';this.onerror=null;">
+                                <img class="full_img" id="intro_user_photo_1" src="/image/base/my.png" alt="User_photo" onerror="this.src='/image/base/my.png';this.onerror=null;">
                             </div>
                             <div class="intro_content_one_txt_div float_left_div">
                                 <!-- 用户头像行。简介 -->
@@ -173,7 +174,7 @@
 
     </div>
     <!-- <script src="/js/jquery/jquery-3.2.1.js"></script> -->
-    <script src="/js/jquery/jquery-3.2.1.js"></script>
+    <script th:src="@{/js/jquery/jquery-3.2.1.js}"></script>
     <script >
         $(document).ready(function() {
             var screenWidth = $(window).width();
@@ -196,7 +197,7 @@
             if (detailRightHeight == 0) {
 
             } else {
-                $('<style>#detail_sign_' + i + '::after { height: ' + detailRightHeight + 'px; }</sstyle>').appendTo('head');
+                $('<style>#detail_sign_' + i + '::after { height: ' + detailRightHeight + 'px; }</style>').appendTo('head');
             }
         });
     </script>

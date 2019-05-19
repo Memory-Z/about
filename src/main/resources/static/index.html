@@ -9,7 +9,8 @@
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script> -->
     <!-- <link rel="stylesheet" href="webjars/bootstrap/4.1.1/css/bootstrap.css"> -->
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script type="text/javascript" th:inline="javasrcript"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <style>
         * {
             padding: 0;
@@ -59,7 +60,7 @@
             bottom: 0;
             left: 0;
             margin: auto;
-            box-shadow: 7px 4px 11px 0px #636268;
+            box-shadow: 7px 4px 11px 0 #636268;
         }
         #date_sent {
             width: 820px;
@@ -198,13 +199,13 @@
     <div class="display_block display_block_1"></div>
     <div class="display_block display_block_2"></div>
     <div class="display_block display_block_3"></div>
-    <script src="/js/jquery/jquery-3.2.1.js"></script>
+    <script src="js/jquery/jquery-3.2.1.js"></script>
     <script>
         $(document).ready(function () {
-            var sceenWidth = window.innerWidth;
-            var sceenHeight = window.innerHeight;
-            $('.banner').height(sceenHeight);
-            console.log('--SceenWidth:' + sceenWidth + '--SceenHeight:' + sceenHeight);
+            var screenWidth = window.innerWidth;
+            var screenHeight = window.innerHeight;
+            $('.banner').height(screenHeight);
+            console.log('--ScreenWidth:' + screenWidth + '--ScreenHeight:' + screenHeight);
             showTime();
         });
 

@@ -15,7 +15,7 @@ public class TempEmail {
 
     private String enable;
 
-    private Date changeTimeeKey;
+    private Date changeTime;
 
     public String getEmailId() {
         return emailId;
@@ -65,11 +65,11 @@ public class TempEmail {
         this.enable = enable == null ? null : enable.trim();
     }
 
-    public Date getChangeTimeeKey() {
-        return changeTimeeKey;
+    public Date getChangeTime() {
+        return changeTime;
     }
 
-    public void setChangeTimeeKey(Date changeTimeeKey) {
-        this.changeTimeeKey = changeTimeeKey;
+    public void setChangeTime(Date changeTime) {
+        this.changeTime = changeTime;
     }
 }

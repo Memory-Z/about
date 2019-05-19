@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -49,7 +50,7 @@ public class MainController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String onLoad(HttpServletRequest request) {
-        String s = IOUtil.readEmailTemp(this.getClass().getClassLoader().getResource("").getPath()
+        String s = IOUtil.readEmailTemp(Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath()
                 + "/static/temp_email.html", "sbss", "ADSDS");
         System.out.println(s);
         return "/index.html";
@@ -61,7 +62,7 @@ public class MainController {
         if (userInfo != null) {
             request.setAttribute("userInfo", userInfo);
         }
-        return "/index.html";
+        return "index.html";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

@@ -1,4 +1,6 @@
 spring:
+#  resources:
+#    static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   # 数据库配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -36,4 +38,4 @@ mybatis:
   # 配置 Mapper xml 文件所在路径，这是一个数组
   mapper-locations: classpath*:com/inz/about/mapping/*.xml
 server:
-  port: 8081
+#  port: 8081
