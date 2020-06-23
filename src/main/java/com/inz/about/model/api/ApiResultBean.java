@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/11 13:38
  **/
-public class ApiTemp1<T> implements Serializable {
+public class ApiResultBean<T> implements Serializable {
     /**
      * 结果码
      */
@@ -61,7 +61,7 @@ public class ApiTemp1<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "ApiTemp1{" +
+        return "ApiResultBean{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
                 ", tempType=" + tempType +

@@ -5,6 +5,7 @@ import com.inz.about.model.*;
 import com.inz.about.model.api.*;
 import com.inz.about.service.*;
 import com.inz.about.util.*;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+// FIXME: 2019/5/21 Timer & 多线程
 
 /**
  * Api 接口
@@ -45,6 +49,8 @@ public class ApiController {
     private static Logger logger = LogManager.getLogger(ApiController.class.getName());
     private Calendar calendar = Calendar.getInstance(Locale.CHINA);
 
+    private ThreadFactory threadFactory = new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build();
+    private ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(50, threadFactory);
 
     private final IUserInfoService userInfoService;
     private final IUserFileService userFileService;
@@ -78,10 +84,11 @@ public class ApiController {
      */
     @RequestMapping(value = "version")
     public String appVersionsController(HttpServletRequest request) {
-        initApiData();
+        ApiResultBean<Integer> resultBean = ApiUtil.initApiTemp1Data();
         String userId = request.getParameter("userId");
         System.out.println("UserId : " + userId);
-        return resultJson1(0);
+        resultBean.setData(0);
+        return ApiUtil.resultJson4Temp1(resultBean);
     }
 
     /**
@@ -93,12 +100,13 @@ public class ApiController {
     @RequestMapping(value = "register")
     public String register(HttpServletRequest request) {
         initApiData();
+        ApiResultBean<Boolean> resultBean = ApiUtil.initApiTemp1Data();
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         boolean isRegister = false;
         if (BaseUtil.isEmpty(userName) || BaseUtil.isEmpty(password)) {
-            apiCode = Constants.API_CODE.WARN.getValue();
-            apiMessage = "传入的参数不完整";
+            resultBean.setCode(Constants.API_CODE.WARN.getValue());
+            resultBean.setMessage("传入的参数不完整");
         } else {
             // 是否存在同一用户名
             boolean haveUserInfo = false;
@@ -129,18 +137,19 @@ public class ApiController {
                 userInfo.setCreateDatetime(createDate);
                 isRegister = userInfoService.register(userInfo);
                 if (isRegister) {
-                    apiCode = Constants.API_CODE.SUCCESS.getValue();
-                    apiMessage = "用户注册成功";
+                    resultBean.setCode(Constants.API_CODE.SUCCESS.getValue());
+                    resultBean.setMessage("用户注册成功");
                 } else {
-                    apiCode = Constants.API_CODE.FAILED.getValue();
-                    apiMessage = "用户注册失败";
+                    resultBean.setCode(Constants.API_CODE.FAILED.getValue());
+                    resultBean.setMessage("用户注册失败");
                 }
             } else {
-                apiCode = Constants.API_CODE.FAILED.getValue();
-                apiMessage = "用户名已存在";
+                resultBean.setCode(Constants.API_CODE.FAILED.getValue());
+                resultBean.setMessage("用户名已存在");
             }
         }
-        return resultJson1(isRegister);
+        resultBean.setData(isRegister);
+        return ApiUtil.resultJson4Temp1(resultBean);
     }
 
     /**
@@ -163,12 +172,7 @@ public class ApiController {
         if (userId != null) {
             String userEmail = request.getParameter("userEmail");
             ThreadPoolProxy.getInstance().execute(new SendEmailRunnable(userId, userEmail, "邮箱验证码"));
-            while (emailCodeIsSendState == 0) {
-                // 邮件发送中...
-                if (timer == null) {
-                    countDownTimer(5000);
-                }
-            }
+            threadPoolExecutor.execute(new SendEmailRunnable(userId, userEmail, "邮箱验证码"));
             emailCodeIsSend = emailCodeIsSendState == 1;
             if (emailCodeIsSend) {
                 apiCode = Constants.API_CODE.SUCCESS.getValue();
@@ -242,7 +246,7 @@ public class ApiController {
         String userName = request.getParameter("userName");
         String userEmail = request.getParameter("userEmail");
         String password = request.getParameter("password");
-        ApiUserInfo apiUserInfo = null;
+        UserInfoBean userInfoBean = null;
         if (BaseUtil.isEmpty(userName) && BaseUtil.isEmpty(userEmail)) {
             apiCode = Constants.API_CODE.FAILED.getValue();
             apiMessage = "账号不能为空！";
@@ -257,7 +261,7 @@ public class ApiController {
                     FileInfo fileInfo = fileInfoService.findById(fileId);
                     userPhotoUrl = fileInfo.getFileUrl();
                 }
-                apiUserInfo = ModelUtil.userInfoToApi(userInfo, userPhotoUrl);
+                userInfoBean = ModelUtil.userInfoToApi(userInfo, userPhotoUrl);
                 apiCode = Constants.API_CODE.SUCCESS.getValue();
                 apiMessage = "登录成功";
             } else {
@@ -265,7 +269,7 @@ public class ApiController {
                 apiMessage = "账号或密码不正确";
             }
         }
-        return resultJson1(apiUserInfo);
+        return resultJson1(userInfoBean);
     }
 
     /**
@@ -326,7 +330,7 @@ public class ApiController {
         String userIntro = request.getParameter("userIntro");
         String userMemo = request.getParameter("userMemo");
         String userPhone = request.getParameter("userPhone");
-        ApiUserInfo apiUserInfo = null;
+        UserInfoBean userInfoBean = null;
         UserInfo userInfo = userInfoService.findById(userId);
         if (!BaseUtil.isEmpty(userSex)) {
             userInfo.setUserSex(userSex);
@@ -359,14 +363,14 @@ public class ApiController {
                 FileInfo fileInfo = fileInfoService.findById(fileId);
                 userPhotoUrl = fileInfo.getFileUrl();
             }
-            apiUserInfo = ModelUtil.userInfoToApi(userInfo, userPhotoUrl);
+            userInfoBean = ModelUtil.userInfoToApi(userInfo, userPhotoUrl);
             apiCode = Constants.API_CODE.SUCCESS.getValue();
             apiMessage = "用户信息更新成功";
         } else {
             apiCode = Constants.API_CODE.FAILED.getValue();
             apiMessage = "用户信息更新失败";
         }
-        return resultJson1(apiUserInfo);
+        return resultJson1(userInfoBean);
     }
 
     /**
@@ -429,13 +433,13 @@ public class ApiController {
             }
         }
         // 需要返回的数据
-        List<ApiDiaryInfo> apiDiaryInfoList = new ArrayList<>();
+        List<DiaryInfoBean> diaryInfoBeanList = new ArrayList<>();
         // 查询的日志数据
         List<DiaryInfo> diaryInfoList = diaryInfoService.findByUserId(userId, start, pageSize);
         if (diaryInfoList != null && diaryInfoList.size() > 0) {
             for (DiaryInfo diaryInfo : diaryInfoList) {
-                ApiDiaryInfo apiDiaryInfo = ModelUtil.diaryInfoToApi(diaryInfo);
-                if (apiDiaryInfo != null) {
+                DiaryInfoBean diaryInfoBean = ModelUtil.diaryInfoToApi(diaryInfo);
+                if (diaryInfoBean != null) {
                     String diaryId = diaryInfo.getDiaryId();
                     String haveImageStr = diaryInfo.getDiaryHaveImage();
                     boolean haveImage = false;
@@ -444,16 +448,16 @@ public class ApiController {
                         haveImage = true;
                     }
                     int diaryPictureNum = 0;
-                    List<ApiPictureInfo> apiPictureInfoList = new ArrayList<>();
+                    List<PictureInfoBean> pictureInfoBeanList = new ArrayList<>();
                     if (haveImage) {
-                        apiPictureInfoList = getPictureInfoByDiaryId(diaryId);
-                        diaryPictureNum = apiPictureInfoList.size();
+                        pictureInfoBeanList = getPictureInfoByDiaryId(diaryId);
+                        diaryPictureNum = pictureInfoBeanList.size();
                     }
-                    List<ApiFileInfo> apiFileInfoList = getFileInfoByDiaryId(diaryId);
-                    apiDiaryInfo.setDiaryImageNum(diaryPictureNum);
-                    apiDiaryInfo.setPictureInfoList(apiPictureInfoList);
-                    apiDiaryInfo.setFileInfoList(apiFileInfoList);
-                    apiDiaryInfoList.add(apiDiaryInfo);
+                    List<FileInfoBean> fileInfoBeanList = getFileInfoByDiaryId(diaryId);
+                    diaryInfoBean.setDiaryImageNum(diaryPictureNum);
+                    diaryInfoBean.setPictureInfoList(pictureInfoBeanList);
+                    diaryInfoBean.setFileInfoList(fileInfoBeanList);
+                    diaryInfoBeanList.add(diaryInfoBean);
                 }
             }
             apiCode = Constants.API_CODE.SUCCESS.getValue();
@@ -466,7 +470,7 @@ public class ApiController {
                 apiMessage = "用户日志信息已全部获取";
             }
         }
-        return resultJson1(apiDiaryInfoList);
+        return resultJson1(diaryInfoBeanList);
     }
 
     /**
@@ -480,7 +484,7 @@ public class ApiController {
     public String getDiaryFileByUserId(@PathVariable("userId") String userId,
                                        @PathVariable("diaryId") String diaryId) {
         initApiData();
-        List<ApiFileInfo> apiFileInfoList = new ArrayList<>();
+        List<FileInfoBean> fileInfoBeanList = new ArrayList<>();
         // 是否相符< 用户Id 和 日志Id 进行 校验>
         boolean isConform = false;
         DiaryInfo diaryInfo = diaryInfoService.findById(diaryId);
@@ -495,7 +499,7 @@ public class ApiController {
             List<DiaryFile> diaryFileList = diaryFileService.findByDiaryId(diaryId);
             if (diaryFileList != null && diaryFileList.size() > 0) {
                 // 获取文件信息
-                apiFileInfoList = getApiFileInfoListByDiaryFileList(diaryFileList);
+                fileInfoBeanList = getApiFileInfoListByDiaryFileList(diaryFileList);
                 apiCode = Constants.API_CODE.SUCCESS.getValue();
                 apiMessage = "日志文件获取成功";
             } else {
@@ -506,7 +510,7 @@ public class ApiController {
             apiCode = Constants.API_CODE.FAILED.getValue();
             apiMessage = "当前用户不存在此日志";
         }
-        return resultJson1(apiFileInfoList);
+        return resultJson1(fileInfoBeanList);
     }
 
     /**
@@ -636,8 +640,8 @@ public class ApiController {
      * @param diaryId 日志Id
      * @return 图片信息 List<PictureInfo>
      */
-    private List<ApiPictureInfo> getPictureInfoByDiaryId(String diaryId) {
-        List<ApiPictureInfo> pictureInfoList = new ArrayList<>();
+    private List<PictureInfoBean> getPictureInfoByDiaryId(String diaryId) {
+        List<PictureInfoBean> pictureInfoList = new ArrayList<>();
         List<DiaryPicture> diaryPictureList = diaryPictureService.findByDiaryId(diaryId, 0, 9);
         if (diaryPictureList != null && diaryPictureList.size() > 0) {
             for (DiaryPicture diaryPicture : diaryPictureList) {
@@ -645,8 +649,8 @@ public class ApiController {
                 PictureInfo pictureInfo = pictureInfoService.findById(pictureId);
                 // 不为空
                 if (pictureInfo != null) {
-                    ApiPictureInfo apiPictureInfo = ModelUtil.pictureInfoToApi(pictureInfo);
-                    pictureInfoList.add(apiPictureInfo);
+                    PictureInfoBean pictureInfoBean = ModelUtil.pictureInfoToApi(pictureInfo);
+                    pictureInfoList.add(pictureInfoBean);
                 }
             }
         }
@@ -659,8 +663,8 @@ public class ApiController {
      * @param diaryId 日志ID
      * @return 文件信息
      */
-    private List<ApiFileInfo> getFileInfoByDiaryId(String diaryId) {
-        List<ApiFileInfo> fileInfoList = new ArrayList<>();
+    private List<FileInfoBean> getFileInfoByDiaryId(String diaryId) {
+        List<FileInfoBean> fileInfoList = new ArrayList<>();
         List<DiaryFile> diaryFileList = diaryFileService.findByDiaryId(diaryId);
         if (diaryFileList != null && diaryFileList.size() > 0) {
             // 获取文件信息
@@ -957,20 +961,20 @@ public class ApiController {
     }
 
     /**
-     * 通过日志文件 获取 ApiFileInfo 文件信息
+     * 通过日志文件 获取 FileInfoBean 文件信息
      *
      * @param diaryFileList 日志文件信息
-     * @return List:ApiFileInfo
+     * @return List:FileInfoBean
      */
-    private List<ApiFileInfo> getApiFileInfoListByDiaryFileList(List<DiaryFile> diaryFileList) {
-        List<ApiFileInfo> apiFileInfoList = new ArrayList<>();
+    private List<FileInfoBean> getApiFileInfoListByDiaryFileList(List<DiaryFile> diaryFileList) {
+        List<FileInfoBean> fileInfoBeanList = new ArrayList<>();
         for (DiaryFile diaryFile : diaryFileList) {
             String fileId = diaryFile.getFileId();
             FileInfo fileInfo = fileInfoService.findById(fileId);
-            ApiFileInfo apiFileInfo = ModelUtil.fileInfoToApi(fileInfo);
-            apiFileInfoList.add(apiFileInfo);
+            FileInfoBean fileInfoBean = ModelUtil.fileInfoToApi(fileInfo);
+            fileInfoBeanList.add(fileInfoBean);
         }
-        return apiFileInfoList;
+        return fileInfoBeanList;
     }
 
     /**
@@ -989,12 +993,12 @@ public class ApiController {
      * @return 结果
      */
     private <T> String resultJson1(T data) {
-        ApiTemp1<T> apiTemp1 = new ApiTemp1<>();
-        apiTemp1.setCode(apiCode);
-        apiTemp1.setMessage(apiMessage);
-        apiTemp1.setTempType(1);
-        apiTemp1.setData(data);
-        JSONObject resultJson = (JSONObject) JSONObject.toJSON(apiTemp1);
+        ApiResultBean<T> apiResultBean = new ApiResultBean<>();
+        apiResultBean.setCode(apiCode);
+        apiResultBean.setMessage(apiMessage);
+        apiResultBean.setTempType(1);
+        apiResultBean.setData(data);
+        JSONObject resultJson = (JSONObject) JSONObject.toJSON(apiResultBean);
         return resultJson.toJSONString();
     }
 
@@ -1012,14 +1016,6 @@ public class ApiController {
          */
         private String subject;
         /**
-         * 邮件内容
-         */
-        private String content;
-        /**
-         * 验证码
-         */
-        private String verificationCode;
-        /**
          * 邮件模板地址
          */
         private final String EMAIL_TEMP_PATH = Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath()
@@ -1034,9 +1030,11 @@ public class ApiController {
         @Override
         public void run() {
             boolean emailCodeIsSend = false;
-            verificationCode = BaseUtil.getVerifyCode(6);
+            // 验证码
+            String verificationCode = BaseUtil.getVerifyCode(6);
             // html 第115 行 ：用户名；第128 行：验证码
-            content = IOUtil.readEmailTemp(EMAIL_TEMP_PATH, toEmails, verificationCode);
+            // 邮件内容
+            String content = IOUtil.readEmailTemp(EMAIL_TEMP_PATH, toEmails, verificationCode);
             boolean flag = MailService.sendSimpleMail(toEmails, subject, content);
             if (flag) {
                 String[] emails = toEmails.split(",");
@@ -1057,38 +1055,37 @@ public class ApiController {
         }
     }
 
-    /**
-     * 计时
-     */
-    private static Timer timer;
-
-    /**
-     * 倒计时时间
-     */
-    private long courtDownTime = 0;
-
-    /**
-     * 倒计时 (间隔周期 1 s)
-     *
-     * @param time 计时时间
-     */
-    @SuppressWarnings("SameParameterValue")
-    private void countDownTimer(long time) {
-        courtDownTime = 0;
-        if (timer == null) {
-            timer = new Timer();
-        } else {
-            timer.cancel();
-        }
-        TimerTask courtDownTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (courtDownTime >= time) {
-                    timer.cancel();
-                }
-                courtDownTime += 1000;
-            }
-        };
-        timer.schedule(courtDownTask, 0, 1000);
-    }
+//    /**
+//     * 计时
+//     */
+//    private static Timer timer;
+//
+//    /**
+//     * 倒计时时间
+//     */
+//    private long courtDownTime = 0;
+//
+//    /**
+//     * 倒计时 (间隔周期 1 s)
+//     *
+//     * @param time 计时时间
+//     */
+//    private void countDownTimer(long time) {
+//        courtDownTime = 0;
+//        if (timer == null) {
+//            timer = new Timer();
+//        } else {
+//            timer.cancel();
+//        }
+//        TimerTask courtDownTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (courtDownTime >= time) {
+//                    timer.cancel();
+//                }
+//                courtDownTime += 1000;
+//            }
+//        };
+//        timer.schedule(courtDownTask, 0, 1000);
+//    }
 }

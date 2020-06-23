@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/12 11:57
  **/
-public class ApiFileInfo implements Serializable {
+public class FileInfoBean extends BaseApiBean implements Serializable {
     /**
      * 文件ID
      */
@@ -110,7 +110,7 @@ public class ApiFileInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "ApiFileInfo{" +
+        return "FileInfoBean{" +
                 "fileId='" + fileId + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", fileUrl='" + fileUrl + '\'' +

@@ -7,7 +7,7 @@ import com.inz.about.model.FileInfo
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/10 10:34
  */
-interface IFileInfoService {
+public interface IFileInfoService {
     fun insert(fileInfo: FileInfo): Boolean
     fun update(fileInfo: FileInfo): Boolean
     fun deleteById(fileId: String): Boolean

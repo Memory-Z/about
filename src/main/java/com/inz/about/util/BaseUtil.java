@@ -579,6 +579,47 @@ public class BaseUtil {
 //    }
 
     /**
+     * SHA-256 加密
+     *
+     * @param value 需要加密的值
+     * @return 加密后的密文
+     */
+    public static String encryptSHA256(String value) {
+        String str = "";
+        MessageDigest md = null;
+        byte[] bytes = value.getBytes();
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+            md.update(bytes);
+            str = bytes2Hex(bytes);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return str;
+    }
+
+    /**
+     * byte 数组 转 16 进制字符串
+     *
+     * @param bytes byte数组
+     * @return 16进制字符串
+     */
+    private static String bytes2Hex(byte[] bytes) {
+        StringBuilder des = new StringBuilder();
+        String temp = "";
+        for (byte aByte : bytes) {
+            temp = Integer.toHexString(aByte & 0xFF);
+            if (temp.length() == 1) {
+                des.append("0");
+            }
+            des.append(temp);
+        }
+        return des.toString();
+    }
+
+
+    /**
      * 创建正则表达式，采用常用形式
      *
      * @param strRegex 通常习惯书写的正则表达式，如"^\\d+\\w."等，注意要用两条斜杠。
@@ -1054,6 +1095,14 @@ public class BaseUtil {
         return str;
     }
 
+    /**
+     * 前一个页面
+     *
+     * @param request 请求
+     * @param url     地址url
+     * @return 跳转地址
+     * @throws UnsupportedEncodingException 不支持
+     */
     public static String refererPage(HttpServletRequest request, String url) throws UnsupportedEncodingException {
         Cookie[] cookies = request.getCookies();
         String formParam = null;
@@ -1062,7 +1111,7 @@ public class BaseUtil {
                 // 判断cookie中存的URL请求的文件路径是否包含当前路径参数Url
                 if ("URL".equals(c.getName()) && c.getValue().contains(url)) {
                     for (Cookie cookie : cookies) {
-                        // 判断cooki中是否已经存在页面表单序列化内容
+                        // 判断cookie 中是否已经存在页面表单序列化内容
                         if ("formParam".equals(cookie.getName()) && !isEmpty(cookie.getValue())) {
                             formParam = URLDecoder.decode(cookie.getValue(), "UTF-8");
                         }
@@ -1156,8 +1205,6 @@ public class BaseUtil {
         int index = systemName.indexOf("linux");
         return index != -1;
     }
-
-
 
 
 }

@@ -1,8 +1,5 @@
 package com.inz.about.model.api;
 
-import com.inz.about.model.FileInfo;
-import com.inz.about.model.PictureInfo;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/12 10:39
  **/
-public class ApiDiaryInfo implements Serializable {
+public class DiaryInfoBean extends BaseApiBean implements Serializable {
 
     /**
      * 日志Id
@@ -59,11 +56,11 @@ public class ApiDiaryInfo implements Serializable {
     /**
      * 日志文件信息
      */
-    private List<ApiFileInfo> fileInfoList;
+    private List<FileInfoBean> fileInfoList;
     /**
      * 日志图片信息
      */
-    private List<ApiPictureInfo> pictureInfoList;
+    private List<PictureInfoBean> pictureInfoList;
 
     public String getDiaryId() {
         return diaryId;
@@ -145,25 +142,25 @@ public class ApiDiaryInfo implements Serializable {
         this.updateDatetime = updateDatetime;
     }
 
-    public List<ApiFileInfo> getFileInfoList() {
+    public List<FileInfoBean> getFileInfoList() {
         return fileInfoList;
     }
 
-    public void setFileInfoList(List<ApiFileInfo> fileInfoList) {
+    public void setFileInfoList(List<FileInfoBean> fileInfoList) {
         this.fileInfoList = fileInfoList;
     }
 
-    public List<ApiPictureInfo> getPictureInfoList() {
+    public List<PictureInfoBean> getPictureInfoList() {
         return pictureInfoList;
     }
 
-    public void setPictureInfoList(List<ApiPictureInfo> pictureInfoList) {
+    public void setPictureInfoList(List<PictureInfoBean> pictureInfoList) {
         this.pictureInfoList = pictureInfoList;
     }
 
     @Override
     public String toString() {
-        return "ApiDiaryInfo{" +
+        return "DiaryInfoBean{" +
                 "diaryId='" + diaryId + '\'' +
                 ", diaryUserId='" + diaryUserId + '\'' +
                 ", diaryContent='" + diaryContent + '\'' +

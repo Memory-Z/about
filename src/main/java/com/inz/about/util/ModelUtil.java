@@ -1,10 +1,10 @@
 package com.inz.about.util;
 
 import com.inz.about.model.*;
-import com.inz.about.model.api.ApiDiaryInfo;
-import com.inz.about.model.api.ApiFileInfo;
-import com.inz.about.model.api.ApiPictureInfo;
-import com.inz.about.model.api.ApiUserInfo;
+import com.inz.about.model.api.DiaryInfoBean;
+import com.inz.about.model.api.FileInfoBean;
+import com.inz.about.model.api.PictureInfoBean;
+import com.inz.about.model.api.UserInfoBean;
 
 import java.util.Date;
 
@@ -21,128 +21,128 @@ public class ModelUtil {
      *
      * @param userInfo 用户信息
      * @param photoUrl 用户头像链接
-     * @return ApiUserInfo
+     * @return UserInfoBean
      */
-    public static ApiUserInfo userInfoToApi(UserInfo userInfo, String photoUrl) {
+    public static UserInfoBean userInfoToApi(UserInfo userInfo, String photoUrl) {
         if (userInfo == null) {
             return null;
         }
-        ApiUserInfo apiUserInfo = new ApiUserInfo();
-        apiUserInfo.setUserId(userInfo.getUserId());
-        apiUserInfo.setUsername(userInfo.getUsername());
-        apiUserInfo.setUserEmail(userInfo.getUserEmail());
+        UserInfoBean userInfoBean = new UserInfoBean();
+        userInfoBean.setUserId(userInfo.getUserId());
+        userInfoBean.setUsername(userInfo.getUsername());
+        userInfoBean.setUserEmail(userInfo.getUserEmail());
         Date birthday = userInfo.getUserBirthday();
         String birthdayStr = BaseUtil.getDateStr(birthday);
-        apiUserInfo.setUserBirthday(birthdayStr);
-        apiUserInfo.setUserIntro(userInfo.getUserIntro());
-        apiUserInfo.setUserMemo(userInfo.getUserMemo());
-        apiUserInfo.setUserPhone(userInfo.getUserPhone());
+        userInfoBean.setUserBirthday(birthdayStr);
+        userInfoBean.setUserIntro(userInfo.getUserIntro());
+        userInfoBean.setUserMemo(userInfo.getUserMemo());
+        userInfoBean.setUserPhone(userInfo.getUserPhone());
         String sex = userInfo.getUserSex();
         String sexStr = "男";
         if ("0".equals(sex)) {
             sexStr = "女";
         }
-        apiUserInfo.setUserSex(sexStr);
-        apiUserInfo.setUserType(userInfo.getUserType());
+        userInfoBean.setUserSex(sexStr);
+        userInfoBean.setUserType(userInfo.getUserType());
         String userPhotoUrl = "";
         if (!"".equals(photoUrl)) {
             userPhotoUrl = photoUrl;
         }
-        apiUserInfo.setUserPhotoUrl(userPhotoUrl);
-        return apiUserInfo;
+        userInfoBean.setUserPhotoUrl(userPhotoUrl);
+        return userInfoBean;
     }
 
     /**
      * 转换为ApiDiaryInfo
      *
      * @param diaryInfo 日志信息
-     * @return ApiDiaryInfo
+     * @return DiaryInfoBean
      */
-    public static ApiDiaryInfo diaryInfoToApi(DiaryInfo diaryInfo) {
+    public static DiaryInfoBean diaryInfoToApi(DiaryInfo diaryInfo) {
         if (diaryInfo == null) {
             return null;
         }
-        ApiDiaryInfo apiDiaryInfo = new ApiDiaryInfo();
-        apiDiaryInfo.setDiaryId(diaryInfo.getDiaryId());
-        apiDiaryInfo.setDiaryAddress(diaryInfo.getDiaryAddress());
-        apiDiaryInfo.setDiaryContent(diaryInfo.getDiaryContent());
-        apiDiaryInfo.setDiaryOrder(diaryInfo.getDiaryOrder());
+        DiaryInfoBean diaryInfoBean = new DiaryInfoBean();
+        diaryInfoBean.setDiaryId(diaryInfo.getDiaryId());
+        diaryInfoBean.setDiaryAddress(diaryInfo.getDiaryAddress());
+        diaryInfoBean.setDiaryContent(diaryInfo.getDiaryContent());
+        diaryInfoBean.setDiaryOrder(diaryInfo.getDiaryOrder());
         boolean isMore = false;
         if ("1".equals(diaryInfo.getDiaryHaveImage())) {
             isMore = true;
         }
-        apiDiaryInfo.setDiaryIsMoreOne(isMore);
-        apiDiaryInfo.setDiaryUserId(diaryInfo.getDiaryUserId());
-        apiDiaryInfo.setDiaryWeather(diaryInfo.getDiaryWeather());
+        diaryInfoBean.setDiaryIsMoreOne(isMore);
+        diaryInfoBean.setDiaryUserId(diaryInfo.getDiaryUserId());
+        diaryInfoBean.setDiaryWeather(diaryInfo.getDiaryWeather());
         String createTime = BaseUtil.getDateStr(diaryInfo.getCreateDatetime());
-        apiDiaryInfo.setCreateDatetime(createTime);
+        diaryInfoBean.setCreateDatetime(createTime);
         Date updateTime = diaryInfo.getUpdateDatetime();
         String updateTimeStr = "";
         if (updateTime != null) {
             updateTimeStr = BaseUtil.getDateStr(updateTime);
         }
-        apiDiaryInfo.setUpdateDatetime(updateTimeStr);
-        return apiDiaryInfo;
+        diaryInfoBean.setUpdateDatetime(updateTimeStr);
+        return diaryInfoBean;
     }
 
     /**
      * 转换为ApiFileInfo
      *
      * @param fileInfo 文件信息
-     * @return ApiFileInfo
+     * @return FileInfoBean
      */
-    public static ApiFileInfo fileInfoToApi(FileInfo fileInfo) {
+    public static FileInfoBean fileInfoToApi(FileInfo fileInfo) {
         if (fileInfo == null) {
             return null;
         }
-        ApiFileInfo apiFileInfo = new ApiFileInfo();
-        apiFileInfo.setFileId(fileInfo.getFileId());
+        FileInfoBean fileInfoBean = new FileInfoBean();
+        fileInfoBean.setFileId(fileInfo.getFileId());
         boolean isEnable = false;
         if ("1".equals(fileInfo.getFileEnable())) {
             isEnable = true;
         }
-        apiFileInfo.setFileEnable(isEnable);
-        apiFileInfo.setFileName(fileInfo.getFileName());
-        apiFileInfo.setFileSize(fileInfo.getFileSize());
-        apiFileInfo.setFileType(fileInfo.getFileType());
-        apiFileInfo.setFileUrl(fileInfo.getFileUrl());
+        fileInfoBean.setFileEnable(isEnable);
+        fileInfoBean.setFileName(fileInfo.getFileName());
+        fileInfoBean.setFileSize(fileInfo.getFileSize());
+        fileInfoBean.setFileType(fileInfo.getFileType());
+        fileInfoBean.setFileUrl(fileInfo.getFileUrl());
         Date createTime = fileInfo.getCreateDatetime();
         String createTimeStr = BaseUtil.getDateStr(createTime);
-        apiFileInfo.setCreateDatetime(createTimeStr);
+        fileInfoBean.setCreateDatetime(createTimeStr);
         Date updateTime = fileInfo.getUpdateTime();
         String updateTimeStr = "";
         if (updateTime != null) {
             updateTimeStr = BaseUtil.getDateStr(updateTime);
         }
-        apiFileInfo.setUpdateTime(updateTimeStr);
-        return apiFileInfo;
+        fileInfoBean.setUpdateTime(updateTimeStr);
+        return fileInfoBean;
     }
 
     /**
-     * 转换为 ApiPictureInfo
+     * 转换为 PictureInfoBean
      *
      * @param pictureInfo 图片信息
-     * @return ApiPictureInfo
+     * @return PictureInfoBean
      */
-    public static ApiPictureInfo pictureInfoToApi(PictureInfo pictureInfo) {
+    public static PictureInfoBean pictureInfoToApi(PictureInfo pictureInfo) {
         if (pictureInfo == null) {
             return null;
         }
-        ApiPictureInfo apiPictureInfo = new ApiPictureInfo();
-        apiPictureInfo.setPictureId(pictureInfo.getPictureId());
-        apiPictureInfo.setPictureEnable(pictureInfo.getPictureEnable());
-        apiPictureInfo.setPictureSize(pictureInfo.getPictureSize());
-        apiPictureInfo.setPictureType(pictureInfo.getPictureType());
-        apiPictureInfo.setPictureUrl(pictureInfo.getPictureUrl());
+        PictureInfoBean pictureInfoBean = new PictureInfoBean();
+        pictureInfoBean.setPictureId(pictureInfo.getPictureId());
+        pictureInfoBean.setPictureEnable(pictureInfo.getPictureEnable());
+        pictureInfoBean.setPictureSize(pictureInfo.getPictureSize());
+        pictureInfoBean.setPictureType(pictureInfo.getPictureType());
+        pictureInfoBean.setPictureUrl(pictureInfo.getPictureUrl());
         Date createDate = pictureInfo.getCreateDatetime();
         String createDateStr = BaseUtil.getDateStr(createDate);
-        apiPictureInfo.setCreateDatetime(createDateStr);
+        pictureInfoBean.setCreateDatetime(createDateStr);
         Date updateDate = pictureInfo.getUpdateTime();
         String updateDateStr = "";
         if (updateDate != null) {
             updateDateStr = BaseUtil.getDateStr(updateDate);
         }
-        apiPictureInfo.setUpdateDatetime(updateDateStr);
-        return apiPictureInfo;
+        pictureInfoBean.setUpdateDatetime(updateDateStr);
+        return pictureInfoBean;
     }
 }

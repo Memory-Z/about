@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/12 11:46
  **/
-public class ApiDiaryPicture implements Serializable {
+public class DiaryPictureBean extends BaseApiBean implements Serializable {
     private String id;
 
     private String diaryId;

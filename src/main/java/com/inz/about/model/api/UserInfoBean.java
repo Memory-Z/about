@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/11 13:36
  **/
-public class ApiUserInfo implements Serializable {
+public class UserInfoBean extends BaseApiBean implements Serializable {
     /**
      * 用户ID
      */
@@ -133,7 +133,7 @@ public class ApiUserInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "ApiUserInfo{" +
+        return "UserInfoBean{" +
                 "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", userEmail='" + userEmail + '\'' +

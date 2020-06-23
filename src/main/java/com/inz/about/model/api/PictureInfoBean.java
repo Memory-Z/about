@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @version 1.0.0
  * Create by Zhenglj on 2018/10/12 11:48
  **/
-public class ApiPictureInfo implements Serializable {
+public class PictureInfoBean extends BaseApiBean implements Serializable {
     /**
      * 图片ID
      */
@@ -98,7 +98,7 @@ public class ApiPictureInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "ApiPictureInfo{" +
+        return "PictureInfoBean{" +
                 "pictureId='" + pictureId + '\'' +
                 ", pictureUrl='" + pictureUrl + '\'' +
                 ", pictureSize=" + pictureSize +
